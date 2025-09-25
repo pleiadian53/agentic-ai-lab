@@ -1,0 +1,22 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+python-dotenv
+jinja2
+openai
+tavily-python
+wikipedia
+requests
+aisuite
+docstring_parser
+
+# Core
+pdfminer.six
+pymupdf           # optional but recommended for faster/better PDF text extraction
+
+# Web/knowledge tools you used in other snippets (optional)
+python-dotenv
+
+# SQLite via SQLAlchemy
+SQLAlchemy
