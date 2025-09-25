@@ -3,7 +3,7 @@ import re
 from typing import List
 from datetime import datetime
 from aisuite import Client
-from agents import research_agent, writer_agent, editor_agent  # Ajusta si están en otro archivo
+from src.agents import research_agent, writer_agent, editor_agent  # Ajusta si están en otro archivo
 
 client = Client()
 

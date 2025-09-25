@@ -1,7 +1,7 @@
 from datetime import datetime
 from urllib import response
 from aisuite import Client
-from research_tools import (
+from src.research_tools import (
     arxiv_search_tool,
     tavily_search_tool,
     wikipedia_search_tool,

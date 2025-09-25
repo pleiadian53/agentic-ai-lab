@@ -14,7 +14,7 @@ from sqlalchemy import create_engine, Column, Text, DateTime, String
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
 
-from planning_agent import planner_agent, executor_agent_step
+from src.planning_agent import planner_agent, executor_agent_step
 
 import html, textwrap
 
