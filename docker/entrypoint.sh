@@ -1,51 +1,39 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Function: wait until Postgres responds
-wait_for_pg() {
-  echo "⏳ Waiting for Postgres on 127.0.0.1:${POSTGRES_PORT}..."
-  for i in $(seq 1 60); do
-    if pg_isready -h 127.0.0.1 -p "${POSTGRES_PORT}" -U postgres >/dev/null 2>&1; then
-      echo "✅ Postgres is ready"
-      return 0
-    fi
-    sleep 1
-  done
-  echo "❌ Postgres did not start in time"
-  exit 1
-}
+# --- Start Debian's default Postgres cluster ---
+PG_MAJOR="$(psql -V | awk '{print $3}' | cut -d. -f1)"
+echo "🚀 Starting Postgres cluster ${PG_MAJOR}/main..."
+pg_ctlcluster "${PG_MAJOR}" main start
 
-# 1. Initialize cluster if not exists
-if [ ! -s "$PGDATA/PG_VERSION" ]; then
-  echo "📦 Initializing Postgres cluster in $PGDATA"
-  mkdir -p "$PGDATA"
-  chown -R postgres:postgres "$PGDATA"
-  su -s /bin/bash postgres -c "initdb -D '$PGDATA' --locale=C.UTF-8"
+# Espera a que esté listo (puedes seguir usando TCP para el check)
+for i in $(seq 1 60); do
+  if pg_isready -h 127.0.0.1 -p 5432 -U postgres >/dev/null 2>&1; then
+    echo "✅ Postgres is ready"
+    break
+  fi
+  sleep 1
+done
 
-  echo "listen_addresses = '127.0.0.1'" >> "$PGDATA/postgresql.conf"
-  echo "port = ${POSTGRES_PORT}" >> "$PGDATA/postgresql.conf"
-  echo "host all all 127.0.0.1/32 md5" >> "$PGDATA/pg_hba.conf"
+# --- Variables de la app/DSN ---
+: "${POSTGRES_USER:=app}"
+: "${POSTGRES_PASSWORD:=local}"
+: "${POSTGRES_DB:=appdb}"
+
+# === IMPORTANTE: usar socket UNIX y el usuario del SO 'postgres' ===
+# Crear rol si no existe
+if ! su -s /bin/bash postgres -c "psql -tAc \"SELECT 1 FROM pg_roles WHERE rolname='${POSTGRES_USER}'\"" | grep -q 1; then
+  su -s /bin/bash postgres -c "psql -c \"CREATE USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';\""
 fi
 
-# 2. Start Postgres in background
-echo "🚀 Starting Postgres..."
-su -s /bin/bash postgres -c "pg_ctl -D '$PGDATA' -l /tmp/postgres.log start"
+# Crear DB si no existe
+if ! su -s /bin/bash postgres -c "psql -tAc \"SELECT 1 FROM pg_database WHERE datname='${POSTGRES_DB}'\"" | grep -q 1; then
+  su -s /bin/bash postgres -c "psql -c \"CREATE DATABASE ${POSTGRES_DB} OWNER ${POSTGRES_USER};\""
+fi
 
-# 3. Wait for Postgres
-wait_for_pg
+# DSN único para tu app (como quieres)
+export DATABASE_URL="${DATABASE_URL:-postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@127.0.0.1:5432/${POSTGRES_DB}}"
+echo "🔗 DATABASE_URL=${DATABASE_URL}"
 
-# 4. Create role and DB if missing
-echo "🔧 Ensuring user and database exist..."
-psql -h 127.0.0.1 -p "${POSTGRES_PORT}" -U postgres -tc \
-  "SELECT 1 FROM pg_roles WHERE rolname='${POSTGRES_USER}'" | grep -q 1 \
-  || psql -h 127.0.0.1 -p "${POSTGRES_PORT}" -U postgres -c \
-  "CREATE USER ${POSTGRES_USER} WITH PASSWORD '${POSTGRES_PASSWORD}';"
-
-psql -h 127.0.0.1 -p "${POSTGRES_PORT}" -U postgres -tc \
-  "SELECT 1 FROM pg_database WHERE datname='${POSTGRES_DB}'" | grep -q 1 \
-  || psql -h 127.0.0.1 -p "${POSTGRES_PORT}" -U postgres -c \
-  "CREATE DATABASE ${POSTGRES_DB} OWNER ${POSTGRES_USER};"
-
-# 5. Launch FastAPI
-echo "🌐 Starting FastAPI..."
+# Arranca FastAPI
 exec uvicorn main:app --host 0.0.0.0 --port 8000
