@@ -1,7 +1,3 @@
-Here’s a drop-in **README.md** you can paste into your repo. It’s tailored to your code + single-container (Postgres + FastAPI) setup you’re running.
-
----
-
 # Reflective Research Agent (FastAPI + Postgres, single container)
 
 A FastAPI web app that plans a research workflow, runs tool-using agents (Tavily, arXiv, Wikipedia), and stores task state/results in Postgres.
