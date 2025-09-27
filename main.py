@@ -5,7 +5,7 @@ import threading
 from datetime import datetime
 from typing import Optional, Literal
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
@@ -70,6 +70,10 @@ class PromptRequest(BaseModel):
 @app.get("/", response_class=HTMLResponse)
 def read_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/api", response_class=JSONResponse)
+def health_check(request: Request):
+    return {'status': 'ok'}
 
 @app.post("/generate_report")
 def generate_report(req: PromptRequest):
