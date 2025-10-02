@@ -3,9 +3,14 @@ import re
 from typing import List
 from datetime import datetime
 from aisuite import Client
-from src.agents import research_agent, writer_agent, editor_agent  # Ajusta si están en otro archivo
+from src.agents import (
+    research_agent,
+    writer_agent,
+    editor_agent,
+)  # Ajusta si están en otro archivo
 
 client = Client()
+
 
 def clean_json_block(raw: str) -> str:
     raw = raw.strip()
@@ -17,6 +22,7 @@ def clean_json_block(raw: str) -> str:
 
 from typing import List
 import json, ast
+
 
 def planner_agent(topic: str, model: str = "openai:o4-mini") -> List[str]:
     prompt = f"""
@@ -107,9 +113,15 @@ Topic: "{topic}"
             steps_list = [required_first] + steps_list
         if len(steps_list) < 2 or steps_list[1] != required_second:
             # remove any generic arxiv step that is not tied to Tavily results
-            steps_list = [steps_list[0]] + [required_second] + [
-                s for s in steps_list[1:] if "arXiv" not in s or "For each collected item" in s
-            ]
+            steps_list = (
+                [steps_list[0]]
+                + [required_second]
+                + [
+                    s
+                    for s in steps_list[1:]
+                    if "arXiv" not in s or "For each collected item" in s
+                ]
+            )
         # ensure final step requirement present
         if final_required not in steps_list:
             steps_list.append(final_required)
@@ -119,8 +131,6 @@ Topic: "{topic}"
     steps = _ensure_contract(steps)
 
     return steps
-
-
 
 
 def executor_agent_step(step_title: str, history: list, model: str, prompt: str):
