@@ -38,9 +38,15 @@ This repo includes a Docker setup that runs **Postgres + the API in one containe
 ## Prerequisites
 
 * **Docker** (Desktop on Windows/macOS, or engine on Linux).
-* API keys (only if you’ll actually call those tools):
 
-  * `TAVILY_API_KEY` (for Tavily web search).
+
+* API keys stored in a `.env` file:
+
+  ```
+  OPENAI_API_KEY=your-open-api-key
+  TAVILY_API_KEY=your-tavily-api-key
+  ```
+
 * Python deps are installed by Docker from `requirements.txt`:
 
   * `fastapi`, `uvicorn`, `sqlalchemy`, `python-dotenv`, `jinja2`, `requests`, `wikipedia`, etc.
@@ -80,12 +86,7 @@ docker build -t fastapi-postgres-service .
 ### 2) Run (foreground)
 
 ```bash
-docker run --rm -it \
-  -p 8000:8000 \
-  -p 5432:5432 \
-  --name fpsvc \
-  -e TAVILY_API_KEY=your_tavily_key_here \  # optional
-  fastapi-postgres-service
+docker run --rm -it  -p 8000:8000  -p 5432:5432  --name fpsvc  --env-file .env  fastapi-postgres-service
 ```
 
 You should see logs like:
