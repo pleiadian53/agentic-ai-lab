@@ -9,40 +9,71 @@ from src.research_tools import (
 
 client = Client()
 
+
 # === Research Agent ===
-def research_agent(prompt: str, model: str = "openai:gpt-4.1", return_messages: bool = False):
+def research_agent(
+    prompt: str, model: str = "openai:gpt-4.1", return_messages: bool = False
+):
     print("==================================")
     print("🔍 Research Agent")
     print("==================================")
 
     full_prompt = f"""
-You are a research assistant.
+You are an advanced research assistant with expertise in information retrieval and academic research methodology. Your mission is to gather comprehensive, accurate, and relevant information on any topic requested by the user.
 
-You have access to the following tools:
-- `tavily_search_tool`: for general web search (e.g., news, blogs, websites)
-- `arxiv_search_tool`: for academic publications **only** in the following domains:
-  - Computer Science
-  - Mathematics
-  - Physics
-  - Statistics
-  - Quantitative Biology
-  - Quantitative Finance
-  - Electrical Engineering and Systems Science
-  - Economics
-- `wikipedia_search_tool`: for background information and encyclopedic definitions
+## AVAILABLE RESEARCH TOOLS:
 
-🛠 TOOL USAGE RULES:
-1. Decide which tools to use based on the research need.
-2. Only use `arxiv_search_tool` for supported domains.
-3. Use `tavily_search_tool` for recent/general/news.
-4. Use `wikipedia_search_tool` for background/definitions.
-5. Never use an unsuitable tool.
+1. **`tavily_search_tool`**: General web search engine
+   - USE FOR: Recent news, current events, blogs, websites, industry reports, and non-academic sources
+   - BEST FOR: Up-to-date information, diverse perspectives, practical applications, and general knowledge
 
----
-User request:
-{prompt}
+2. **`arxiv_search_tool`**: Academic publication database
+   - USE FOR: Peer-reviewed research papers, technical reports, and scholarly articles
+   - LIMITED TO THESE DOMAINS ONLY:
+     * Computer Science
+     * Mathematics
+     * Physics
+     * Statistics
+     * Quantitative Biology
+     * Quantitative Finance
+     * Electrical Engineering and Systems Science
+     * Economics
+   - BEST FOR: Scientific evidence, theoretical frameworks, and technical details in supported fields
+
+3. **`wikipedia_search_tool`**: Encyclopedia resource
+   - USE FOR: Background information, definitions, overviews, historical context
+   - BEST FOR: Establishing foundational knowledge and understanding basic concepts
+
+## RESEARCH METHODOLOGY:
+
+1. **Analyze Request**: Identify the core research questions and knowledge domains
+2. **Plan Search Strategy**: Determine which tools are most appropriate for the topic
+3. **Execute Searches**: Use the selected tools with effective keywords and queries
+4. **Evaluate Sources**: Prioritize credibility, relevance, recency, and diversity
+5. **Synthesize Findings**: Organize information logically with clear source attribution
+6. **Document Search Process**: Note which tools were used and why
+
+## TOOL SELECTION GUIDELINES:
+
+- For scientific/academic questions in supported domains → Use `arxiv_search_tool`
+- For recent developments, news, or practical information → Use `tavily_search_tool`
+- For fundamental concepts or historical context → Use `wikipedia_search_tool`
+- For comprehensive research → Use multiple tools strategically
+- NEVER use `arxiv_search_tool` for domains outside its supported list
+- ALWAYS verify information across multiple sources when possible
+
+## OUTPUT FORMAT:
+
+Present your research findings in a structured format that includes:
+1. **Summary of Research Approach**: Tools used and search strategy
+2. **Key Findings**: Organized by subtopic or source
+3. **Source Details**: Include URLs, titles, authors, and publication dates
+4. **Limitations**: Note any gaps in available information
 
 Today is {datetime.now().strftime('%Y-%m-%d')}.
+
+USER RESEARCH REQUEST:
+{prompt}
 """.strip()
 
     messages = [{"role": "user", "content": full_prompt}]
@@ -94,6 +125,7 @@ Today is {datetime.now().strftime('%Y-%m-%d')}.
             arg_text = str(args)
             try:
                 import json as _json
+
                 parsed = _json.loads(args) if isinstance(args, str) else args
                 if isinstance(parsed, dict):
                     kv = ", ".join(f"{k}={repr(v)}" for k, v in parsed.items())
@@ -104,10 +136,13 @@ Today is {datetime.now().strftime('%Y-%m-%d')}.
             tool_lines.append(f"- {name}({arg_text})")
 
         if tool_lines:
-            tools_html = "<h2 style='font-size:1.5em; color:#2563eb;'>📎 Tools used</h2>"
-            tools_html += "<ul>" + "".join(f"<li>{line}</li>" for line in tool_lines) + "</ul>"
+            tools_html = (
+                "<h2 style='font-size:1.5em; color:#2563eb;'>📎 Tools used</h2>"
+            )
+            tools_html += (
+                "<ul>" + "".join(f"<li>{line}</li>" for line in tool_lines) + "</ul>"
+            )
             content += "\n\n" + tools_html
-
 
         print("✅ Output:\n", content)
         return content, messages
@@ -117,55 +152,72 @@ Today is {datetime.now().strftime('%Y-%m-%d')}.
         return f"[Model Error: {str(e)}]", messages
 
 
-
 def writer_agent(
     prompt: str,
     model: str = "openai:gpt-4.1",
-    min_words_total: int = 2400,            # mínimo de palabras para todo el informe
-    min_words_per_section: int = 400,       # mínimo por sección
-    max_tokens: int = 15000,                 # presupuesto de salida (ajústalo a tu modelo)
-    retries: int = 1,                       # reintentos si queda corto
+    min_words_total: int = 2400,  # mínimo de palabras para todo el informe
+    min_words_per_section: int = 400,  # mínimo por sección
+    max_tokens: int = 15000,  # presupuesto de salida (ajústalo a tu modelo)
+    retries: int = 1,  # reintentos si queda corto
 ):
     print("==================================")
     print("✍️ Writer Agent")
     print("==================================")
 
     # 1) Instrucciones de longitud claras y medibles
-    system_message = f"""
-You are an academic writing agent.
+    system_message = """
+You are an expert academic writer with a PhD-level understanding of scholarly communication. Your task is to synthesize research materials into a comprehensive, well-structured academic report.
 
-Produce a complete, self-contained FINAL REPORT in Markdown. DO NOT summarize; WRITE THE FULL REPORT.
+## REPORT REQUIREMENTS:
+- Produce a COMPLETE, POLISHED, and PUBLICATION-READY academic report in Markdown format
+- Create original content that thoroughly analyzes the provided research materials
+- DO NOT merely summarize the sources; develop a cohesive narrative with critical analysis
+- Length should be appropriate to thoroughly cover the topic (typically 1500-3000 words)
 
-MANDATORY SECTIONS (each section MUST be at least {min_words_per_section} words):
-- Introduction
-- Background or Context
-- Key Findings
-- Discussion
-- Conclusion
-- References
+## MANDATORY STRUCTURE:
+1. **Title**: Clear, concise, and descriptive of the content
+2. **Abstract**: Brief summary (100-150 words) of the report's purpose, methods, and key findings
+3. **Introduction**: Present the topic, research question/problem, significance, and outline of the report
+4. **Background/Literature Review**: Contextualize the topic within existing scholarship
+5. **Methodology**: If applicable, describe research methods, data collection, and analytical approaches
+6. **Key Findings/Results**: Present the primary outcomes and evidence
+7. **Discussion**: Interpret findings, address implications, limitations, and connections to broader field
+8. **Conclusion**: Synthesize main points and suggest directions for future research
+9. **References**: Complete list of all cited works
 
-LENGTH REQUIREMENTS:
-- The TOTAL report MUST be at least {min_words_total} words.
-- If needed, expand examples, equations, methods, limitations, and implications to meet the length.
+## ACADEMIC WRITING GUIDELINES:
+- Maintain formal, precise, and objective language throughout
+- Use discipline-appropriate terminology and concepts
+- Support all claims with evidence and reasoning
+- Develop logical flow between ideas, paragraphs, and sections
+- Include relevant examples, case studies, data, or equations to strengthen arguments
+- Address potential counterarguments and limitations
 
-CITATION RULES:
-- Use numeric inline citations [1], [2], ... linked to the References.
-- Every inline citation must have a matching References entry.
-- Every item in References must be cited at least once.
-- Preserve and merge any incoming references/sources/tools links (keep URLs).
+## CITATION AND REFERENCE RULES:
+- Use numeric inline citations [1], [2], etc. for all borrowed ideas and information
+- Every claim based on external sources MUST have a citation
+- Each inline citation must correspond to a complete entry in the References section
+- Every reference listed must be cited at least once in the text
+- Preserve ALL original URLs, DOIs, and bibliographic information from source materials
+- Format references consistently according to academic standards
 
-OUTPUT:
-- Markdown only.
-- At the very end include:
+## FORMATTING GUIDELINES:
+- Use Markdown syntax for all formatting (headings, emphasis, lists, etc.)
+- Include appropriate section headings and subheadings to organize content
+- Format any equations, tables, or figures according to academic conventions
+- Use bullet points or numbered lists when appropriate for clarity
 
-USE THE COMPLIANCE CHECKLIST BUT DON'T ADD IT TO THE FINAL OUTPUT.
+Output the complete report in Markdown format only. Do not include meta-commentary about the writing process.
 
-**Compliance checklist**
-- [ ] Used all provided research
-- [ ] Included inline citations
-- [ ] Included a References section
-- [ ] Preserved input references/sources/tools links
-- [ ] Structured sections present
+INTERNAL CHECKLIST (DO NOT INCLUDE IN OUTPUT):
+- [ ] Incorporated all provided research materials
+- [ ] Developed original analysis beyond mere summarization
+- [ ] Included all mandatory sections with appropriate content
+- [ ] Used proper inline citations for all borrowed content
+- [ ] Created complete References section with all cited sources
+- [ ] Maintained academic tone and language throughout
+- [ ] Ensured logical flow and coherent structure
+- [ ] Preserved all source URLs and bibliographic information
 """.strip()
 
     messages = [
@@ -178,7 +230,7 @@ USE THE COMPLIANCE CHECKLIST BUT DON'T ADD IT TO THE FINAL OUTPUT.
             model=model,
             messages=messages_,
             temperature=0,
-            max_tokens=max_tokens,            # << IMPORTANTE: darle “aire” a la salida
+            max_tokens=max_tokens,  # << IMPORTANTE: darle “aire” a la salida
             # top_p=1,                         # opcional
             # presence_penalty=0,              # opcional
             # frequency_penalty=0,             # opcional
@@ -187,28 +239,12 @@ USE THE COMPLIANCE CHECKLIST BUT DON'T ADD IT TO THE FINAL OUTPUT.
 
     def _word_count(md_text: str) -> int:
         import re
+
         words = re.findall(r"\b\w+\b", md_text)
         return len(words)
 
     # 2) Primer intento
     content = _call(messages)
-
-    # 3) Verificación de longitud y reintento si hace falta
-    tries = 0
-    while tries < retries:
-        total_words = _word_count(content)
-        if total_words >= min_words_total:
-            break  # suficiente
-        # Si quedó corto, pedimos explícitamente expandir
-        expand_msg = f"""
-Your previous answer was too short ({total_words} words).
-You MUST expand each section to at least {min_words_per_section} words and the TOTAL to at least {min_words_total} words.
-Add more detail, examples, methodology, limitations, and implications. Keep all citations rules.
-Only return the full expanded Markdown report (no explanations).
-""".strip()
-        messages.append({"role": "system", "content": expand_msg})
-        content = _call(messages)
-        tries += 1
 
     print("✅ Output:\n", content)
     return content, messages
@@ -223,13 +259,31 @@ def editor_agent(
     print("🧠 Editor Agent")
     print("==================================")
 
-    system_message = f"""
-You are an editor of academic writing.
+    system_message = """
+You are a professional academic editor with expertise in improving scholarly writing across disciplines. Your task is to refine and elevate the quality of the academic text provided.
 
-Revise for clarity, flow, and structure WITHOUT reducing length.
-If the text is below {target_min_words} words, EXPAND with clarifying detail, equations, examples, and transitions.
-Preserve citations [1], [2], ... and the References section.
-Return only the revised Markdown.
+## Your Editing Process:
+1. Analyze the overall structure, argument flow, and coherence of the text
+2. Ensure logical progression of ideas with clear topic sentences and transitions between paragraphs
+3. Improve clarity, precision, and conciseness of language while maintaining academic tone
+4. Verify technical accuracy (to the extent possible based on context)
+5. Enhance readability through appropriate formatting and organization
+
+## Specific Elements to Address:
+- Strengthen thesis statements and main arguments
+- Clarify complex concepts with additional explanations or examples where needed
+- Add relevant equations, diagrams, or illustrations (described in markdown) when they would enhance understanding
+- Ensure proper integration of evidence and maintain academic rigor
+- Standardize terminology and eliminate redundancies
+- Improve sentence variety and paragraph structure
+- Preserve all citations [1], [2], etc., and maintain the integrity of the References section
+
+## Formatting Guidelines:
+- Use markdown formatting consistently for headings, emphasis, lists, etc.
+- Structure content with appropriate section headings and subheadings
+- Format equations, tables, and figures according to academic standards
+
+Return only the revised, polished text in Markdown format without explanatory comments about your edits.
 """.strip()
 
     messages = [
@@ -241,7 +295,7 @@ Return only the revised Markdown.
         model=model,
         messages=messages,
         temperature=0,
-        max_tokens=4000,   # dale aire aquí también
+        max_tokens=4000,  # dale aire aquí también
     )
 
     content = response.choices[0].message.content
