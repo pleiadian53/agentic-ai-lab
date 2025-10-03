@@ -85,7 +85,7 @@ USER RESEARCH REQUEST:
             messages=messages,
             tools=tools,
             tool_choice="auto",
-            max_turns=12,
+            max_turns=5,
             temperature=0.0,  # Use deterministic output
         )
 
@@ -294,8 +294,7 @@ Return only the revised, polished text in Markdown format without explanatory co
     response = client.chat.completions.create(
         model=model,
         messages=messages,
-        temperature=0,
-        max_tokens=4000,  # dale aire aquí también
+        temperature=0
     )
 
     content = response.choices[0].message.content

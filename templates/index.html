@@ -21,11 +21,44 @@
 <body class="p-4">
 <div class="container">
   <h2 class="mb-4">🧠 Reflective Research Agent — Planning and Tool Use</h2>
-  <div class="mb-3 d-flex align-items-center">
-    <label for="promptInput" class="form-label me-3">Prompt:</label>
-    <input type="text" class="form-control me-2" id="promptInput" placeholder="Enter your research topic here" style="flex: 1">
-    <button class="btn btn-primary" onclick="submitPrompt()">Submit</button>
+
+  <!-- Intro card -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <p class="mb-2">
+        <strong>In this item,</strong> you can try the research agent that Andrew walked through earlier in the module for yourself.
+      </p>
+      <p class="mb-2">
+        To use the agent, enter a prompt in the box below. Research agents work best when you give some details in your prompt to guide the agent.
+        So try adding <strong>3–4 details</strong> to your prompt that give the agent more context about your research question. You don't have to write lots of text, a few sentences will be enough.
+      </p>
+      <p class="mb-2">
+        To see what the agent is doing in the background, you can expand the box associated with each step of the workflow by clicking on the <strong>‘+’</strong> sign next to the agent call.
+        This will reveal the behind-the-scenes working of the agent for that step.
+      </p>
+      <p class="mb-0">
+        This agent is powered by <strong>GPT-4o-mini</strong>, which is a lower cost model and therefore not as powerful as more recent OpenAI, Anthropic, or Gemini models,
+        so see what you think of the output—your mileage may vary depending on your question!
+      </p>
+    </div>
   </div>
+
+  <!-- Prompt area con textarea de 4 líneas -->
+  <div class="mb-3">
+    <label for="promptInput" class="form-label">Prompt</label>
+    <div class="d-flex align-items-start gap-2">
+      <textarea
+        class="form-control"
+        id="promptInput"
+        rows="4"
+        placeholder="Describe your research topic here"
+        style="flex: 1"
+      ></textarea>
+      <button class="btn btn-primary" onclick="submitPrompt()">Submit</button>
+    </div>
+    <div class="form-text">Tip: Add 3–4 details to make your question more specific.</div>
+  </div>
+
   <div id="taskInfo" class="mb-3"></div>
   <div id="stepStatusList" class="mb-4"></div>
   <div id="stepDetails"></div>
@@ -65,7 +98,6 @@ function submitPrompt() {
   if (!prompt) return;
 
   currentTopic = prompt;
-  // ⬇️ Mostrar mensaje y bloquear UI INMEDIATAMENTE
   setTaskInfoGenerating(currentTopic);
   disableUI(true);
 
@@ -78,7 +110,6 @@ function submitPrompt() {
   .then(data => {
     currentTaskId = data.task_id;
 
-    // limpiar UI de pasos
     document.getElementById('stepStatusList').innerHTML = '';
     document.getElementById('stepDetails').innerHTML = '';
     document.getElementById('finalOutput').innerHTML = '';
@@ -102,7 +133,6 @@ function fetchProgress() {
     .then(data => {
       const { steps } = data;
 
-      // ✅ En cuanto existan steps, marcamos “steps generated”
       if (Array.isArray(steps) && steps.length > 0) {
         setStepsGenerated();
       }
@@ -168,7 +198,7 @@ function fetchProgress() {
       fetchTaskStatus();
     })
     .catch(() => {
-      // si falla el polling, no reactivamos aún
+      // silent
     });
 }
 
