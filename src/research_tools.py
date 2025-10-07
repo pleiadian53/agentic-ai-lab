@@ -282,7 +282,7 @@ def tavily_search_tool(query: str, max_results: int = 5, include_images: bool = 
     if not api_key:
         raise ValueError("TAVILY_API_KEY not found in environment variables.")
 
-    client = TavilyClient(api_key)
+    client = TavilyClient(api_key, api_base_url=os.getenv("DLAI_TAVILY_BASE_URL"))
 
     try:
         response = client.search(
