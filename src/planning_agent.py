@@ -133,7 +133,7 @@ Topic: "{topic}"
     return steps
 
 
-def executor_agent_step(step_title: str, history: list, model: str, prompt: str):
+def executor_agent_step(step_title: str, history: list, prompt: str):
     """
     Ejecuta un paso individual del plan usando el agente apropiado.
     Devuelve:
@@ -163,14 +163,14 @@ def executor_agent_step(step_title: str, history: list, model: str, prompt: str)
     # Seleccionar agente basado en el paso
     step_lower = step_title.lower()
     if "research" in step_lower:
-        content, _ = research_agent(prompt=enriched_task, model=model)
+        content, _ = research_agent(prompt=enriched_task)
         print("🔍 Research Agent Output:", content)
         return step_title, "research_agent", content
     elif "draft" in step_lower or "write" in step_lower:
-        content, _ = writer_agent(prompt=enriched_task, model=model)
+        content, _ = writer_agent(prompt=enriched_task)
         return step_title, "writer_agent", content
     elif "revise" in step_lower or "edit" in step_lower or "feedback" in step_lower:
-        content, _ = editor_agent(prompt=enriched_task, model=model)
+        content, _ = editor_agent(prompt=enriched_task)
         return step_title, "editor_agent", content
     else:
         raise ValueError(f"Unknown step type: {step_title}")

@@ -64,8 +64,7 @@ templates = Jinja2Templates(directory="templates")
 task_progress = {}
 
 class PromptRequest(BaseModel):
-    prompt: str
-    model: Optional[Literal["gpt-4o", "gpt-3.5-turbo", "o4-mini"]] = "openai:gpt-4o"
+    prompt: str 
 
 @app.get("/", response_class=HTMLResponse)
 def read_index(request: Request):
@@ -84,7 +83,7 @@ def generate_report(req: PromptRequest):
     db.close()
 
     task_progress[task_id] = {"steps": []}
-    initial_plan_steps = planner_agent(req.prompt, req.model)
+    initial_plan_steps = planner_agent(req.prompt)
     for step_title in initial_plan_steps:
         task_progress[task_id]["steps"].append({
             "title": step_title,
@@ -93,7 +92,7 @@ def generate_report(req: PromptRequest):
             "substeps": []
         })
 
-    thread = threading.Thread(target=run_agent_workflow, args=(task_id, req.prompt, req.model, initial_plan_steps))
+    thread = threading.Thread(target=run_agent_workflow, args=(task_id, req.prompt, initial_plan_steps))
     thread.start()
     return {"task_id": task_id}
 
@@ -119,7 +118,7 @@ def format_history(history):
         for title, desc, output in history
     )
 
-def run_agent_workflow(task_id: str, prompt: str, model: str, initial_plan_steps: list):
+def run_agent_workflow(task_id: str, prompt: str, initial_plan_steps: list):
     steps_data = task_progress[task_id]["steps"]
     execution_history = []
 
@@ -137,7 +136,7 @@ def run_agent_workflow(task_id: str, prompt: str, model: str, initial_plan_steps
             update_step_status(i, "running", f"Executing: {plan_step_title}")
 
             actual_step_description, agent_name, output = executor_agent_step(
-                plan_step_title, execution_history, model, prompt
+                plan_step_title, execution_history, prompt
             )
 
             execution_history.append([plan_step_title, actual_step_description, output])

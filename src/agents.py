@@ -12,7 +12,7 @@ client = Client()
 
 # === Research Agent ===
 def research_agent(
-    prompt: str, model: str = "openai:gpt-4.1", return_messages: bool = False
+    prompt: str, model: str = "openai:gpt-4.1-mini", return_messages: bool = False
 ):
     print("==================================")
     print("🔍 Research Agent")
@@ -154,7 +154,7 @@ USER RESEARCH REQUEST:
 
 def writer_agent(
     prompt: str,
-    model: str = "openai:gpt-4.1",
+    model: str = "openai:gpt-4.1-mini",
     min_words_total: int = 2400,  # mínimo de palabras para todo el informe
     min_words_per_section: int = 400,  # mínimo por sección
     max_tokens: int = 15000,  # presupuesto de salida (ajústalo a tu modelo)
@@ -252,7 +252,7 @@ INTERNAL CHECKLIST (DO NOT INCLUDE IN OUTPUT):
 
 def editor_agent(
     prompt: str,
-    model: str = "openai:gpt-4.1",
+    model: str = "openai:gpt-4.1-mini",
     target_min_words: int = 2400,
 ):
     print("==================================")
