@@ -35,6 +35,7 @@ Base = declarative_base()
 engine = create_engine(DATABASE_URL, echo=False, future=True)
 SessionLocal = sessionmaker(bind=engine)
 
+
 class Task(Base):
     __tablename__ = "tasks"
     id = Column(String, primary_key=True, index=True)
@@ -47,7 +48,7 @@ class Task(Base):
 
 try:
     Base.metadata.drop_all(bind=engine)
-except Exception as e:      
+except Exception as e:
     print(f"\u274c DB creation failed: {e}")
 
 try:
@@ -57,22 +58,28 @@ except Exception as e:
 
 # === FastAPI ===
 app = FastAPI()
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
+)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 task_progress = {}
 
+
 class PromptRequest(BaseModel):
-    prompt: str 
+    prompt: str
+
 
 @app.get("/", response_class=HTMLResponse)
 def read_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+
 @app.get("/api", response_class=JSONResponse)
 def health_check(request: Request):
-    return {'status': 'ok'}
+    return {"status": "ok"}
+
 
 @app.post("/generate_report")
 def generate_report(req: PromptRequest):
@@ -85,20 +92,26 @@ def generate_report(req: PromptRequest):
     task_progress[task_id] = {"steps": []}
     initial_plan_steps = planner_agent(req.prompt)
     for step_title in initial_plan_steps:
-        task_progress[task_id]["steps"].append({
-            "title": step_title,
-            "status": "pending",
-            "description": "Awaiting execution",
-            "substeps": []
-        })
+        task_progress[task_id]["steps"].append(
+            {
+                "title": step_title,
+                "status": "pending",
+                "description": "Awaiting execution",
+                "substeps": [],
+            }
+        )
 
-    thread = threading.Thread(target=run_agent_workflow, args=(task_id, req.prompt, initial_plan_steps))
+    thread = threading.Thread(
+        target=run_agent_workflow, args=(task_id, req.prompt, initial_plan_steps)
+    )
     thread.start()
     return {"task_id": task_id}
+
 
 @app.get("/task_progress/{task_id}")
 def get_task_progress(task_id: str):
     return task_progress.get(task_id, {"steps": []})
+
 
 @app.get("/task_status/{task_id}")
 def get_task_status(task_id: str):
@@ -109,14 +122,15 @@ def get_task_status(task_id: str):
         raise HTTPException(status_code=404, detail="Task not found")
     return {
         "status": task.status,
-        "result": json.loads(task.result) if task.result else None
+        "result": json.loads(task.result) if task.result else None,
     }
+
 
 def format_history(history):
     return "\n\n".join(
-        f"🔹 {title}\n{desc}\n\n📝 Output:\n{output}"
-        for title, desc, output in history
+        f"🔹 {title}\n{desc}\n\n📝 Output:\n{output}" for title, desc, output in history
     )
+
 
 def run_agent_workflow(task_id: str, prompt: str, initial_plan_steps: list):
     steps_data = task_progress[task_id]["steps"]
@@ -148,9 +162,13 @@ def run_agent_workflow(task_id: str, prompt: str, initial_plan_steps: list):
                 return esc(s).replace("\n", "<br>")
 
             # ...
-            update_step_status(i, "done", f"Completed: {plan_step_title}", {
-    "title": f"Called {agent_name}",
-    "content": f"""
+            update_step_status(
+                i,
+                "done",
+                f"Completed: {plan_step_title}",
+                {
+                    "title": f"Called {agent_name}",
+                    "content": f"""
 <div style='border:1px solid #ccc; border-radius:8px; padding:10px; margin:8px 0; background:#fff;'>
   <div style='font-weight:bold; color:#2563eb;'>📘 User Prompt</div>
   <div style='white-space:pre-wrap;'>{prompt}</div>
@@ -169,17 +187,15 @@ def run_agent_workflow(task_id: str, prompt: str, initial_plan_steps: list):
 {output}
   </div>
 </div>
-""".strip()
-})
+""".strip(),
+                },
+            )
 
+        final_report_markdown = (
+            execution_history[-1][-1] if execution_history else "No report generated."
+        )
 
-
-        final_report_markdown = execution_history[-1][-1] if execution_history else "No report generated."
-
-        result = {
-            "html_report": final_report_markdown,
-            "history": steps_data
-        }
+        result = {"html_report": final_report_markdown, "history": steps_data}
 
         db = SessionLocal()
         task = db.query(Task).filter(Task.id == task_id).first()
@@ -192,12 +208,17 @@ def run_agent_workflow(task_id: str, prompt: str, initial_plan_steps: list):
     except Exception as e:
         print(f"Workflow error for task {task_id}: {e}")
         if steps_data:
-            error_step_index = next((i for i, s in enumerate(steps_data) if s["status"] == "running"), len(steps_data) - 1)
+            error_step_index = next(
+                (i for i, s in enumerate(steps_data) if s["status"] == "running"),
+                len(steps_data) - 1,
+            )
             if error_step_index >= 0:
-                update_step_status(error_step_index, "error", f"Error during execution: {e}", {
-                    "title": "Error",
-                    "content": str(e)
-                })
+                update_step_status(
+                    error_step_index,
+                    "error",
+                    f"Error during execution: {e}",
+                    {"title": "Error", "content": str(e)},
+                )
 
         db = SessionLocal()
         task = db.query(Task).filter(Task.id == task_id).first()
