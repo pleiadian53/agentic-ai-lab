@@ -70,7 +70,7 @@ Present your research findings in a structured format that includes:
 3. **Source Details**: Include URLs, titles, authors, and publication dates
 4. **Limitations**: Note any gaps in available information
 
-Today is {datetime.now().strftime('%Y-%m-%d')}.
+Today is {datetime.now().strftime("%Y-%m-%d")}.
 
 USER RESEARCH REQUEST:
 {prompt}
@@ -155,16 +155,15 @@ USER RESEARCH REQUEST:
 def writer_agent(
     prompt: str,
     model: str = "openai:gpt-4.1-mini",
-    min_words_total: int = 2400,  # mínimo de palabras para todo el informe
-    min_words_per_section: int = 400,  # mínimo por sección
-    max_tokens: int = 15000,  # presupuesto de salida (ajústalo a tu modelo)
-    retries: int = 1,  # reintentos si queda corto
+    min_words_total: int = 2400,
+    min_words_per_section: int = 400,
+    max_tokens: int = 15000,
+    retries: int = 1,
 ):
     print("==================================")
     print("✍️ Writer Agent")
     print("==================================")
 
-    # 1) Instrucciones de longitud claras y medibles
     system_message = """
 You are an expert academic writer with a PhD-level understanding of scholarly communication. Your task is to synthesize research materials into a comprehensive, well-structured academic report.
 
@@ -231,10 +230,7 @@ INTERNAL CHECKLIST (DO NOT INCLUDE IN OUTPUT):
             model=model,
             messages=messages_,
             temperature=0,
-            max_tokens=max_tokens,  # << IMPORTANTE: darle “aire” a la salida
-            # top_p=1,                         # opcional
-            # presence_penalty=0,              # opcional
-            # frequency_penalty=0,             # opcional
+            max_tokens=max_tokens,
         )
         return resp.choices[0].message.content or ""
 
@@ -244,7 +240,6 @@ INTERNAL CHECKLIST (DO NOT INCLUDE IN OUTPUT):
         words = re.findall(r"\b\w+\b", md_text)
         return len(words)
 
-    # 2) Primer intento
     content = _call(messages)
 
     print("✅ Output:\n", content)
@@ -293,9 +288,7 @@ Return only the revised, polished text in Markdown format without explanatory co
     ]
 
     response = client.chat.completions.create(
-        model=model,
-        messages=messages,
-        temperature=0
+        model=model, messages=messages, temperature=0
     )
 
     content = response.choices[0].message.content

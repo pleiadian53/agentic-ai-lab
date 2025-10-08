@@ -7,9 +7,9 @@ import requests
 from pdfminer.high_level import extract_text
 
 session = requests.Session()
-session.headers.update({
-    "User-Agent": "LF-ADP-Agent/1.0 (mailto:your.email@example.com)"
-})
+session.headers.update(
+    {"User-Agent": "LF-ADP-Agent/1.0 (mailto:your.email@example.com)"}
+)
 
 ## -----
 
@@ -39,14 +39,19 @@ from io import BytesIO
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-def _build_session(user_agent: str = "LF-ADP-Agent/1.0 (mailto:your.email@example.com)") -> requests.Session:
+
+def _build_session(
+    user_agent: str = "LF-ADP-Agent/1.0 (mailto:your.email@example.com)",
+) -> requests.Session:
     s = requests.Session()
-    s.headers.update({
-        "User-Agent": user_agent,
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate",
-        "Connection": "keep-alive",
-    })
+    s.headers.update(
+        {
+            "User-Agent": user_agent,
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate",
+            "Connection": "keep-alive",
+        }
+    )
     retry = Retry(
         total=5,
         connect=5,
@@ -62,7 +67,9 @@ def _build_session(user_agent: str = "LF-ADP-Agent/1.0 (mailto:your.email@exampl
     s.mount("http://", adapter)
     return s
 
+
 session = _build_session()
+
 
 # ----- Utilities -----
 def ensure_pdf_url(abs_or_pdf_url: str) -> str:
@@ -74,30 +81,35 @@ def ensure_pdf_url(abs_or_pdf_url: str) -> str:
         url += ".pdf"
     return url
 
+
 def _safe_filename(name: str) -> str:
     import re
+
     name = re.sub(r"[^A-Za-z0-9._-]+", "_", name)
     if not name.lower().endswith(".pdf"):
         name += ".pdf"
     return name
 
+
 def clean_text(s: str) -> str:
-    s = re.sub(r"-\n", "", s)                  # "transfor-\nmers" -> "transformers"
-    s = re.sub(r"\r\n|\r", "\n", s)            # normaliza saltos
-    s = re.sub(r"[ \t]+", " ", s)              # colapsa espacios
-    s = re.sub(r"\n{3,}", "\n\n", s)           # no más de 1 línea en blanco seguida
+    s = re.sub(r"-\n", "", s)  # "transfor-\nmers" -> "transformers"
+    s = re.sub(r"\r\n|\r", "\n", s)  # normaliza saltos
+    s = re.sub(r"[ \t]+", " ", s)  # colapsa espacios
+    s = re.sub(r"\n{3,}", "\n\n", s)  # no más de 1 línea en blanco seguida
     return s.strip()
 
-# ====== NUEVO: descarga a memoria y extrae desde bytes ======
+
 def fetch_pdf_bytes(pdf_url: str, timeout: int = 90) -> bytes:
     r = session.get(pdf_url, timeout=timeout, allow_redirects=True)
     r.raise_for_status()
     return r.content
 
+
 def pdf_bytes_to_text(pdf_bytes: bytes, max_pages: Optional[int] = None) -> str:
     # 1) PyMuPDF
     try:
         import fitz  # PyMuPDF
+
         out = []
         with fitz.open(stream=pdf_bytes, filetype="pdf") as doc:
             n = len(doc)
@@ -111,14 +123,15 @@ def pdf_bytes_to_text(pdf_bytes: bytes, max_pages: Optional[int] = None) -> str:
     # 2) pdfminer.six
     try:
         from pdfminer.high_level import extract_text_to_fp
+
         buf_in = BytesIO(pdf_bytes)
         buf_out = BytesIO()
-        extract_text_to_fp(buf_in, buf_out)  # pdfminer no limita páginas fácilmente
+        extract_text_to_fp(buf_in, buf_out)
         return buf_out.getvalue().decode("utf-8", errors="ignore")
     except Exception as e:
         raise RuntimeError(f"PDF text extraction failed: {e}")
 
-# ====== (Opcional) Guardar PDF si lo pides explícitamente ======
+
 def maybe_save_pdf(pdf_bytes: bytes, dest_dir: str, filename: str) -> str:
     os.makedirs(dest_dir, exist_ok=True)
     path = os.path.join(dest_dir, _safe_filename(filename))
@@ -126,14 +139,15 @@ def maybe_save_pdf(pdf_bytes: bytes, dest_dir: str, filename: str) -> str:
         f.write(pdf_bytes)
     return path
 
-# ----- arXiv search + extracción en memoria -----
+
+# ----- arXiv search -----
 from typing import List, Dict
 import time, requests, xml.etree.ElementTree as ET
 from io import BytesIO
 
-# --- helpers que ya tienes (resumen) ---
 # session = _build_session()
 # ensure_pdf_url(), clean_text(), fetch_pdf_bytes(), pdf_bytes_to_text(), maybe_save_pdf()
+
 
 def arxiv_search_tool(
     query: str,
@@ -144,12 +158,12 @@ def arxiv_search_tool(
     para contener el texto extraído del PDF (full_text si es posible).
     """
     # ===== FLAGS INTERNOS =====
-    _INCLUDE_PDF       = True
-    _EXTRACT_TEXT      = True
-    _MAX_PAGES         = 6
-    _TEXT_CHARS        = 5000
-    _SAVE_FULL_TEXT    = False
-    _SLEEP_SECONDS     = 1.0
+    _INCLUDE_PDF = True
+    _EXTRACT_TEXT = True
+    _MAX_PAGES = 6
+    _TEXT_CHARS = 5000
+    _SAVE_FULL_TEXT = False
+    _SLEEP_SECONDS = 1.0
     # ==========================
 
     api_url = (
@@ -169,11 +183,17 @@ def arxiv_search_tool(
         ns = {"atom": "http://www.w3.org/2005/Atom"}
 
         for entry in root.findall("atom:entry", ns):
-            title = (entry.findtext("atom:title", default="", namespaces=ns) or "").strip()
-            published = (entry.findtext("atom:published", default="", namespaces=ns) or "")[:10]
+            title = (
+                entry.findtext("atom:title", default="", namespaces=ns) or ""
+            ).strip()
+            published = (
+                entry.findtext("atom:published", default="", namespaces=ns) or ""
+            )[:10]
             url_abs = entry.findtext("atom:id", default="", namespaces=ns) or ""
             # original abstract
-            abstract_summary = (entry.findtext("atom:summary", default="", namespaces=ns) or "").strip()
+            abstract_summary = (
+                entry.findtext("atom:summary", default="", namespaces=ns) or ""
+            ).strip()
 
             authors = []
             for a in entry.findall("atom:author", ns):
@@ -194,7 +214,7 @@ def arxiv_search_tool(
                 "authors": authors,
                 "published": published,
                 "url": url_abs,
-                "summary": abstract_summary,   # ← se sobrescribirá si hay full_text
+                "summary": abstract_summary,
                 "link_pdf": link_pdf,
             }
 
@@ -212,10 +232,8 @@ def arxiv_search_tool(
                     text = clean_text(text) if text else ""
                     if text:
                         if _SAVE_FULL_TEXT:
-                            # ⚡️ Aquí forzamos que summary sea el full_text
-                            item["summary"] = text  
+                            item["summary"] = text
                         else:
-                            # O al menos un excerpt
                             item["summary"] = text[:_TEXT_CHARS]
                 except Exception as e:
                     item["text_error"] = f"Text extraction failed: {e}"
@@ -228,8 +246,7 @@ def arxiv_search_tool(
         return [{"error": f"Unexpected error: {e}"}]
 
 
-
-# ---- Tool def (si usas tool-calling) ----
+# ---- Tool def ----
 arxiv_tool_def = {
     "type": "function",
     "function": {
@@ -238,26 +255,16 @@ arxiv_tool_def = {
         "parameters": {
             "type": "object",
             "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "Search keywords."
-                },
-                "max_results": {
-                    "type": "integer",
-                    "default": 3
-                }
+                "query": {"type": "string", "description": "Search keywords."},
+                "max_results": {"type": "integer", "default": 3},
             },
-            "required": ["query"]
-        }
-    }
+            "required": ["query"],
+        },
+    },
 }
 
 
-
 ## -----
-
-
-
 
 
 import os
@@ -266,7 +273,10 @@ from tavily import TavilyClient
 
 load_dotenv()  # Loads environment variables from a .env file
 
-def tavily_search_tool(query: str, max_results: int = 5, include_images: bool = False) -> list[dict]:
+
+def tavily_search_tool(
+    query: str, max_results: int = 5, include_images: bool = False
+) -> list[dict]:
     """
     Perform a search using the Tavily API.
 
@@ -286,18 +296,18 @@ def tavily_search_tool(query: str, max_results: int = 5, include_images: bool = 
 
     try:
         response = client.search(
-            query=query,
-            max_results=max_results,
-            include_images=include_images
+            query=query, max_results=max_results, include_images=include_images
         )
 
         results = []
         for r in response.get("results", []):
-            results.append({
-                "title": r.get("title", ""),
-                "content": r.get("content", ""),
-                "url": r.get("url", "")
-            })
+            results.append(
+                {
+                    "title": r.get("title", ""),
+                    "content": r.get("content", ""),
+                    "url": r.get("url", ""),
+                }
+            )
 
         if include_images:
             for img_url in response.get("images", []):
@@ -307,7 +317,7 @@ def tavily_search_tool(query: str, max_results: int = 5, include_images: bool = 
 
     except Exception as e:
         return [{"error": str(e)}]  # For LLM-friendly agents
-    
+
 
 tavily_tool_def = {
     "type": "function",
@@ -319,28 +329,29 @@ tavily_tool_def = {
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "Search keywords for retrieving information from the web."
+                    "description": "Search keywords for retrieving information from the web.",
                 },
                 "max_results": {
                     "type": "integer",
                     "description": "Maximum number of results to return.",
-                    "default": 5
+                    "default": 5,
                 },
                 "include_images": {
                     "type": "boolean",
                     "description": "Whether to include image results.",
-                    "default": False
-                }
+                    "default": False,
+                },
             },
-            "required": ["query"]
-        }
-    }
+            "required": ["query"],
+        },
+    },
 }
 
 ## Wikipedia search tool
 
 from typing import List, Dict
 import wikipedia
+
 
 def wikipedia_search_tool(query: str, sentences: int = 5) -> List[Dict]:
     """
@@ -358,13 +369,10 @@ def wikipedia_search_tool(query: str, sentences: int = 5) -> List[Dict]:
         page = wikipedia.page(page_title)
         summary = wikipedia.summary(page_title, sentences=sentences)
 
-        return [{
-            "title": page.title,
-            "summary": summary,
-            "url": page.url
-        }]
+        return [{"title": page.title, "summary": summary, "url": page.url}]
     except Exception as e:
         return [{"error": str(e)}]
+
 
 # Tool definition
 wikipedia_tool_def = {
@@ -377,24 +385,23 @@ wikipedia_tool_def = {
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "Search keywords for the Wikipedia article."
+                    "description": "Search keywords for the Wikipedia article.",
                 },
                 "sentences": {
                     "type": "integer",
                     "description": "Number of sentences in the summary.",
-                    "default": 5
-                }
+                    "default": 5,
+                },
             },
-            "required": ["query"]
-        }
-    }
+            "required": ["query"],
+        },
+    },
 }
-
 
 
 # Tool mapping
 tool_mapping = {
     "tavily_search_tool": tavily_search_tool,
     "arxiv_search_tool": arxiv_search_tool,
-    "wikipedia_search_tool": wikipedia_search_tool
+    "wikipedia_search_tool": wikipedia_search_tool,
 }

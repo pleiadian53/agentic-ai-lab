@@ -7,7 +7,7 @@ from src.agents import (
     research_agent,
     writer_agent,
     editor_agent,
-)  # Ajusta si están en otro archivo
+)
 
 client = Client()
 
@@ -135,8 +135,8 @@ Topic: "{topic}"
 
 def executor_agent_step(step_title: str, history: list, prompt: str):
     """
-    Ejecuta un paso individual del plan usando el agente apropiado.
-    Devuelve:
+    Executes a step of the executor agent.
+    Returns:
         - step_title (str)
         - agent_name (str)
         - output (str)
@@ -146,13 +146,13 @@ def executor_agent_step(step_title: str, history: list, prompt: str):
     context = f"📘 User Prompt:\n{prompt}\n\n📜 History so far:\n"
     for i, (desc, agent, output) in enumerate(history):
         if "draft" in desc.lower() or agent == "writer_agent":
-            context += f"\n✍️ Draft (Step {i+1}):\n{output.strip()}\n"
+            context += f"\n✍️ Draft (Step {i + 1}):\n{output.strip()}\n"
         elif "feedback" in desc.lower() or agent == "editor_agent":
-            context += f"\n🧠 Feedback (Step {i+1}):\n{output.strip()}\n"
+            context += f"\n🧠 Feedback (Step {i + 1}):\n{output.strip()}\n"
         elif "research" in desc.lower() or agent == "research_agent":
-            context += f"\n🔍 Research (Step {i+1}):\n{output.strip()}\n"
+            context += f"\n🔍 Research (Step {i + 1}):\n{output.strip()}\n"
         else:
-            context += f"\n🧩 Other (Step {i+1}) by {agent}:\n{output.strip()}\n"
+            context += f"\n🧩 Other (Step {i + 1}) by {agent}:\n{output.strip()}\n"
 
     enriched_task = f"""{context}
 
