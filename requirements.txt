@@ -1,22 +1,45 @@
-fastapi
-uvicorn[standard]
-sqlalchemy
-psycopg2-binary
-python-dotenv
-jinja2
+# === Agent + LLM Tools ===
+aisuite==0.1.11
+anthropic
+docstring-parser
+markdown
+mistralai
 openai
-tavily-python
-wikipedia
-requests
-aisuite
-docstring_parser
+qrcode
+tavily-python>=0.7.12
+textstat
+vertexai
 
-# Core
-pdfminer.six
-pymupdf           # optional but recommended for faster/better PDF text extraction
-
-# Web/knowledge tools you used in other snippets (optional)
+# === Web Framework + API ===
+fastapi
+pydantic
+pydantic[email]
 python-dotenv
+python-multipart
+requests
+sqlalchemy
+uvicorn
 
-# SQLite via SQLAlchemy
-SQLAlchemy
+# === Notebook Experience ===
+ipywidgets
+jupyter_server
+nbclassic
+notebook
+
+# === Data Analysis / Display (Optional Enhancements) ===
+duckdb
+matplotlib
+pandas
+seaborn
+tabulate
+tinydb
+
+# === Machine Learning / NLP (Optional Enhancements) ===
+jinja2
+psycopg2-binary
+scikit-learn
+wikipedia
+
+# === Additional Project Dependencies ===
+pdfminer.six
+pymupdf

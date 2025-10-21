@@ -35,11 +35,42 @@ This repo includes a Docker setup that runs **Postgres + the API in one containe
 
 ---
 
+## Quick Start
+
+### 🚀 Local Development Setup (Recommended)
+
+For the best development experience, set up a local Python environment with mamba:
+
+```bash
+./scripts/install/setup.sh
+mamba activate agentic-ai
+```
+
+**Prerequisites:** Miniforge (includes mamba)
+- Install: `brew install --cask miniforge` or visit https://github.com/conda-forge/miniforge
+
+**See**: 
+* `SETUP_README.md` for detailed setup instructions
+* `docs/libraries/` for complete library documentation
+
+### 🐳 Docker Setup (Alternative)
+
+For containerized deployment, see [Docker Setup](#build--run-localdev) below.
+
+---
+
 ## Prerequisites
 
+### For Local Development
+
+* **Python 3.10+** (automatically handled by mamba/conda)
+* **API keys** in `.env` file (see [Environment Setup](#environment-variables))
+
+See `docs/ENVIRONMENT_SETUP.md` for complete setup guide.
+
+### For Docker
+
 * **Docker** (Desktop on Windows/macOS, or engine on Linux).
-
-
 * API keys stored in a `.env` file:
 
   ```

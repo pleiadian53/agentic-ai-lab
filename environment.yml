@@ -1,0 +1,59 @@
+name: agentic-ai
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python version
+  - python=3.11
+
+  # === Agent + LLM Tools ===
+  - pip
+  - openai
+  - markdown
+  - requests
+  
+  # === Web Framework + API ===
+  - fastapi
+  - pydantic
+  - python-dotenv
+  - python-multipart
+  - sqlalchemy
+  - uvicorn
+  
+  # === Notebook Experience ===
+  - ipywidgets
+  - jupyter
+  - jupyter_server
+  - nbclassic
+  - notebook
+  - ipykernel
+  
+  # === Data Analysis / Display ===
+  - duckdb
+  - matplotlib
+  - pandas
+  - seaborn
+  - tabulate
+  
+  # === Machine Learning / NLP ===
+  - jinja2
+  - psycopg2
+  - scikit-learn
+  
+  # Packages only available via pip
+  - pip:
+    # Agent & LLM specific packages not in conda-forge
+    - aisuite==0.1.11
+    - anthropic
+    - docstring-parser
+    - mistralai
+    - qrcode
+    - tavily-python>=0.7.12
+    - textstat
+    - vertexai
+    
+    # Additional pip-only packages
+    - tinydb
+    - wikipedia
+    - pdfminer.six
+    - pymupdf
