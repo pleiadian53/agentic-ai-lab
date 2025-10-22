@@ -1,6 +1,15 @@
 # utils.py API Reference
 
+**Module**: `reflection.M2_UGL_1.utils`  
+**Location**: `reflection/M2_UGL_1/utils.py`
+
 Core utility functions for the reflection package.
+
+## Import
+
+```python
+from reflection.M2_UGL_1 import utils
+```
 
 ## Data Loading & Preparation
 

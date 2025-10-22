@@ -59,6 +59,26 @@ def parse_args() -> argparse.Namespace:
         default=5,
         help="Number of head rows to include in prompts for additional context.",
     )
+    parser.add_argument(
+        "--max-iterations",
+        type=int,
+        default=2,
+        help="Maximum number of refinement iterations (including the initial draft).",
+    )
+    parser.add_argument(
+        "--no-save-final-code",
+        dest="save_final_code",
+        action="store_false",
+        help="Skip writing the final chart code to disk.",
+    )
+    parser.add_argument(
+        "--no-stop-on-convergence",
+        dest="stop_on_convergence",
+        action="store_false",
+        help="Force running all iterations even when the reflection appears to converge early.",
+    )
+    parser.set_defaults(stop_on_convergence=True)
+    parser.set_defaults(save_final_code=True)
     return parser.parse_args()
 
 
@@ -74,6 +94,9 @@ def main() -> None:
         image_basename=args.image_basename,
         output_dir=Path(args.output_dir),
         sample_rows=args.sample_rows,
+        max_iterations=args.max_iterations,
+        stop_on_convergence=args.stop_on_convergence,
+        save_final_code=args.save_final_code,
     )
 
     artifacts = run_reflection_workflow(
@@ -86,17 +109,25 @@ def main() -> None:
     print(artifacts.instruction)
     print()
 
-    summary = textwrap.dedent(
-        f"""
-        Workflow completed.
-          • V1 code length: {len(artifacts.code_v1)} characters
-          • V1 chart saved to: {artifacts.chart_v1}
-          • Reflection feedback: {artifacts.feedback or 'n/a'}
-          • V2 chart saved to: {artifacts.chart_v2}
-        """
-    ).strip()
+    print("Iteration summary:")
+    for iteration in artifacts.iterations:
+        feedback_display = iteration.feedback if iteration.feedback else "n/a"
+        print(
+            textwrap.dedent(
+                f"""
+                -- Iteration {iteration.iteration} --
+                   Chart: {iteration.chart_path}
+                   Code length: {len(iteration.code)} characters
+                   Feedback: {feedback_display}
+                """
+            ).strip()
+        )
 
-    print(summary)
+    final_chart = artifacts.iterations[-1].chart_path
+    print(f"\nWorkflow completed in {len(artifacts.iterations)} iteration(s).")
+    print(f"Final chart saved to: {final_chart}")
+    if artifacts.final_code_path:
+        print(f"Final code written to: {artifacts.final_code_path}")
 
 
 if __name__ == "__main__":
