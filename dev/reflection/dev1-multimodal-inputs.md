@@ -58,6 +58,10 @@ Base64 encoding converts the binary image file into a text string that can be se
 
 
 
+Yes. Any digital image—JPEG, PNG, GIF, SVG, TIFF, BMP, etc.—is ultimately stored as binary data (a sequence of bytes). Base64 is simply a binary-to-text encoding scheme that maps every 3 bytes (24 bits) into 4 printable ASCII characters. Because this mapping is deterministic and reversible, you can encode *any* binary file, including any image, as a Base64 text string. When the API receives the string, it decodes the Base64 back into the original bytes before further processing. In other words, Base64 does not care about file type; it just works on raw bytes.
+
+
+
 ### The Multi-Modal Workflow in This Notebook
 
 ```python

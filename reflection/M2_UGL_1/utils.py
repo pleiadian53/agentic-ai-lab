@@ -45,8 +45,13 @@ def get_response(model: str, prompt: str) -> str:
     
 # === Data Loading ===
 def load_and_prepare_data(csv_path: str) -> pd.DataFrame:
-    """Load CSV and derive date parts commonly used in charts."""
-    df = pd.read_csv(csv_path)
+    """Load CSV/TSV and derive date parts commonly used in charts."""
+    # Detect file type and use appropriate separator
+    path_str = str(csv_path)
+    if path_str.endswith('.tsv'):
+        df = pd.read_csv(csv_path, sep='\t', low_memory=False)
+    else:
+        df = pd.read_csv(csv_path)
     # Be tolerant if 'date' exists
     if "date" in df.columns:
         df["date"] = pd.to_datetime(df["date"], errors="coerce")

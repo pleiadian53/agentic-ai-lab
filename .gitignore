@@ -49,6 +49,10 @@ coverage.xml
 *.py.cover
 .hypothesis/
 .pytest_cache/
+
+# Test outputs
+tests/*/outputs/
+test_outputs/
 cover/
 
 # Translations
@@ -206,3 +210,9 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Data directory
+data/
+
+# Development temporary files
+dev/
