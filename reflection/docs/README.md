@@ -18,27 +18,35 @@ The reflection pattern enables AI agents to critique and improve their own outpu
 ### 📚 [API Reference](api/)
 Technical documentation of all functions, classes, and modules.
 
-- [utils.md](api/utils.md) - Core utility functions (data loading, LLM interaction, display)
-- [chart_workflow.md](api/chart_workflow.md) - Chart workflow package API *(coming soon)*
+**Available:**
+- **[utils.md](api/utils.md)** - Core utility functions (data loading, LLM interaction, display)
 
-### 📖 [Guides](guides/)
+**Planned (to be created):**
+- **chart_workflow.md** - Chart workflow package API documentation
+
+### 📖 Guides
 Step-by-step tutorials and how-to guides.
 
-- [Getting Started](guides/getting-started.md) - Quick start guide
-- [Chart Generation](guides/chart-generation.md) - Building chart workflows
-- [Reflection Pattern](guides/reflection-pattern.md) - Implementing reflection
+**Planned (to be created):**
+- **Getting Started** - Quick start guide for new users
+- **Chart Generation** - Building chart workflows with the reflection pattern
+- **Reflection Pattern** - Implementing reflection in custom workflows
 
-### 💡 [Examples](examples/)
+### 💡 Examples
 Real-world examples and use cases.
 
-- [Basic Reflection](examples/basic-reflection.md) - Simple reflection workflow
-- [Multi-Model Comparison](examples/multi-model-comparison.md) - Compare different models
+**Planned (to be created):**
+- **Basic Reflection** - Simple reflection workflow example
+- **Multi-Model Comparison** - Comparing different LLM models in reflection
 
 ### 🏗️ [Design](design/)
 Architecture and design decisions.
 
-- [Architecture](design/architecture.md) - Package architecture
-- [Styling System](design/styling-system.md) - Custom HTML/CSS styling
+**Available:**
+- **[Styling System](design/styling-system.md)** - Custom HTML/CSS styling for Jupyter notebooks
+
+**Planned (to be created):**
+- **Architecture** - Overall package architecture and design philosophy
 
 ## Quick Start
 
