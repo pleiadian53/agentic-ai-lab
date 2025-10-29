@@ -1,0 +1,275 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-ai"
+version = "0.1.0"
+description = "Agentic AI Workflows & Patterns - A comprehensive collection of agentic AI workflows demonstrating reflection, iterative refinement, and tool-using agents"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Agentic AI Contributors"}
+]
+keywords = [
+    "agentic-ai",
+    "llm",
+    "agents",
+    "reflection",
+    "iterative-refinement",
+    "multiagent",
+    "workflows",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Core dependencies (synced with requirements.txt)
+dependencies = [
+    # === Agent + LLM Tools ===
+    "aisuite==0.1.11",
+    "anthropic",
+    "docstring-parser",
+    "markdown",
+    "mistralai",
+    "openai",
+    "qrcode",
+    "tavily-python>=0.7.12",
+    "textstat",
+    "vertexai",
+    
+    # === Web Framework + API ===
+    "fastapi",
+    "pydantic",
+    "pydantic[email]",
+    "python-dotenv",
+    "python-multipart",
+    "requests",
+    "sqlalchemy",
+    "uvicorn",
+    
+    # === Notebook Experience ===
+    "ipywidgets",
+    "jupyter_server",
+    "nbclassic",
+    "notebook",
+    
+    # === Data Analysis / Display ===
+    "duckdb",
+    "matplotlib",
+    "pandas",
+    "seaborn",
+    "tabulate",
+    "tinydb",
+    
+    # === Machine Learning / NLP ===
+    "jinja2",
+    "psycopg2-binary",
+    "scikit-learn",
+    "wikipedia",
+    
+    # === Additional Project Dependencies ===
+    "pdfminer.six",
+    "pymupdf",
+]
+
+[project.optional-dependencies]
+# Development dependencies
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-asyncio>=0.21",
+    "black>=23.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+    "ipython>=8.0",
+]
+
+# Testing only
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-asyncio>=0.21",
+]
+
+# Documentation
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.0",
+    "mkdocstrings[python]>=0.24",
+]
+
+# All optional dependencies
+all = [
+    "agentic-ai[dev,test,docs]",
+]
+
+[project.urls]
+Homepage = "https://github.com/pleiadian53/agentic-ai-public"
+Repository = "https://github.com/pleiadian53/agentic-ai-public"
+Documentation = "https://github.com/pleiadian53/agentic-ai-public/tree/main/docs"
+Issues = "https://github.com/pleiadian53/agentic-ai-public/issues"
+
+[project.scripts]
+# CLI entry points for workflows
+run-chart-workflow = "scripts.run_chart_workflow:main"
+run-enhanced-chart-workflow = "scripts.run_enhanced_chart_workflow:main"
+
+# Research agent workflows (by pattern)
+run-reflection-research-agent = "scripts.run_reflection_research_agent:main"
+
+[tool.setuptools]
+# Ensure setuptools finds all packages
+zip-safe = false
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "reflection*",
+    "src*",
+    "scripts*",
+    "chartgen*",
+]
+exclude = [
+    "tests*",
+    "docs*",
+    "data*",
+    "dev*",
+    "docker*",
+    "static*",
+    "templates*",
+]
+
+[tool.setuptools.package-data]
+"*" = ["*.txt", "*.md", "*.yml", "*.yaml", "*.json"]
+
+# ============================================================================
+# Tool Configurations
+# ============================================================================
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+    "--cov=reflection",
+    "--cov=src",
+    "--cov=scripts",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+  | data
+  | outputs
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+    "C901",  # too complex
+]
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+    "data",
+    "outputs",
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]  # Allow unused imports in __init__.py
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+follow_imports = "normal"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "aisuite.*",
+    "anthropic.*",
+    "tavily.*",
+    "wikipedia.*",
+    "vertexai.*",
+]
+ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["reflection", "src", "scripts"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/env/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]

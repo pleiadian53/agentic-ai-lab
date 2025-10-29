@@ -216,3 +216,7 @@ data/
 
 # Development temporary files
 dev/
+
+# Chart workflow outputs
+charts/
+output/
