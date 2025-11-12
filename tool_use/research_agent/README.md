@@ -15,14 +15,19 @@ A modular research agent that uses LLM tool calling to generate, reflect on, and
 ### Command Line
 
 ```bash
-# Simple usage
+# Simple usage (outputs to default research_outputs/)
 python run_research_workflow.py "quantum computing applications"
 
-# With custom output directory
-python run_research_workflow.py --topic "CRISPR gene editing" --output-dir ./my_reports
+# Organize by topic (recommended for multiple reports)
+python run_research_workflow.py "CRISPR gene editing" --output-dir reports/gene_editing
+python run_research_workflow.py "quantum computing error correction" --output-dir reports/quantum_computing
+python run_research_workflow.py "climate change mitigation strategies" --output-dir reports/climate_change
 
 # Disable parallel execution
 python run_research_workflow.py "climate change" --no-parallel
+
+# Skip PDF generation
+python run_research_workflow.py "machine learning" --no-pdf
 ```
 
 ### Jupyter Notebook
@@ -30,12 +35,20 @@ python run_research_workflow.py "climate change" --no-parallel
 ```python
 # Import helpers
 from notebook_helpers import quick_research, save_research_results
+from pathlib import Path
 
 # Run complete workflow
-results = quick_research("extraterrestrial life")
+results = quick_research("CRISPR gene editing applications")
 
-# Save results
-save_research_results(results, "extraterrestrial_life_2024")
+# Save to topic-organized directory
+output_dir = Path("reports/gene_editing")
+output_dir.mkdir(parents=True, exist_ok=True)
+
+save_research_results(
+    results, 
+    str(output_dir / "crispr_applications_2024"),
+    generate_pdf=True
+)
 ```
 
 ### Python API
@@ -64,17 +77,47 @@ html = convert_report_to_html(reflection_result["revised_report"])
 
 ## Module Structure
 
-```
+```text
 research_agent/
 ├── research_agent.py          # Core agent functions
 ├── parallel_tools.py          # Parallel tool execution
+├── pdf_generator.py           # PDF conversion with multi-backend support
 ├── research_tools.py          # Tool definitions (arXiv, Tavily)
 ├── inspect_utils.py           # Visualization and inspection
 ├── notebook_helpers.py        # Jupyter notebook convenience functions
 ├── run_research_workflow.py   # Command-line driver script
+├── clean_html_outputs.py      # Utility to clean HTML files
 ├── unittests.py              # Test functions
-└── README.md                 # This file
+├── README.md                 # This file
+└── PDF_SETUP.md              # PDF tool installation guide
 ```
+
+## Recommended Directory Structure for Reports
+
+For managing multiple research reports, organize by topic:
+
+```text
+research_agent/
+├── reports/                   # Organized research outputs
+│   ├── gene_editing/          # CRISPR, gene therapy, etc.
+│   │   ├── 20241111_crispr_applications_preliminary.txt
+│   │   ├── 20241111_crispr_applications_revised.txt
+│   │   ├── 20241111_crispr_applications_report.html
+│   │   └── 20241111_crispr_applications_report.pdf
+│   ├── quantum_computing/     # Quantum algorithms, error correction, etc.
+│   │   ├── 20241110_error_correction_preliminary.txt
+│   │   └── ...
+│   ├── climate_change/        # Climate research topics
+│   └── machine_learning/      # ML/AI research topics
+└── research_outputs/          # Default output directory (legacy)
+```
+
+**Benefits:**
+
+- ✅ Easy to find related reports
+- ✅ Clean organization by research area
+- ✅ Supports multiple reports per topic
+- ✅ Timestamps prevent filename conflicts
 
 ## Key Components
 
