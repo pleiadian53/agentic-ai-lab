@@ -1,0 +1,12 @@
+# Optional dependencies for PDF generation
+# Install with: pip install -r requirements-pdf.txt
+
+# Option 1: WeasyPrint (recommended - pure Python, good quality)
+weasyprint>=60.0
+markdown>=3.5
+
+# Option 2: Pandoc (requires system installation)
+# Install pandoc separately: brew install pandoc (macOS) or apt-get install pandoc (Linux)
+
+# Option 3: markdown-pdf (requires Node.js)
+# Install separately: npm install -g markdown-pdf

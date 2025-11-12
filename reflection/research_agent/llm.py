@@ -14,6 +14,8 @@ def generate_draft(
     model: str,
     temperature: float,
     client: ai.Client,
+    min_words: int = 800,
+    max_words: int = 6000,
 ) -> str:
     """
     Generate an initial essay draft on the given topic.
@@ -23,11 +25,13 @@ def generate_draft(
         model: Model identifier (e.g., "openai:gpt-4o-mini")
         temperature: Sampling temperature
         client: aisuite client instance
+        min_words: Minimum word count target
+        max_words: Maximum word count target
         
     Returns:
         Generated essay draft text
     """
-    prompt = build_draft_prompt(topic)
+    prompt = build_draft_prompt(topic, min_words=min_words, max_words=max_words)
     
     response = client.chat.completions.create(
         model=model,
@@ -75,6 +79,8 @@ def revise_draft(
     model: str,
     temperature: float,
     client: ai.Client,
+    min_words: int = 800,
+    max_words: int = 6000,
 ) -> str:
     """
     Revise an essay based on reflection feedback.
@@ -85,11 +91,13 @@ def revise_draft(
         model: Model identifier (e.g., "openai:gpt-4o")
         temperature: Sampling temperature
         client: aisuite client instance
+        min_words: Minimum target word count
+        max_words: Maximum target word count
         
     Returns:
         Revised essay text
     """
-    prompt = build_revision_prompt(original_draft, reflection)
+    prompt = build_revision_prompt(original_draft, reflection, min_words=min_words, max_words=max_words)
     
     response = client.chat.completions.create(
         model=model,

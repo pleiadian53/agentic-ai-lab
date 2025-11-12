@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Email + LLM Dashboard</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+    .column {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    header {
+      background: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .email-box {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border-left: 5px solid #ccc;
+    }
+    .unread {
+      border-left-color: #007bff;
+      background-color: #eef6ff;
+    }
+    .meta {
+      font-size: 12px;
+      color: #666;
+    }
+    .actions button {
+      margin-right: 10px;
+    }
+    #compose input, #compose textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #compose button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #llm-box textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    #llm-box button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #007bff;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ✅ ESTILOS para respetar listas */
+    #llm-response ul, #llm-response ol {
+      padding-left: 20px;
+      margin: 10px 0;
+      list-style-type: disc;
+    }
+    #llm-response li {
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="column">
+    <header><h2>Email Dashboard</h2></header>
+    <div id="emails"></div>
+    <div id="compose">
+      <h3>Compose Email</h3>
+      <input type="text" id="recipient" placeholder="To: someone@example.com" required />
+      <input type="text" id="subject" placeholder="Subject" required />
+      <textarea id="body" rows="4" placeholder="Write your message..." required></textarea>
+      <button onclick="sendEmail()">Send</button>
+      <div id="sendStatus"></div>
+    </div>
+  <div style="margin-top: 20px;">
+    <button onclick="resetDatabase()">Reset Database</button>
+    <div id="resetStatus" style="margin-top: 10px; font-size: 14px; color: #333;"></div>
+  </div>
+  </div>
+
+  <div class="column">
+    <header><h2>LLM Prompt Box</h2></header>
+    <div id="llm-box">
+      <textarea id="prompt" placeholder="What do you want the LLM to do?"></textarea>
+      <button onclick="sendPrompt()">Submit Prompt</button>
+      <div id="llm-response"></div>
+    </div>
+  </div>
+
+  <script>
+    // API endpoints - using correct ports for email_agent services
+    const EMAIL_API = "http://localhost:8000";  // Email service
+    const LLM_API   = "http://localhost:8001/prompt";  // LLM service
+    
+    async function loadEmails() {
+      try {
+        const res = await fetch(EMAIL_API + "/emails");
+        const emails = await res.json();
+        renderEmails(emails);
+      } catch (err) {
+        document.getElementById("emails").innerHTML = "<p>Error loading emails.</p>";
+      }
+    }
+
+    function renderEmails(emails) {
+      const container = document.getElementById("emails");
+      container.innerHTML = emails.length === 0 ? "<p>No emails found.</p>" : "";
+      emails.forEach(email => {
+        const div = document.createElement("div");
+        div.className = "email-box" + (email.read ? "" : " unread");
+        div.innerHTML = `
+          <strong>${email.subject}</strong>
+          <div class="meta">From: ${email.sender} | To: ${email.recipient} | ${new Date(email.timestamp).toLocaleString()}</div>
+          <p>${email.body}</p>
+          <div class="actions">
+            <button onclick="toggleRead(${email.id}, ${email.read})">${email.read ? 'Mark Unread' : 'Mark Read'}</button>
+            <button onclick="deleteEmail(${email.id})">Delete</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function toggleRead(id, isRead) {
+      const endpoint = isRead ? "/unread" : "/read";
+      await fetch(`${EMAIL_API}/emails/${id}${endpoint}`, { method: "PATCH" });
+      loadEmails();
+    }
+
+    async function deleteEmail(id) {
+      await fetch(`${EMAIL_API}/emails/${id}`, { method: "DELETE" });
+      loadEmails();
+    }
+
+    async function sendEmail() {
+      const recipient = document.getElementById("recipient").value;
+      const subject = document.getElementById("subject").value;
+      const body = document.getElementById("body").value;
+
+      try {
+        const res = await fetch(`${EMAIL_API}/send`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ recipient, subject, body })
+        });
+
+        const status = document.getElementById("sendStatus");
+        if (res.ok) {
+          status.textContent = "Email sent!";
+          document.getElementById("recipient").value = "";
+          document.getElementById("subject").value = "";
+          document.getElementById("body").value = "";
+          loadEmails();
+        } else {
+          status.textContent = "Failed to send email.";
+        }
+      } catch (err) {
+        document.getElementById("sendStatus").textContent = "Error occurred.";
+      }
+    }
+
+    async function sendPrompt() {
+      const prompt = document.getElementById("prompt").value;
+      const llmBox = document.getElementById("llm-response");
+
+      // Spinner mientras espera
+      llmBox.innerHTML = '<div class="spinner"></div>';
+
+      try {
+        const res = await fetch(LLM_API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt })
+        });
+
+        const data = await res.json();
+        const html = data.html_response || "<p>No reasoning returned.</p>";
+
+        // Renderizamos como HTML real
+        llmBox.innerHTML = `<div class="email-box unread">${html}</div>`;
+        loadEmails();
+      } catch (err) {
+        llmBox.innerHTML = "<p>Error contacting LLM service.</p>";
+      }
+    }
+
+    async function resetDatabase() {
+      const status = document.getElementById("resetStatus");
+      status.textContent = "Resetting database...";
+
+      try {
+        const res = await fetch(`${EMAIL_API}/reset_database`);
+        const data = await res.json();
+        status.textContent = data.message || "Database reset.";
+        loadEmails();
+      } catch (err) {
+        status.textContent = "Error resetting database.";
+      }
+    }
+
+    loadEmails();
+  </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4c1c83ca2dd644dea02182b686a741bd","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

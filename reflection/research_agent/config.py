@@ -23,6 +23,12 @@ class ResearchAgentConfig:
     output_dir: Path = Path("./essays")
     essay_basename: str = "essay"
     save_artifacts: bool = True  # Save drafts, feedback, and final essay
+    generate_pdf: bool = False  # Generate PDF output
+    wrap_width: int = 88  # Line width for text wrapping
+    
+    # Essay content configuration
+    min_words: int = 800  # Minimum word count
+    max_words: int = 6000  # Maximum word count (typical conference paper length)
     
     # Temperature settings
     draft_temperature: float = 1.0

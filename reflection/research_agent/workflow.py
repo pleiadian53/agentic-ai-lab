@@ -9,6 +9,7 @@ from typing import Any
 import aisuite as ai
 
 from .config import ResearchAgentConfig
+from .formatting import save_formatted_essay, wrap_text
 from .llm import generate_draft, reflect_on_draft, revise_draft
 
 
@@ -167,6 +168,8 @@ def run_research_workflow(
         model=config.draft_model,
         temperature=config.draft_temperature,
         client=client,
+        min_words=config.min_words,
+        max_words=config.max_words,
     )
     
     iterations.append(
@@ -206,6 +209,8 @@ def run_research_workflow(
             model=config.revision_model,
             temperature=config.revision_temperature,
             client=client,
+            min_words=config.min_words,
+            max_words=config.max_words,
         )
         
         # Check if text has converged
@@ -237,9 +242,17 @@ def run_research_workflow(
     feedback_path: Path | None = None
     
     if config.save_artifacts:
-        # Save final essay
-        final_essay_path = output_dir / f"{config.essay_basename}_final.txt"
-        final_essay_path.write_text(iterations[-1].essay_text, encoding="utf-8")
+        # Save final essay with formatting
+        final_base_path = output_dir / f"{config.essay_basename}_final"
+        final_files = save_formatted_essay(
+            essay_text=iterations[-1].essay_text,
+            output_path=final_base_path,
+            topic=topic,
+            word_count=iterations[-1].word_count,
+            wrap_width=config.wrap_width,
+            generate_pdf=config.generate_pdf,
+        )
+        final_essay_path = final_files['txt']
         
         # Save feedback markdown
         feedback_path = output_dir / f"{config.essay_basename}_feedback.md"
@@ -250,10 +263,18 @@ def run_research_workflow(
         )
         feedback_path.write_text(feedback_content, encoding="utf-8")
         
-        # Save each iteration as separate files
+        # Save each iteration as separate files with formatting
         for iteration in iterations:
-            iteration_path = output_dir / f"{config.essay_basename}_v{iteration.iteration}.txt"
-            iteration_path.write_text(iteration.essay_text, encoding="utf-8")
+            iteration_base_path = output_dir / f"{config.essay_basename}_v{iteration.iteration}"
+            save_formatted_essay(
+                essay_text=iteration.essay_text,
+                output_path=iteration_base_path,
+                topic=topic,
+                word_count=iteration.word_count,
+                iteration=iteration.iteration,
+                wrap_width=config.wrap_width,
+                generate_pdf=config.generate_pdf,
+            )
     
     return WorkflowArtifacts(
         topic=topic,

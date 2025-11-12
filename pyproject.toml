@@ -137,6 +137,7 @@ include = [
     "src*",
     "scripts*",
     "chartgen*",
+    "tool_use*",
 ]
 exclude = [
     "tests*",
@@ -146,6 +147,8 @@ exclude = [
     "docker*",
     "static*",
     "templates*",
+    "tool_use.email_agent.notebooks*",
+    "tool_use.email_agent.static*",
 ]
 
 [tool.setuptools.package-data]

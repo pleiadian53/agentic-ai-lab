@@ -18,7 +18,7 @@ This guide covers the local development environment setup for the DeepLearning.A
 
 # Or manually:
 mamba env create -f environment.yml
-conda activate agentic-ai
+mamba activate agentic-ai
 ```
 
 See [Mamba/Conda Setup](#mambaconda-setup-recommended) below for details.
@@ -139,7 +139,7 @@ The script will:
 mamba env create -f environment.yml
 
 # Activate environment
-conda activate agentic-ai
+mamba activate agentic-ai
 
 # Verify installation
 python --version  # Should show 3.11.x
@@ -152,10 +152,10 @@ python -m ipykernel install --user --name=agentic-ai --display-name="Python (age
 
 ```bash
 # Activate environment
-conda activate agentic-ai
+mamba activate agentic-ai
 
 # Deactivate
-conda deactivate
+mamba deactivate
 
 # Update environment (after changing environment.yml)
 mamba env update -f environment.yml --prune
@@ -174,10 +174,10 @@ conda env export > environment-lock.yml
 
 ```bash
 # Activate environment
-conda activate agentic-ai
+mamba activate agentic-ai
 
 # Check installed packages
-conda list
+mamba list
 
 # Test key imports
 python -c "import openai, fastapi, jupyter_server, pandas, aisuite; print('✅ All packages working!')"

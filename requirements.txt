@@ -43,3 +43,6 @@ wikipedia
 # === Additional Project Dependencies ===
 pdfminer.six
 pymupdf
+
+# === PDF Generation for Research Agent ===
+weasyprint>=60.0

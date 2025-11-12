@@ -1,0 +1,4 @@
+Weather Note (as of 17:50:09):
+Current Temperature: 52.9°F
+High Today: 60.4°F
+Low Today: 45.6°F

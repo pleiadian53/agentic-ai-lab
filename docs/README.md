@@ -13,6 +13,8 @@ Getting started with the project environment and dependencies.
 - **[Mamba vs Pip](./installation/MAMBA_VS_PIP.md)** - Package manager comparison
 - **[Setup Checklist](./installation/SETUP_CHECKLIST.md)** - Step-by-step setup verification
 - **[GitHub Setup](./installation/GITHUB_SETUP.md)** - Repository and Git configuration
+- **[Install Quickstart](./installation/INSTALL_QUICKSTART.md)** - Quick installation guide
+- **[Setup README](./installation/SETUP_README.md)** - Mamba/conda setup guide
 
 **Start here if:** You're setting up the project for the first time.
 
@@ -62,14 +64,54 @@ Documentation for external libraries and tools used in the project.
 
 ---
 
+### 💾 [Data Management](./data_management/)
+
+Guidelines for organizing, documenting, and versioning datasets.
+
+- **[Data Management Guidelines](./data_management/guidelines.md)** - Complete data organization policy
+- **[Data Patterns](../tool_use/docs/data_patterns.md)** - ML Agent data documentation patterns
+
+**Start here if:** You're working with datasets or need to understand data organization.
+
+---
+
+### 📖 [Tutorials](./tutorials/)
+
+Learning guides and usage examples.
+
+- **[Learning Guide](./tutorials/LEARNING_GUIDE.md)** - Comprehensive system overview and learning path
+- **[Usage Guide](./tutorials/USAGE_GUIDE.md)** - Research agent usage examples
+
+**Start here if:** You want to learn how to use the system.
+
+---
+
+### 👨‍💻 [Development](./development/)
+
+Developer guides and collaboration standards.
+
+- **[Codex Collaboration Guide](./development/AGENTS.md)** - How to work with Codex in this repo
+
+**Start here if:** You're contributing code or working with AI assistants.
+
+---
+
+### 📋 [Documentation](./DOCUMENTATION_ORGANIZATION.md)
+
+- **[Documentation Organization](./DOCUMENTATION_ORGANIZATION.md)** - How documentation is structured
+- **[Documentation Structure](./DOCUMENTATION_STRUCTURE.md)** - Technical documentation hierarchy
+- **[Documentation Example](./DOCUMENTATION_GUIDES_EXAMPLE.md)** - Example from another project
+
+---
+
 ## 🚀 Quick Start Paths
 
 ### For New Users
 
-1. [Environment Setup](./installation/ENVIRONMENT_SETUP.md)
-2. [Setup Checklist](./installation/SETUP_CHECKLIST.md)
-3. [Agentic Patterns Overview](./patterns/AGENTIC_PATTERNS.md)
-4. [Driver Script Guide](./workflows/DRIVER_SCRIPT_GUIDE.md)
+1. [Install Quickstart](./installation/INSTALL_QUICKSTART.md) or [Setup README](./installation/SETUP_README.md)
+2. [Learning Guide](./tutorials/LEARNING_GUIDE.md)
+3. [Usage Guide](./tutorials/USAGE_GUIDE.md)
+4. [Agentic Patterns Overview](./patterns/AGENTIC_PATTERNS.md)
 
 ### For Contributors
 
@@ -109,6 +151,12 @@ Documentation for external libraries and tools used in the project.
 - Environment setup → [installation/ENVIRONMENT_SETUP.md](./installation/ENVIRONMENT_SETUP.md)
 - Package managers → [installation/MAMBA_VS_PIP.md](./installation/MAMBA_VS_PIP.md)
 - Editable mode → [installation/EDITABLE_INSTALL.md](./installation/EDITABLE_INSTALL.md)
+- Quick install → [installation/INSTALL_QUICKSTART.md](./installation/INSTALL_QUICKSTART.md)
+- Mamba setup → [installation/SETUP_README.md](./installation/SETUP_README.md)
+
+### Learning & Tutorials
+- System overview → [tutorials/LEARNING_GUIDE.md](./tutorials/LEARNING_GUIDE.md)
+- Usage examples → [tutorials/USAGE_GUIDE.md](./tutorials/USAGE_GUIDE.md)
 
 ### Agentic AI Concepts
 - Design patterns → [patterns/AGENTIC_PATTERNS.md](./patterns/AGENTIC_PATTERNS.md)
@@ -125,6 +173,17 @@ Documentation for external libraries and tools used in the project.
 
 ### Libraries & Tools
 - LLM providers → [libraries/AGENT_LLM_TOOLS.md](./libraries/AGENT_LLM_TOOLS.md)
+
+### Data Management
+- Data guidelines → [data_management/guidelines.md](./data_management/guidelines.md)
+- Data patterns → [../tool_use/docs/data_patterns.md](../tool_use/docs/data_patterns.md)
+
+### Development & Collaboration
+- Codex guide → [development/AGENTS.md](./development/AGENTS.md)
+
+### Documentation
+- Organization → [DOCUMENTATION_ORGANIZATION.md](./DOCUMENTATION_ORGANIZATION.md)
+- Structure → [DOCUMENTATION_STRUCTURE.md](./DOCUMENTATION_STRUCTURE.md)
 
 ---
 
@@ -146,10 +205,13 @@ When adding new documentation:
 
 1. **Choose the right directory:**
    - Installation/setup → `installation/`
+   - Tutorials/learning → `tutorials/`
    - Design patterns → `patterns/`
    - Workflow guides → `workflows/`
    - Architecture/structure → `architecture/`
    - Library references → `libraries/`
+   - Data management → `data_management/`
+   - Developer guides → `development/`
 
 2. **Follow naming conventions:**
    - Use UPPERCASE for main docs (e.g., `PATTERN_NAME.md`)
@@ -172,21 +234,24 @@ When adding new documentation:
 
 | Category | Docs | Status |
 |----------|------|--------|
-| Installation | 5 | ✅ Complete |
+| Installation | 7 | ✅ Complete |
+| Tutorials | 2 | ✅ Complete |
 | Patterns | 3 | ✅ Complete (1 pattern), 🚧 More planned |
 | Workflows | 2 | ✅ Complete |
 | Architecture | 2 | ✅ Complete |
 | Libraries | 1 | 🚧 In Progress |
+| Data Management | 2 | ✅ Complete |
+| Development | 1 | ✅ Complete |
 
-**Last Updated:** October 28, 2025
+**Last Updated:** November 7, 2024
 
 ---
 
 ## 🔗 External Resources
 
 - **Main README:** [../README.md](../README.md)
-- **Installation Guide:** [../INSTALL_QUICKSTART.md](../INSTALL_QUICKSTART.md)
-- **Learning Guide:** [../LEARNING_GUIDE.md](../LEARNING_GUIDE.md)
+- **Installation Guide:** [./installation/INSTALL_QUICKSTART.md](./installation/INSTALL_QUICKSTART.md)
+- **Learning Guide:** [./tutorials/LEARNING_GUIDE.md](./tutorials/LEARNING_GUIDE.md)
 
 ---
 

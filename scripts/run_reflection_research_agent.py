@@ -118,6 +118,17 @@ def parse_args() -> argparse.Namespace:
         action="store_false",
         help="Skip saving essay drafts and feedback to disk.",
     )
+    output_group.add_argument(
+        "--generate-pdf",
+        action="store_true",
+        help="Generate PDF versions of essays (requires weasyprint, pandoc, or markdown-pdf).",
+    )
+    output_group.add_argument(
+        "--wrap-width",
+        type=int,
+        default=88,
+        help="Line width for text wrapping (default: 88 characters).",
+    )
     
     # Workflow configuration
     workflow_group = parser.add_argument_group("Workflow Configuration")
@@ -137,6 +148,21 @@ def parse_args() -> argparse.Namespace:
         help=textwrap.dedent("""
             Force all iterations even when essay converges early.
             By default, stops when minimal changes detected.
+        """),
+    )
+    workflow_group.add_argument(
+        "--min-words",
+        type=int,
+        default=800,
+        help="Minimum target word count (default: 800).",
+    )
+    workflow_group.add_argument(
+        "--max-words",
+        type=int,
+        default=6000,
+        help=textwrap.dedent("""
+            Maximum target word count (default: 6000, typical conference paper).
+            The model will use its judgment—complex topics get comprehensive treatment.
         """),
     )
     
@@ -252,8 +278,11 @@ def main() -> None:
     print(f"   Revision model: {args.revision_model}")
     print(f"   Max iterations: {args.max_iterations}")
     print(f"   Stop on convergence: {args.stop_on_convergence}")
+    print(f"   Word count range: {args.min_words}-{args.max_words}")
     print(f"   Output directory: {args.output_dir}")
     print(f"   Save artifacts: {args.save_artifacts}")
+    print(f"   Generate PDF: {args.generate_pdf}")
+    print(f"   Text wrap width: {args.wrap_width}")
     print()
     
     # Create configuration
@@ -266,6 +295,10 @@ def main() -> None:
         output_dir=Path(args.output_dir),
         essay_basename=args.essay_basename,
         save_artifacts=args.save_artifacts,
+        generate_pdf=args.generate_pdf,
+        wrap_width=args.wrap_width,
+        min_words=args.min_words,
+        max_words=args.max_words,
         draft_temperature=args.draft_temperature,
         reflection_temperature=args.reflection_temperature,
         revision_temperature=args.revision_temperature,

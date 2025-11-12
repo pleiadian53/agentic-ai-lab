@@ -1,0 +1,36 @@
+# Server Templates Directory
+
+This directory is for server-specific template overrides.
+
+## Purpose
+
+Templates placed here will take priority over shared templates in `../static/`.
+
+## Usage
+
+To customize the email UI:
+
+```bash
+# Copy the default template
+cp ../static/ui_all.html templates/ui_all.html
+
+# Edit your custom version
+nano templates/ui_all.html
+```
+
+## Template Search Priority
+
+1. **`server/templates/`** ← Checked first (this directory)
+2. **`../static/`** ← Fallback if not found here
+
+## Example
+
+If both exist:
+- `server/templates/ui_all.html` ✅ (used)
+- `../static/ui_all.html` (ignored)
+
+If only fallback exists:
+- `server/templates/ui_all.html` (doesn't exist)
+- `../static/ui_all.html` ✅ (used)
+
+This allows you to override only the templates you need to customize!

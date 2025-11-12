@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 
-def build_draft_prompt(topic: str) -> str:
+def build_draft_prompt(topic: str, min_words: int = 800, max_words: int = 6000) -> str:
     """
     Build a prompt for generating an initial essay draft.
     
     Args:
         topic: The essay topic or question to address
+        min_words: Minimum word count target
+        max_words: Maximum word count target
         
     Returns:
         Formatted prompt string
@@ -21,7 +23,10 @@ Requirements:
 - Write a complete essay with introduction, body paragraphs, and conclusion
 - Present clear arguments supported by reasoning and examples
 - Maintain an academic tone appropriate for a research essay
-- Aim for approximately 500-800 words
+- Target word count: {min_words}-{max_words} words
+  * Use your judgment—complex topics deserve comprehensive treatment
+  * Provide sufficient depth and examples to thoroughly address the topic
+  * Don't artificially pad or restrict length; let the topic guide the scope
 - Use proper paragraph structure and transitions
 - Include a thesis statement in the introduction
 
@@ -89,13 +94,15 @@ Constraints:
 """.strip()
 
 
-def build_revision_prompt(original_draft: str, reflection: str) -> str:
+def build_revision_prompt(original_draft: str, reflection: str, min_words: int = 800, max_words: int = 6000) -> str:
     """
     Build a prompt for revising an essay based on feedback.
     
     Args:
         original_draft: The initial essay text
         reflection: Critique and feedback on the draft
+        min_words: Minimum target word count
+        max_words: Maximum target word count
         
     Returns:
         Formatted prompt string
@@ -121,7 +128,11 @@ REVISION INSTRUCTIONS
 - Address the issues raised in the feedback directly.
 - Strengthen argument structure and transitions between sections.
 - Clarify ambiguous phrasing or weak evidence.
-- Improve readability, sentence flow, and conciseness.
+- When removing repetition, REPLACE with deeper analysis, concrete examples, or new perspectives—don't just delete.
+- Target word count: {min_words}-{max_words} words (use your judgment—complex topics deserve comprehensive treatment).
+- If consolidating sections, reorganize but ADD depth and elaboration to maintain substance.
+- Balance conciseness with comprehensiveness—trim only what truly adds no value.
+- For technical topics, provide sufficient detail and examples to thoroughly explain concepts.
 - Ensure consistent academic tone and formatting.
 - Do NOT add unrelated content or fabricate citations.
 - Output ONLY the revised essay, without commentary or explanation.
