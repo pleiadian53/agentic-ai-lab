@@ -217,6 +217,9 @@ data/
 # Development temporary files
 dev/
 
+# Backup files
+backups/
+
 # Chart workflow outputs
 charts/
 output/
