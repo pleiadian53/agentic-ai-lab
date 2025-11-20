@@ -220,7 +220,7 @@ cp .env.example .env
 **Solution**:
 ```bash
 # Ensure you're in the project root
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 
 # Activate environment
 mamba activate agentic-ai
@@ -247,7 +247,7 @@ python scripts/test_chart_workflow.py
 **Solution**:
 ```bash
 # Use absolute paths or run from project root
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 python scripts/test_chart_workflow.py
 ```
 

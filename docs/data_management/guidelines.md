@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document defines data organization patterns for the `agentic-ai-public` repository.
+This document defines data organization patterns for the `agentic-ai-lab` repository.
 
 ## Principles
 

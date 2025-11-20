@@ -46,7 +46,7 @@ brew install python@3.11
 # Option 2: pyenv
 brew install pyenv
 pyenv install 3.11.7
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 pyenv local 3.11.7
 ```
 

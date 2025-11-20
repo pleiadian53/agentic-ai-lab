@@ -139,7 +139,7 @@ lsof -i :8003
 **Import errors?**
 
 ```bash
-cd /path/to/agentic-ai-public
+cd /path/to/agentic-ai-lab
 pip install -e .
 ```
 

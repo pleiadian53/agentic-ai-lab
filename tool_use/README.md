@@ -398,7 +398,7 @@ When adding new tools:
 
 ## 📝 License
 
-Part of the agentic-ai-public repository. See repository LICENSE for details.
+Part of the agentic-ai-lab repository. See repository LICENSE for details.
 
 ## 🙏 Acknowledgments
 

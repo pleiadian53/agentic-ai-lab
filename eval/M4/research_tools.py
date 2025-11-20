@@ -19,7 +19,24 @@ session.headers.update({
 
 def arxiv_search_tool(query: str, max_results: int = 5) -> list[dict]:
     """
-    Searches arXiv for research papers matching the given query.
+    Searches arXiv for research papers using flexible keyword matching.
+    
+    Supports loose queries across title, abstract, authors, and full text.
+    The search is relevance-based, not exact match, so general topics like
+    "quantum computing" or "black holes" work well. Also supports advanced
+    operators like "author:Einstein" or boolean "quantum AND computing".
+    
+    Args:
+        query: Search keywords or phrases. Can be general topics, specific terms,
+               or author names. Examples:
+               - "quantum entanglement"
+               - "author:Hawking black holes"
+               - "neural networks AND physics"
+        max_results: Maximum number of papers to return (default: 5).
+    
+    Returns:
+        List of paper dictionaries with keys: title, authors, published,
+        url, summary, link_pdf. Returns [{"error": ...}] on failure.
     """
     url = f"https://export.arxiv.org/api/query?search_query=all:{query}&start=0&max_results={max_results}"
 
@@ -88,15 +105,23 @@ arxiv_tool_def = {
 
 def tavily_search_tool(query: str, max_results: int = 5, include_images: bool = False) -> list[dict]:
     """
-    Perform a search using the Tavily API.
+    Performs a general-purpose web search using the Tavily API.
+    
+    Use this tool for current events, news, general information, and topics
+    not covered by academic sources. Tavily provides high-quality, curated
+    web results with content snippets. Ideal for recent developments,
+    company information, product details, and real-world applications.
 
     Args:
-        query (str): The search query.
-        max_results (int): Number of results to return (default 5).
-        include_images (bool): Whether to include image results.
+        query: The search query. Can be questions ("What is quantum computing?")
+               or keywords ("latest AI developments 2024").
+        max_results: Number of web results to return (default: 5).
+        include_images: Whether to include image URLs in results (default: False).
 
     Returns:
-        list[dict]: A list of dictionaries with keys like 'title', 'content', and 'url'.
+        List of result dictionaries with keys: title, content, url.
+        If include_images=True, also includes {"image_url": ...} entries.
+        Returns [{"error": ...}] on failure.
     """
     params = {}
     api_key = os.getenv("TAVILY_API_KEY")
@@ -169,14 +194,25 @@ tavily_tool_def = {
 
 def wikipedia_search_tool(query: str, sentences: int = 5) -> list[dict]:
     """
-    Searches Wikipedia for a summary of the given query.
+    Searches Wikipedia for encyclopedic summaries and background information.
+    
+    Use this tool for well-established concepts, historical information,
+    definitions, and general knowledge. Wikipedia provides reliable,
+    comprehensive overviews of topics. Best for foundational understanding
+    before diving into specialized sources.
 
     Args:
-        query (str): Search query for Wikipedia.
-        sentences (int): Number of sentences to include in the summary.
+        query: Search query for Wikipedia. Works best with specific topics,
+               people, places, or concepts. Examples:
+               - "Quantum entanglement"
+               - "Albert Einstein"
+               - "CRISPR gene editing"
+        sentences: Number of sentences to include in the summary (default: 5).
+                   Use fewer (2-3) for brief overviews, more (7-10) for detail.
 
     Returns:
-        list[dict]: A list with a single dictionary containing title, summary, and URL.
+        List with a single dictionary containing keys: title, summary, url.
+        Returns [{"error": ...}] if the topic is not found or ambiguous.
     """
     try:
         page_title = wikipedia.search(query)[0]

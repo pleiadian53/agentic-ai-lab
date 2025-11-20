@@ -161,7 +161,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
 ## File Structure
 
 ```
-agentic-ai-public/
+agentic-ai-lab/
 ├── docs/                          # Official documentation
 │   ├── AGENTIC_ROADMAP.md        # Learning & enhancement roadmap
 │   ├── ENVIRONMENT_SETUP.md      # Detailed setup guide

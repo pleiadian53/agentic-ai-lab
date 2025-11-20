@@ -92,7 +92,7 @@ If you prefer manual setup:
 mamba activate agentic-ai
 
 # Install in editable mode (recommended)
-cd /path/to/agentic-ai-public
+cd /path/to/agentic-ai-lab
 pip install -e .
 ```
 

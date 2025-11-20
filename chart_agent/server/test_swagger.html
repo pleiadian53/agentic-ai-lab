@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Chart Agent API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Chart Agent API Test</h1>
+    
+    <div class="section">
+        <h2>Test /analyze Endpoint</h2>
+        <button onclick="testAnalyze()">Run Test</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function testAnalyze() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Sending request...</p>';
+            
+            const payload = {
+                dataset_path: "data/splice_sites_enhanced.tsv",
+                question: "Show the top 20 genes with the most splice sites",
+                context: "Focus on standard chromosomes only.",
+                model: "gpt-5.1-codex-mini"
+            };
+            
+            try {
+                const response = await fetch('http://localhost:8003/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <h3 class="success">✓ Success!</h3>
+                        <p><strong>Status:</strong> ${response.status}</p>
+                        <p><strong>Code length:</strong> ${data.code.length} characters</p>
+                        <p><strong>Explanation:</strong> ${data.explanation}</p>
+                        <p><strong>Libraries:</strong> ${data.libraries_used.join(', ')}</p>
+                        <h4>Generated Code:</h4>
+                        <pre>${data.code}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <h3 class="error">✗ Error ${response.status}</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3 class="error">✗ Request Failed</h3>
+                    <p>${error.message}</p>
+                    <pre>${error.stack}</pre>
+                `;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

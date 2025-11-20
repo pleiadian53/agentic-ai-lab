@@ -83,12 +83,12 @@ from reflection.chart_workflow.workflow import run_reflection_workflow
 
 ```bash
 # Before: Must be in project root
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 python scripts/run_chart_workflow.py data/file.csv
 
 # After: Run from anywhere
 cd ~/Documents
-run-chart-workflow ~/work/agentic-ai-public/data/file.csv
+run-chart-workflow ~/work/agentic-ai-lab/data/file.csv
 ```
 
 ### Testing

@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Project paths
 EMAIL_AGENT_DIR = Path(__file__).parent
-PROJECT_ROOT = EMAIL_AGENT_DIR.parent.parent  # agentic-ai-public/
+PROJECT_ROOT = EMAIL_AGENT_DIR.parent.parent  # agentic-ai-lab/
 SERVER_DIR = EMAIL_AGENT_DIR / "server"
 NOTEBOOKS_DIR = EMAIL_AGENT_DIR / "notebooks"
 STATIC_DIR = EMAIL_AGENT_DIR / "static"

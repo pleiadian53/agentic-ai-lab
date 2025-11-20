@@ -127,7 +127,7 @@ curl http://localhost:8000/emails
 
 ### Before ❌
 ```bash
-cd /Users/pleiadian53/work/agentic-ai-public/tool_use/email_agent/server
+cd /Users/pleiadian53/work/agentic-ai-lab/tool_use/email_agent/server
 uvicorn email_service:app --reload --timeout-keep-alive 1200
 ```
 
@@ -176,7 +176,7 @@ The scripts will automatically:
 If you see import errors, ensure the project is installed in editable mode:
 
 ```bash
-cd /path/to/agentic-ai-public
+cd /path/to/agentic-ai-lab
 pip install -e .
 ```
 

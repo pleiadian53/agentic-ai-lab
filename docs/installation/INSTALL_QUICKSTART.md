@@ -27,7 +27,7 @@ run-chart-workflow --help
 
 ```bash
 cd ~/Documents
-run-chart-workflow ~/work/agentic-ai-public/data/coffee_sales.csv
+run-chart-workflow ~/work/agentic-ai-lab/data/coffee_sales.csv
 ```
 
 ### Import Modules Cleanly

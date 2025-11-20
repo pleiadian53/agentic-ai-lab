@@ -12,7 +12,7 @@ Get up and running with the research agent in 5 minutes.
 
 ```bash
 # Clone or navigate to the project
-cd /path/to/agentic-ai-public
+cd /path/to/agentic-ai-lab
 
 # Create environment with all dependencies (including PDF generation)
 mamba env create -f environment.yml

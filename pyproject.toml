@@ -113,10 +113,10 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/pleiadian53/agentic-ai-public"
-Repository = "https://github.com/pleiadian53/agentic-ai-public"
-Documentation = "https://github.com/pleiadian53/agentic-ai-public/tree/main/docs"
-Issues = "https://github.com/pleiadian53/agentic-ai-public/issues"
+Homepage = "https://github.com/pleiadian53/agentic-ai-lab"
+Repository = "https://github.com/pleiadian53/agentic-ai-lab"
+Documentation = "https://github.com/pleiadian53/agentic-ai-lab/tree/main/docs"
+Issues = "https://github.com/pleiadian53/agentic-ai-lab/issues"
 
 [project.scripts]
 # CLI entry points for workflows
@@ -125,6 +125,10 @@ run-enhanced-chart-workflow = "scripts.run_enhanced_chart_workflow:main"
 
 # Research agent workflows (by pattern)
 run-reflection-research-agent = "scripts.run_reflection_research_agent:main"
+
+# Customer service agents
+run-customer-service-single-agent = "multiagent.customer_service.cli_single:main"
+run-customer-service-tool-agent = "multiagent.customer_service.cli_tool_agent:main"
 
 [tool.setuptools]
 # Ensure setuptools finds all packages
@@ -136,8 +140,8 @@ include = [
     "reflection*",
     "src*",
     "scripts*",
-    "chartgen*",
     "tool_use*",
+    "multiagent*",
 ]
 exclude = [
     "tests*",

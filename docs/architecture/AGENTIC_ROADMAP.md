@@ -1,6 +1,6 @@
 # Agentic AI Course Repo — Learning & Enhancement Roadmap
 
-This roadmap is tailored for deep-diving the **agentic-ai-public** starter and incrementally enhancing it while keeping parity with course labs.
+This roadmap is tailored for deep-diving the **agentic-ai-lab** starter and incrementally enhancing it while keeping parity with course labs.
 
 ## 0) Orientation
 - App: FastAPI service (`main.py`) with simple task DB, background worker, and web UI (`templates/`, `static/`).

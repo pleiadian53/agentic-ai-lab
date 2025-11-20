@@ -343,4 +343,4 @@ unittests.test_convert_report_to_html(convert_report_to_html)
 
 ## License
 
-Part of the agentic-ai-public project.
+Part of the agentic-ai-lab project.

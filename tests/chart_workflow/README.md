@@ -70,7 +70,7 @@ mamba activate agentic-ai
 cat .env | grep OPENAI_API_KEY
 
 # 3. Navigate to project root
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 ```
 
 ### Run Quick Test
@@ -210,7 +210,7 @@ cp .env.example .env
 **Solution**:
 ```bash
 # Run from project root
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 ./tests/chart_workflow/scripts/test_simple_workflow.sh
 ```
 

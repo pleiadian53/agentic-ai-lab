@@ -12,7 +12,7 @@ This guide walks you through setting up and running the email agent demo from sc
 
 ### 1. Set Up Environment Variables
 
-The email agent will automatically use API keys from the **project root `.env` file** (`agentic-ai-public/.env`).
+The email agent will automatically use API keys from the **project root `.env` file** (`agentic-ai-lab/.env`).
 
 If you need email-agent-specific settings, you can optionally create a local `.env`:
 
@@ -109,14 +109,14 @@ Now you can run the notebook:
 mamba activate agentic-ai
 
 # Start Jupyter from the project root
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 jupyter lab tool_use/email_agent/notebooks/email_agent_demo.ipynb
 ```
 
 Or from the notebooks directory:
 
 ```bash
-cd /Users/pleiadian53/work/agentic-ai-public/tool_use/email_agent/notebooks
+cd /Users/pleiadian53/work/agentic-ai-lab/tool_use/email_agent/notebooks
 jupyter lab email_agent_demo.ipynb
 ```
 
@@ -148,7 +148,7 @@ jupyter lab email_agent_demo.ipynb
 **Solution**:
 ```bash
 mamba activate agentic-ai
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 pip install -e .
 ```
 

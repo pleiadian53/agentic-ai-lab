@@ -83,7 +83,7 @@
 ## File Structure
 
 ```
-agentic-ai-public/
+agentic-ai-lab/
 ├── environment.yml              # Mamba/conda config (PRIMARY)
 ├── requirements.txt             # Pip config (FALLBACK)
 ├── SETUP_README.md             # Quick start guide

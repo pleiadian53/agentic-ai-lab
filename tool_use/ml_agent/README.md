@@ -354,7 +354,7 @@ uvicorn server.ml_service:app --port 8002 --reload
 **Import errors:**
 ```bash
 # Install in editable mode
-cd /path/to/agentic-ai-public
+cd /path/to/agentic-ai-lab
 pip install -e .
 ```
 

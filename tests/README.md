@@ -84,7 +84,7 @@ All tests require:
 
 3. **Run from project root**:
    ```bash
-   cd /Users/pleiadian53/work/agentic-ai-public
+   cd /Users/pleiadian53/work/agentic-ai-lab
    ```
 
 ### Chart Workflow Tests

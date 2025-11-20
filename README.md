@@ -8,19 +8,36 @@ A comprehensive and **evolving collection** of **agentic AI workflows** demonstr
 
 This repository showcases **practical agentic AI patterns** with working implementations:
 
-### **1. Chart Generation Workflow** 📊
-Automated data visualization with iterative refinement and reflection.
-- **Location**: `reflection/chart_workflow/`
+### **1. Chart Agent** 📊
+Production-ready data visualization agent with FastAPI service, iterative refinement, and reflection.
+- **Location**: `chart_agent/`
 - **Features**:
-  - Iterative refinement with convergence detection (V1 → V2 → ... → Vn)
-  - Auto-generated visualization prompts from data schemas
-  - Code persistence (saves final refined Python code)
-  - Configurable max iterations with early stopping
-  - Cost optimization: 25-50% savings via smart stopping
-- **CLI**: `scripts/run_chart_workflow.py`
-- **Tests**: `tests/chart_workflow/`
+  - **FastAPI REST API** with Swagger UI (`http://localhost:8003/docs`)
+  - LLM-driven code-as-plan chart generation
+  - Iterative refinement with convergence detection
+  - DuckDB-based data access (TSV, CSV, Parquet)
+  - Multiple model support (GPT-4, GPT-5, o1, etc.)
+  - Reflection pattern for code improvement
+  - Comprehensive documentation and examples
+- **Server**: `chart_agent/server/chart_service.py`
+- **Examples**: `chart_agent/examples/`
+- **Docs**: `chart_agent/docs/`
 
-### **2. SQL Agent Workflow** 🗄️
+### **2. Splice Agent** 🧬
+Specialized genomics agent for splice site analysis using agentic workflows.
+- **Location**: `splice_agent/`
+- **Features**:
+  - **Domain-specific analysis templates** for splice sites
+  - Biological context and genomic feature analysis
+  - FastAPI service with splice-specific endpoints (`http://localhost:8004/docs`)
+  - Template-based and exploratory analysis modes
+  - Built on chart_agent core engine
+  - Genomic data visualization and insights
+- **Server**: `splice_agent/server/splice_service.py`
+- **Examples**: `splice_agent/examples/`
+- **Docs**: `splice_agent/docs/`
+
+### **3. SQL Agent Workflow** 🗄️
 Natural language to SQL with adaptive iteration based on model strength.
 - **Location**: `reflection/sql_agent/`
 - **Features**:
@@ -31,7 +48,7 @@ Natural language to SQL with adaptive iteration based on model strength.
 - **Analysis**: `reflection/sql_agent/ADAPTIVE_ITERATION_ANALYSIS.md`
 - **Notebook**: `reflection/sql_agent/sql.ipynb`
 
-### **3. Research Agent** 🔬
+### **4. Research Agent** 🔬
 Multi-step research workflow with planning, execution, and reflection.
 - **Location**: `reflection/research_agent/`, `src/`
 - **Features**:
@@ -43,10 +60,15 @@ Multi-step research workflow with planning, execution, and reflection.
 - **Web UI**: [http://localhost:8000/](http://localhost:8000/)
 - **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-### **4. Visualization Agent** 📈
+### **5. Visualization Agent** 📈
 Advanced data visualization with multiple chart types and layouts.
 - **Location**: `reflection/viz_agent/`
 - **Features**: Multi-panel figures, exploratory analysis, custom styling
+
+### **6. Legacy Workflows** 📚
+Earlier implementations and learning materials (superseded by chart_agent/splice_agent):
+- **Chart Workflow**: `reflection/chart_workflow/` - Original chart generation prototype
+- **Note**: Use `chart_agent/` and `splice_agent/` for production work
 
 ## 🚀 Key Features Across All Workflows
 
@@ -104,41 +126,52 @@ Have a workflow pattern you'd like to see? Contributions are welcome! See the [C
 
 ```
 .
-├─ reflection/                  # Main workflows directory
-│  ├─ chart_workflow/          # Chart generation with iterative refinement
-│  │  ├─ workflow.py           # Core workflow logic with iteration loop
-│  │  ├─ execution.py          # Code execution and validation
-│  │  ├─ llm.py                # LLM integration for generation and reflection
-│  │  ├─ prompting.py          # Auto-prompt generation from data
-│  │  └─ data.py               # Data loading and preprocessing
-│  ├─ sql_agent/               # SQL generation with adaptive iteration
-│  │  ├─ sql.ipynb             # Interactive notebook
-│  │  ├─ adaptive_sql_workflow.py  # Adaptive iteration implementation
-│  │  ├─ ADAPTIVE_ITERATION_ANALYSIS.md  # Analysis and recommendations
-│  │  └─ utils.py              # Database utilities
-│  ├─ research_agent/          # Multi-step research workflow
-│  └─ viz_agent/               # Advanced visualization agent
-├─ scripts/                     # CLI tools
-│  ├─ run_chart_workflow.py    # Chart generation CLI
-│  └─ install/                 # Setup scripts
-├─ tests/                       # Comprehensive test suites
-│  ├─ chart_workflow/          # Chart workflow tests
-│  │  ├─ test_iterative_refinement.py  # 6 iteration tests
-│  │  └─ test_code_persistence.py      # 6 code saving tests
-│  └─ sql_agent/               # SQL workflow tests
-├─ src/                         # Research agent backend
-│  ├─ planning_agent.py        # Planner and executor agents
-│  ├─ agents.py                # Research, writer, editor agents
-│  └─ research_tools.py        # Tavily, arXiv, Wikipedia tools
-├─ docs/                        # Documentation
-│  ├─ ENVIRONMENT_SETUP.md     # Environment configuration
-│  ├─ SETUP_CHECKLIST.md       # Setup verification
-│  └─ libraries/               # Library documentation
+├─ chart_agent/                 # Production chart generation agent
+│  ├─ server/                   # FastAPI service (port 8003)
+│  │  ├─ chart_service.py       # Main API service
+│  │  ├─ config.py              # Configuration
+│  │  └─ schemas.py             # Pydantic models
+│  ├─ examples/                 # Example scripts and notebooks
+│  ├─ docs/                     # Comprehensive documentation
+│  ├─ data_access.py            # DuckDB dataset loading
+│  ├─ planning.py               # LLM-based code generation
+│  ├─ llm_client.py             # OpenAI API client
+│  └─ utils.py                  # Utility functions
+│
+├─ splice_agent/                # Genomics splice site analysis agent
+│  ├─ server/                   # FastAPI service (port 8004)
+│  │  ├─ splice_service.py      # Splice-specific API
+│  │  ├─ config.py              # Configuration
+│  │  └─ schemas.py             # Pydantic models
+│  ├─ examples/                 # Splice analysis examples
+│  ├─ docs/                     # Documentation
+│  ├─ splice_analysis.py        # Domain-specific templates
+│  ├─ data_access.py            # Dataset loading (from chart_agent)
+│  ├─ planning.py               # Code generation (from chart_agent)
+│  └─ llm_client.py             # LLM client (from chart_agent)
+│
+├─ reflection/                  # Reflection pattern implementations
+│  ├─ chart_workflow/           # Original chart generation prototype
+│  ├─ sql_agent/                # SQL generation with adaptive iteration
+│  ├─ research_agent/           # Multi-step research workflow
+│  └─ viz_agent/                # Advanced visualization agent
+│
+├─ multiagent/                  # Multiagent collaboration patterns
+│  └─ customer_service/         # Customer service multiagent system
+│
+├─ tool_use/                    # Tool-using agent patterns
+│
+├─ docs/                        # Global documentation
+│  ├─ architecture/             # System architecture
+│  ├─ tutorials/                # Learning guides
+│  ├─ installation/             # Setup guides
+│  └─ libraries/                # Library documentation
+│
 ├─ data/                        # Sample datasets
-├─ main.py                      # FastAPI app for research agent
-├─ environment.yml              # Conda environment spec
-├─ requirements.txt             # Python dependencies
-├─ Dockerfile                   # Docker configuration
+├─ tests/                       # Test suites
+├─ scripts/                     # CLI tools and utilities
+├─ environment.yml              # Mamba environment spec
+├─ pyproject.toml               # Poetry project configuration
 └─ README.md                    # This file
 ```
 
@@ -162,32 +195,89 @@ mamba activate agentic-ai
 * `SETUP_README.md` for detailed setup instructions
 * `docs/libraries/` for complete library documentation
 
-### 📊 Quick Start: Chart Workflow
+### 📊 Quick Start: Chart Agent
 
-Generate visualizations with iterative refinement:
+**Option 1: FastAPI Service (Recommended)**
 
 ```bash
 # Activate environment
 mamba activate agentic-ai
 
-# Run with default settings (2 iterations, stop on convergence)
-python3 scripts/run_chart_workflow.py data/your_data.csv
+# Start the Chart Agent API server
+cd chart_agent/server
+python chart_service.py
 
-# Run with custom settings
-python3 scripts/run_chart_workflow.py data/your_data.csv \
-  --max-iterations 4 \
-  --output-dir outputs/ \
-  --image-basename my_chart
-
-# With custom instruction
-python3 scripts/run_chart_workflow.py data/your_data.csv \
-  "Create a bar chart showing sales by category"
+# Visit Swagger UI at http://localhost:8003/docs
+# Or use the API:
+curl -X POST http://localhost:8003/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "dataset_path": "data/your_data.csv",
+    "user_request": "Show top 10 categories by sales",
+    "model": "gpt-4o-mini"
+  }'
 ```
 
-**Output:**
-- `my_chart_v1.png`, `my_chart_v2.png`, ... (iterative charts)
-- `my_chart_final.py` (final refined code)
-- Per-iteration feedback and convergence detection
+**Option 2: Python API**
+
+```python
+from chart_agent import create_dataset, generate_chart_code
+
+# Load dataset
+dataset = create_dataset("data/your_data.csv")
+
+# Generate chart
+result = generate_chart_code(
+    dataset=dataset,
+    user_request="Create a bar chart showing sales by category",
+    model="gpt-4o-mini"
+)
+
+# Access generated code and chart
+print(result["code"])
+result["chart"].show()
+```
+
+**Option 3: CLI Examples**
+
+```bash
+# Run example scripts
+python chart_agent/examples/quick_start.py
+python chart_agent/examples/analyze_splice_sites.py
+```
+
+### 🧬 Quick Start: Splice Agent
+
+Genomics-specific analysis with domain templates:
+
+```bash
+# Start the Splice Agent API server
+cd splice_agent/server
+python splice_service.py
+
+# Visit Swagger UI at http://localhost:8004/docs
+
+# List available analyses
+curl http://localhost:8004/analyses
+
+# Run template-based analysis
+curl -X POST http://localhost:8004/analyze/template \
+  -H "Content-Type: application/json" \
+  -d '{
+    "dataset_path": "data/splice_sites.tsv",
+    "analysis_type": "high_alternative_splicing",
+    "model": "gpt-4o-mini"
+  }'
+
+# Run exploratory analysis
+curl -X POST http://localhost:8004/analyze/exploratory \
+  -H "Content-Type: application/json" \
+  -d '{
+    "dataset_path": "data/splice_sites.tsv",
+    "research_question": "What genes show tissue-specific splicing patterns?",
+    "model": "gpt-4o-mini"
+  }'
+```
 
 ### 🗄️ Quick Start: SQL Agent
 
@@ -387,34 +477,59 @@ TAVILY_API_KEY=your-tavily-api-key
 
 ## 🆕 Recent Updates
 
+### November 2024: Production Agent Services
+
+**Chart Agent (NEW):**
+- ✅ Production-ready FastAPI service with Swagger UI (port 8003)
+- ✅ DuckDB-based data access for TSV, CSV, Parquet files
+- ✅ LLM-driven code-as-plan chart generation
+- ✅ Reflection pattern for iterative code improvement
+- ✅ Multi-model support (GPT-4, GPT-5, o1, etc.)
+- ✅ Comprehensive documentation and examples
+- ✅ Supersedes `reflection/chart_workflow/`
+
+**Splice Agent (NEW):**
+- ✅ Domain-specific genomics analysis agent
+- ✅ FastAPI service with splice-specific endpoints (port 8004)
+- ✅ Predefined analysis templates for splice sites
+- ✅ Exploratory analysis mode for custom research questions
+- ✅ Built on chart_agent core engine
+- ✅ Biological context and genomic feature analysis
+
+**Model Support Updates:**
+- ✅ GPT-5 series support (gpt-5, gpt-5-mini, gpt-5-pro, gpt-5-codex)
+- ✅ GPT-5.1 series support (gpt-5.1, gpt-5.1-codex, gpt-5.1-codex-mini)
+- ✅ Responses API support for all models
+- ✅ Updated model recommendations for fast prototyping
+
 ### October 2024: Iterative Refinement & Code Persistence
 
 **Chart Workflow Enhancements:**
 - ✅ Configurable `max_iterations` with early stopping on convergence
-- ✅ Save final refined code to disk (`--no-save-final-code` to disable)
+- ✅ Save final refined code to disk
 - ✅ Per-iteration tracking and summary output
-- ✅ Backward compatible with existing code
 - ✅ Cost savings: 25-50% for strong models via early stopping
 
 **SQL Agent Analysis:**
-- ✅ Adaptive iteration based on model strength (GPT-4 vs GPT-3.5 vs custom)
+- ✅ Adaptive iteration based on model strength
 - ✅ Convergence detection and regression handling
 - ✅ Comprehensive analysis document with cost/quality tradeoffs
-- ✅ Role assignment importance analysis for prompts
-
-**Testing Infrastructure:**
-- ✅ `test_iterative_refinement.py` - 6 test cases for iteration features
-- ✅ `test_code_persistence.py` - 6 test cases for code saving
-- ✅ `test_adaptive_vs_fixed.py` - SQL workflow comparisons
-- ✅ `test_role_importance.py` - Prompt engineering analysis
-
-All tests pass successfully with comprehensive coverage.
 
 ---
 
 ## 📚 Learning Resources
 
 ### Documentation
+
+**Agent Documentation:**
+- `chart_agent/README.md` - Chart Agent overview and features
+- `chart_agent/docs/` - Comprehensive Chart Agent documentation
+- `splice_agent/README.md` - Splice Agent overview and features
+- `splice_agent/docs/` - Splice Agent documentation
+- `splice_agent/QUICKSTART.md` - 5-minute Splice Agent guide
+- `splice_agent/MIGRATION.md` - Moving Splice Agent to new projects
+
+**General Documentation:**
 - `LEARNING_GUIDE.md` - Comprehensive guide to agentic AI patterns
 - `AGENTS.md` - Agent architecture and design patterns
 - `docs/ENVIRONMENT_SETUP.md` - Environment configuration guide
@@ -422,13 +537,19 @@ All tests pass successfully with comprehensive coverage.
 - `reflection/sql_agent/ADAPTIVE_ITERATION_ANALYSIS.md` - Adaptive iteration deep dive
 
 ### Example Datasets
-- `reflection/M2_UGL_1/coffee_sales.csv` - Simple temporal data
 - `data/splice_sites_enhanced.tsv` - Complex genomic data (2.8M rows)
+- `reflection/M2_UGL_1/coffee_sales.csv` - Simple temporal data
+
+### Example Scripts
+- `chart_agent/examples/quick_start.py` - Chart Agent quick examples
+- `chart_agent/examples/analyze_splice_sites.py` - Splice site analysis
+- `splice_agent/examples/quick_start.py` - Splice Agent examples
+- `splice_agent/examples/analyze_splice_sites.py` - Full splice analysis CLI
 
 ### Interactive Notebooks
 - `reflection/sql_agent/sql.ipynb` - SQL generation with reflection
+- `chart_agent/examples/` - Chart Agent notebooks
 - `reflection/C1M2_Assignment.ipynb` - Course assignments
-- `reflection/C1M2_Assignment_Solution.ipynb` - Solutions
 
 ---
 
@@ -463,9 +584,18 @@ pytest tests/sql_agent/
 
 ## 📖 Related Documentation
 
+**Agent Documentation:**
+- `chart_agent/README.md` - Chart Agent comprehensive guide
+- `chart_agent/docs/` - Chart Agent detailed documentation
+- `splice_agent/README.md` - Splice Agent comprehensive guide
+- `splice_agent/QUICKSTART.md` - Splice Agent quick start
+- `splice_agent/MIGRATION.md` - Splice Agent migration guide
+
+**General Documentation:**
 - `SETUP_README.md` - Detailed setup instructions
 - `LEARNING_GUIDE.md` - Agentic AI concepts and patterns
 - `AGENTS.md` - Agent architecture guide
+- `docs/` - Global documentation (architecture, tutorials, installation)
 - `docs/libraries/` - Library documentation
 - `reflection/docs/` - Workflow-specific documentation
 

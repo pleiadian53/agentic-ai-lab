@@ -23,7 +23,7 @@ Run the quick validation test:
 
 ```bash
 # From project root
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 
 # Activate environment
 mamba activate agentic-ai
@@ -113,7 +113,7 @@ cat .env | grep OPENAI_API_KEY
 ```bash
 # Error: ModuleNotFoundError: No module named 'reflection'
 # Solution: Run from project root
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 python scripts/test_chart_workflow.py
 ```
 

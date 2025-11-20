@@ -157,8 +157,8 @@ Added sections on:
 ### 6. **User-Specific Details**
 Customized for the user:
 - GitHub username: `pleiadian53`
-- Repository name: `agentic-ai-public`
-- Project path: `/Users/pleiadian53/work/agentic-ai-public`
+- Repository name: `agentic-ai-lab`
+- Project path: `/Users/pleiadian53/work/agentic-ai-lab`
 - Specific to their situation (cloned from DeepLearning.AI)
 
 ## Structure Comparison
@@ -287,7 +287,7 @@ it for your session, so you only type it once per login.
 cat docs/GITHUB_SETUP.md
 
 # Or view in browser (if using GitHub Pages)
-open https://github.com/pleiadian53/agentic-ai-public/blob/main/docs/GITHUB_SETUP.md
+open https://github.com/pleiadian53/agentic-ai-lab/blob/main/docs/GITHUB_SETUP.md
 ```
 
 ### For Documentation

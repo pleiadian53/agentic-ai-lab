@@ -6,7 +6,7 @@
 
 ## Overview
 
-This document describes the organization of documentation in the agentic-ai-public project. All documentation follows a clear hierarchy to keep the project root clean and make information easy to find.
+This document describes the organization of documentation in the agentic-ai-lab project. All documentation follows a clear hierarchy to keep the project root clean and make information easy to find.
 
 **Core Principle**: Only `README.md` lives in the project root. All other documentation is organized under `docs/` by topic and scope.
 
@@ -15,7 +15,7 @@ This document describes the organization of documentation in the agentic-ai-publ
 ## Directory Structure
 
 ```
-agentic-ai-public/
+agentic-ai-lab/
 ├── README.md                          # Main project README (ONLY doc in root)
 │
 ├── docs/

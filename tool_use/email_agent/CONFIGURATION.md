@@ -108,7 +108,7 @@ Output:
 
 The configuration module loads environment variables in this order:
 
-1. **Project root `.env`** (`agentic-ai-public/.env`) - Loaded first
+1. **Project root `.env`** (`agentic-ai-lab/.env`) - Loaded first
 2. **Local `.env`** (`tool_use/email_agent/.env`) - Overrides project root if exists
 
 This allows you to:

@@ -92,7 +92,7 @@ Updated script paths in the following files:
 ### Before
 
 ```
-agentic-ai-public/
+agentic-ai-lab/
 ├── setup-mamba.sh          # ❌ Root clutter
 ├── setup.sh                # ❌ Root clutter
 ├── environment.yml
@@ -105,7 +105,7 @@ agentic-ai-public/
 ### After
 
 ```
-agentic-ai-public/
+agentic-ai-lab/
 ├── environment.yml
 ├── requirements.txt
 ├── README.md

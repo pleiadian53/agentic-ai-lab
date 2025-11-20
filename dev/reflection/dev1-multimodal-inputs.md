@@ -10,7 +10,7 @@ Exactly! 🎯
 
 ## Yes, This Enables Multi-Modal Input
 
-The line [media_type, b64 = utils.encode_image_b64(chart_path)](cci:1://file:///Users/pleiadian53/work/agentic-ai-public/reflection/M2_UGL_1/utils.py:71:0-77:26) is preparing the image to be sent to a **multi-modal LLM** (like GPT-4o or Claude) that can process both text and images.
+The line [media_type, b64 = utils.encode_image_b64(chart_path)](cci:1://file:///Users/pleiadian53/work/agentic-ai-lab/reflection/M2_UGL_1/utils.py:71:0-77:26) is preparing the image to be sent to a **multi-modal LLM** (like GPT-4o or Claude) that can process both text and images.
 
 ### How It Works
 
@@ -86,7 +86,7 @@ feedback = reflect_on_image_and_regenerate(
 
 ### What the LLM "Sees"
 
-When you call [image_anthropic_call()](cci:1://file:///Users/pleiadian53/work/agentic-ai-public/reflection/M2_UGL_1/utils.py:169:0-196:33) or [image_openai_call()](cci:1://file:///Users/pleiadian53/work/agentic-ai-public/reflection/M2_UGL_1/utils.py:199:0-214:18), the LLM receives:
+When you call [image_anthropic_call()](cci:1://file:///Users/pleiadian53/work/agentic-ai-lab/reflection/M2_UGL_1/utils.py:169:0-196:33) or [image_openai_call()](cci:1://file:///Users/pleiadian53/work/agentic-ai-lab/reflection/M2_UGL_1/utils.py:199:0-214:18), the LLM receives:
 
 **Text:**
 ```

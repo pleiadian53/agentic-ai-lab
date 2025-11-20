@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the documentation organization strategy for the agentic-ai-public project.
+This document describes the documentation organization strategy for the agentic-ai-lab project.
 
 ## Principles
 
@@ -14,7 +14,7 @@ This document describes the documentation organization strategy for the agentic-
 ## Directory Structure
 
 ```
-agentic-ai-public/
+agentic-ai-lab/
 │
 ├── docs/                           # Global documentation
 │   ├── README.md                   # Documentation index

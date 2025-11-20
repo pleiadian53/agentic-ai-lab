@@ -6,7 +6,7 @@ from pathlib import Path
 # Load environment variables from project root first, then local
 # This ensures the tools work from notebooks, scripts, and services
 EMAIL_AGENT_DIR = Path(__file__).parent
-PROJECT_ROOT = EMAIL_AGENT_DIR.parent.parent  # agentic-ai-public/
+PROJECT_ROOT = EMAIL_AGENT_DIR.parent.parent  # agentic-ai-lab/
 
 load_dotenv(PROJECT_ROOT / ".env")  # Load from project root
 load_dotenv(EMAIL_AGENT_DIR / ".env", override=True)  # Override with local if exists

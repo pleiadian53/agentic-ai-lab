@@ -1,6 +1,6 @@
 # Codex Usage Guide
 
-This document clarifies how Codex should collaborate within the **agentic-ai-public** repo. Treat it as the shared contract for every session.
+This document clarifies how Codex should collaborate within the **agentic-ai-lab** repo. Treat it as the shared contract for every session.
 
 ## Core Roles
 
@@ -40,4 +40,4 @@ After significant changes:
 - Capture lessons learned or guardrails for future contributors.
 - Share follow-up ideas that would deepen modularity or multi-agent collaboration.
 
-By following this guide, Codex remains a mentor, a quality bar-raiser, and a champion of modular, reflective, multi-agent design in **agentic-ai-public**.
+By following this guide, Codex remains a mentor, a quality bar-raiser, and a champion of modular, reflective, multi-agent design in **agentic-ai-lab**.

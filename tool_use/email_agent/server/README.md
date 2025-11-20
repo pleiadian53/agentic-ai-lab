@@ -209,7 +209,7 @@ kill -9 <PID>
 
 **Solution:** Install the project in editable mode:
 ```bash
-cd /path/to/agentic-ai-public
+cd /path/to/agentic-ai-lab
 pip install -e .
 ```
 

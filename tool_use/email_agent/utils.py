@@ -28,7 +28,7 @@ from typing import Any
 # Load environment variables from project root first, then local
 # This matches the pattern in config.py
 EMAIL_AGENT_DIR = Path(__file__).parent
-PROJECT_ROOT = EMAIL_AGENT_DIR.parent.parent  # agentic-ai-public/
+PROJECT_ROOT = EMAIL_AGENT_DIR.parent.parent  # agentic-ai-lab/
 
 load_dotenv(PROJECT_ROOT / ".env")  # Load from project root
 load_dotenv(EMAIL_AGENT_DIR / ".env", override=True)  # Override with local if exists

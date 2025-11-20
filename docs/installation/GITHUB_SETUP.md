@@ -32,7 +32,7 @@ Before we start, make sure you have:
 - **Git installed** on your computer (check with `git --version`)
 - **A GitHub account** at github.com/pleiadian53 (which you already have!)
 - **Terminal access** (Terminal on Mac, Git Bash on Windows, or any shell)
-- **Your project directory** at `/Users/pleiadian53/work/agentic-ai-public`
+- **Your project directory** at `/Users/pleiadian53/work/agentic-ai-lab`
 
 You're ready to go!
 
@@ -43,7 +43,7 @@ You're ready to go!
 First, let's navigate to your project and see what we're working with. Open your terminal and move into your project directory:
 
 ```bash
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 ```
 
 Now, let's check the current state of your repository. This command shows you which files have been modified, added, or are waiting to be committed:
@@ -214,7 +214,7 @@ Now that authentication is set up, let's create a new home for your project on G
 Here's how to fill out the form:
 
 ### Repository Name
-Enter: `agentic-ai-public`
+Enter: `agentic-ai-lab`
 
 This matches your local directory name, which keeps things consistent and easy to remember.
 
@@ -274,13 +274,13 @@ Or you might see nothing if the remote was removed.
 Now we'll point it to your new repository. Replace `pleiadian53` with your actual GitHub username if different:
 
 ```bash
-git remote set-url origin git@github.com:pleiadian53/agentic-ai-public.git
+git remote set-url origin git@github.com:pleiadian53/agentic-ai-lab.git
 ```
 
 **If you got an error** saying the remote doesn't exist, add it instead:
 
 ```bash
-git remote add origin git@github.com:pleiadian53/agentic-ai-public.git
+git remote add origin git@github.com:pleiadian53/agentic-ai-lab.git
 ```
 
 ### Verify the Change
@@ -293,8 +293,8 @@ git remote -v
 
 You should now see:
 ```
-origin  git@github.com:pleiadian53/agentic-ai-public.git (fetch)
-origin  git@github.com:pleiadian53/agentic-ai-public.git (push)
+origin  git@github.com:pleiadian53/agentic-ai-lab.git (fetch)
+origin  git@github.com:pleiadian53/agentic-ai-lab.git (push)
 ```
 
 **Notice the difference?** It now starts with `git@github.com:` instead of `https://`. This means it's using SSH (your secure key) instead of HTTPS (username/password).
@@ -330,7 +330,7 @@ Compressing objects: 100% (789/789), done.
 Writing objects: 100% (1234/1234), 2.5 MiB | 1.2 MiB/s, done.
 Total 1234 (delta 456), reused 0 (delta 0)
 remote: Resolving deltas: 100% (456/456), done.
-To github.com:pleiadian53/agentic-ai-public.git
+To github.com:pleiadian53/agentic-ai-lab.git
  * [new branch]      main -> main
 Branch 'main' set up to track remote branch 'main' from 'origin'.
 ```
@@ -345,7 +345,7 @@ Branch 'main' set up to track remote branch 'main' from 'origin'.
 
 Open your browser and go to:
 ```
-https://github.com/pleiadian53/agentic-ai-public
+https://github.com/pleiadian53/agentic-ai-lab
 ```
 
 You should see your entire project! Browse through:
@@ -454,7 +454,7 @@ fatal: Could not read from remote repository.
 **How to fix:**
 1. Make sure you created the repository on GitHub
 2. Check your remote URL: `git remote -v`
-3. Verify the repository name matches: `pleiadian53/agentic-ai-public`
+3. Verify the repository name matches: `pleiadian53/agentic-ai-lab`
 4. Make sure you have access (if it's private, you need to be logged in)
 
 ### "Permission denied (publickey)" Error
@@ -483,7 +483,7 @@ fatal: Could not read from remote repository.
 git remote -v
 
 # If it shows https://, change to SSH
-git remote set-url origin git@github.com:pleiadian53/agentic-ai-public.git
+git remote set-url origin git@github.com:pleiadian53/agentic-ai-lab.git
 ```
 
 ### "Failed to push some refs"
@@ -595,7 +595,7 @@ Track bugs, feature requests, and tasks:
 Host your documentation for free:
 1. Go to Settings → Pages
 2. Choose your source (usually `main` branch, `/docs` folder)
-3. Your docs will be live at `https://pleiadian53.github.io/agentic-ai-public/`
+3. Your docs will be live at `https://pleiadian53.github.io/agentic-ai-lab/`
 
 ### 4. Add a License
 

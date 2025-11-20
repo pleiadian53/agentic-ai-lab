@@ -58,7 +58,7 @@ brew install pyenv
 pyenv install 3.11.7
 
 # Set as local version for this project
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 pyenv local 3.11.7
 
 # Verify
@@ -119,7 +119,7 @@ conda install -n base -c conda-forge mamba
 
 ```bash
 # Navigate to project
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 
 # Run setup script
 ./scripts/install/setup-mamba.sh
@@ -201,7 +201,7 @@ Once you have Python 3.10+, follow these steps:
 
 ```bash
 # Navigate to project directory
-cd /Users/pleiadian53/work/agentic-ai-public
+cd /Users/pleiadian53/work/agentic-ai-lab
 
 # Create virtual environment (use python3.11 or your installed version)
 python3.11 -m venv .venv
@@ -211,7 +211,7 @@ source .venv/bin/activate
 
 # Verify you're in the virtual environment
 which python
-# Should show: /Users/pleiadian53/work/agentic-ai-public/.venv/bin/python
+# Should show: /Users/pleiadian53/work/agentic-ai-lab/.venv/bin/python
 ```
 
 ### 2. Upgrade pip
