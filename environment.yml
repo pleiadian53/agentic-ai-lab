@@ -11,16 +11,18 @@ dependencies:
   - openai
   - markdown
   - requests
-  - weasyprint  # PDF generation for research agent
+  - weasyprint  # PDF generation (fallback)
+  - pandoc      # LaTeX-based PDF generation with proper equation rendering
   
   # === Web Framework + API ===
-  # Used by: tool_use/ml_agent, tool_use/email_agent, chart_agent/server
+  # Used by: tool_use/ml_agent, tool_use/email_agent, chart_agent/server, nexus agents
   - fastapi
   - pydantic
   - python-dotenv
   - python-multipart
   - sqlalchemy
   - uvicorn
+  - beautifulsoup4  # HTML parsing for nexus
   
   # === Notebook Experience ===
   - ipywidgets
@@ -51,6 +53,7 @@ dependencies:
     - anthropic
     - docstring-parser
     - mistralai
+    - pypandoc  # Python wrapper for pandoc (LaTeX PDF generation)
     - qrcode
     - tavily-python>=0.7.12
     - textstat

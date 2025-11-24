@@ -1,0 +1,100 @@
+"""
+Setup configuration for agentic-ai-lab
+======================================
+
+Installs the Nexus platform and all agent packages.
+"""
+
+from setuptools import setup, find_packages
+from pathlib import Path
+
+# Read README for long description
+readme_file = Path(__file__).parent / "README.md"
+long_description = readme_file.read_text() if readme_file.exists() else ""
+
+setup(
+    name="nexus-ai",
+    version="0.1.0",
+    description="Nexus: Superintelligent Research Platform",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    author="Agentic AI Lab",
+    author_email="",
+    url="https://github.com/yourusername/agentic-ai-lab",
+    
+    # Package discovery
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
+    
+    # Include non-Python files
+    include_package_data=True,
+    package_data={
+        "nexus.agents.research": [
+            "prompts/*.txt",
+            "server/templates/*.html",
+            "server/static/**/*",
+        ],
+        "nexus.templates": [
+            "papers/*.pdf",
+            "metadata/*.json",
+        ],
+    },
+    
+    # Python version requirement
+    python_requires=">=3.10",
+    
+    # Core dependencies
+    install_requires=[
+        "aisuite>=0.1.0",
+        "fastapi>=0.104.0",
+        "uvicorn[standard]>=0.24.0",
+        "pydantic>=2.0.0",
+        "python-multipart>=0.0.6",
+        "jinja2>=3.1.0",
+        "markdown>=3.5.0",
+        "weasyprint>=60.0",
+        "beautifulsoup4>=4.12.0",
+        "requests>=2.31.0",
+        "python-dotenv>=1.0.0",
+    ],
+    
+    # Optional dependencies
+    extras_require={
+        "dev": [
+            "pytest>=7.4.0",
+            "pytest-asyncio>=0.21.0",
+            "black>=23.0.0",
+            "ruff>=0.1.0",
+            "mypy>=1.7.0",
+        ],
+        "pdf": [
+            "pypandoc>=1.12",
+        ],
+        "docs": [
+            "mkdocs>=1.5.0",
+            "mkdocs-material>=9.4.0",
+            "mkdocs-mermaid2-plugin>=1.1.0",
+        ],
+    },
+    
+    # Entry points for CLI commands
+    entry_points={
+        "console_scripts": [
+            "nexus-research=nexus.cli.research:main",
+        ],
+    },
+    
+    # Classifiers
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Science/Research",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+    ],
+    
+    # Keywords
+    keywords="ai research agents multiagent llm scientific-research",
+)

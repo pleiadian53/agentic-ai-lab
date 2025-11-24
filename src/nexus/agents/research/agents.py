@@ -10,15 +10,21 @@ from . import llm_client
 # Shared client for aisuite calls
 client = Client()
 
-def planner_agent(topic: str, model: str = "openai:o4-mini", report_length: str = "standard", context: str = None) -> list[str]:
+def planner_agent(topic: str, model: str = "openai:o4-mini", report_length: str = "standard", context: str = None) -> dict:
     """
-    Generates a plan as a Python list of steps.
+    Generates a plan as a Python list of steps and decides output format.
     
     Args:
         topic: Research topic
         model: LLM model to use
         report_length: "brief" (2-3 pages), "standard" (5-10 pages), "comprehensive" (15-25 pages), "technical-paper" (25-40 pages)
         context: Additional context or style template guidance
+        
+    Returns:
+        dict with keys:
+            - 'steps': list[str] - Research plan steps
+            - 'output_format': str - 'latex' or 'markdown'
+            - 'reason': str - Why this format was chosen
     """
     print("==================================")
     print("🧠 Planner Agent")
@@ -123,25 +129,28 @@ No commentary, no markdown, no surrounding backticks — only a plain Python lis
 5. Synthesis/insights (cross-reference, compare)
 6. Writing steps (multiple sections: intro, findings, analysis, conclusion)
 7. Editing/refinement (clarity, structure, accuracy)
-8. Final Markdown report generation
+8. Final report generation
 
 ---
 
-� Output:
-Return ONLY a Python list of strings.
-
-Example format (do NOT repeat this example, just follow the structure):
-[
-  "Search arXiv for foundational papers on quantum computing",
-  "Search Europe PMC for clinical applications of quantum computing",
-  "Extract key findings from collected papers",
-  "Draft introduction section",
-  "Edit introduction for clarity",
-  "Generate final Markdown research report"
-]
+📌 Requirements for each step:
+- **Atomic** → one action, one verb, one agent
+- **Executable** → must clearly map to one of the above agents
+- **Concrete** → specify the source or output ("Search arXiv for X", "Draft introduction section")
+- **Sequenced** → broad → focused → synthesis → writing → editing
+- **Complete** → include all phases: literature search, filtering, synthesis, drafting, editing, final report
 
 Now generate the plan for: "{topic}"
 """
+    
+    if context:
+        prompt += f"""
+📄 Style & Context Requirements:
+{context}
+
+Ensure the plan produces a report that matches this style and structure.
+"""
+    
     messages = [{"role": "user", "content": prompt}]
     
     # Use unified client (supports Responses API)
@@ -208,15 +217,20 @@ You are an expert research analyst with access to cutting-edge academic and web 
     print("✅ Output:\n", content)
     return (content, messages) if return_messages else content
 
-def writer_agent(task: str, model: str = "openai:gpt-4o") -> str:
+def writer_agent(task: str, model: str = "openai:gpt-4o", format_instructions: str = "") -> str:
     """
-    Executes writing tasks.
+    Executes writing tasks with optional format-specific instructions.
+    
+    Args:
+        task: Writing task description
+        model: LLM model to use
+        format_instructions: Additional instructions for specific output format (LaTeX, Markdown, etc.)
     """
     print("==================================")
     print("✍️ Writer Agent")
     print("==================================")
-    messages = [
-        {"role": "system", "content": """You are an award-winning technical writer with expertise in academic publications, grant proposals, whitepapers, and research reports.
+    
+    system_prompt = """You are an award-winning technical writer with expertise in academic publications, grant proposals, whitepapers, and research reports.
 
 Your writing is characterized by:
 - Clear, precise language that balances accessibility with technical rigor
@@ -244,22 +258,34 @@ Your output formats include:
 - Technical whitepapers and reports
 - Research summaries and literature reviews
 
-Write with authority, clarity, and intellectual depth. Make science come alive—avoid dry, lifeless prose. Your goal is to inform, engage, and inspire."""},
+Write with authority, clarity, and intellectual depth. Make science come alive—avoid dry, lifeless prose. Your goal is to inform, engage, and inspire."""
+    
+    # Add format-specific instructions if provided
+    if format_instructions:
+        system_prompt += "\n\n" + format_instructions
+    
+    messages = [
+        {"role": "system", "content": system_prompt},
         {"role": "user", "content": task}
     ]
 
     content = llm_client.call_llm_text(client, model, messages, temperature=1.0)
     return content
 
-def editor_agent(task: str, model: str = "openai:gpt-4o") -> str:
+def editor_agent(task: str, model: str = "openai:gpt-4o", format_instructions: str = "") -> str:
     """
     Executes editorial tasks.
+    
+    Args:
+        task: Editorial task to perform
+        model: LLM model to use
+        format_instructions: Format-specific instructions (LaTeX, Markdown, etc.)
     """
     print("==================================")
     print("🧠 Editor Agent")
     print("==================================")
-    messages = [
-        {"role": "system", "content": """You are a senior editor with decades of experience in academic peer review, technical editing, and content refinement.
+    
+    system_prompt = """You are a senior editor with decades of experience in academic peer review, technical editing, and content refinement.
 
 Your editorial expertise covers:
 - Structural coherence: Ensure logical flow and clear argumentation
@@ -276,7 +302,14 @@ Your editorial approach:
 4. Rewrite sections that need substantial revision
 5. Ensure the final product meets publication standards
 
-Be constructive but rigorous. Your goal is to elevate good writing to excellence."""},
+Be constructive but rigorous. Your goal is to elevate good writing to excellence."""
+    
+    # Add format-specific instructions if provided
+    if format_instructions:
+        system_prompt += "\n\n" + format_instructions
+    
+    messages = [
+        {"role": "system", "content": system_prompt},
         {"role": "user", "content": task}
     ]
 
@@ -290,9 +323,14 @@ agent_registry = {
     "writer_agent": writer_agent,
 }
 
-def executor_agent(plan_steps: list[str], model: str = "openai:gpt-4o"):
+def executor_agent(plan_steps: list[str], model: str = "openai:gpt-4o", format_instructions: str = ""):
     """
     Routes each task to the correct sub-agent.
+    
+    Args:
+        plan_steps: List of research plan steps
+        model: LLM model to use
+        format_instructions: Format-specific instructions for writer agent
     """
     history = []
 
@@ -341,7 +379,13 @@ Your next task is:
             print(f"\n🛠️ Executing with agent: `{agent_name}` on task: {task}")
 
             if agent_name in agent_registry:
-                output = agent_registry[agent_name](enriched_task)
+                # Pass format_instructions to writer_agent and editor_agent
+                if agent_name in ["writer_agent", "editor_agent"] and format_instructions:
+                    output = agent_registry[agent_name](enriched_task, model=model, format_instructions=format_instructions)
+                elif agent_name == "research_agent":
+                    output = agent_registry[agent_name](enriched_task)
+                else:
+                    output = agent_registry[agent_name](enriched_task, model=model)
                 history.append((step, agent_name, output))
             else:
                 output = f"⚠️ Unknown agent: {agent_name}"

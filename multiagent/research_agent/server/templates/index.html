@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Agent - Multi-Agent Research Reports</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .reports-list {
+            list-style: none;
+        }
+        
+        .report-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .report-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .report-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .report-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .report-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-view,
+        .btn-download {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .btn-view {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-view:hover {
+            background: #5568d3;
+        }
+        
+        .btn-download {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-download:hover {
+            background: #38a169;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔬 Research Agent</h1>
+            <p>Multi-Agent AI Research Report Generation</p>
+        </header>
+        
+        <div class="card">
+            <h2>Generate New Research Report</h2>
+            <form id="research-form">
+                <div class="form-group">
+                    <label for="topic">Research Topic *</label>
+                    <input 
+                        type="text" 
+                        id="topic" 
+                        name="topic" 
+                        placeholder="e.g., Recent advances in quantum error correction"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="model">Model</label>
+                    <select id="model" name="model">
+                        <optgroup label="Development (Fast & Economical)">
+                            <option value="openai:gpt-4o-mini" selected>GPT-4o Mini</option>
+                            <option value="openai:gpt-5.1-codex-mini">GPT-5.1 Codex Mini</option>
+                        </optgroup>
+                        <optgroup label="Production (Balanced Quality)">
+                            <option value="openai:gpt-4o">GPT-4o</option>
+                            <option value="openai:gpt-5">GPT-5</option>
+                            <option value="openai:o4-mini">O4 Mini (Reasoning)</option>
+                        </optgroup>
+                        <optgroup label="Premium (Publication Quality)">
+                            <option value="openai:gpt-5.1">GPT-5.1 ⭐</option>
+                            <option value="openai:gpt-5.1-codex">GPT-5.1 Codex (Planning)</option>
+                            <option value="openai:gpt-5-pro">GPT-5 Pro (Advanced)</option>
+                            <option value="openai:gpt-5-codex">GPT-5 Codex</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="report_length">Report Length</label>
+                    <select id="report_length" name="report_length">
+                        <option value="brief">Brief (2-3 pages)</option>
+                        <option value="standard" selected>Standard (5-10 pages)</option>
+                        <option value="comprehensive">Comprehensive (15-25 pages)</option>
+                        <option value="technical-paper">Technical Paper (25-40 pages)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="context">Additional Context / Style Template (Optional)</label>
+                    <textarea 
+                        id="context" 
+                        name="context" 
+                        placeholder="e.g., Follow Nature Methods style. Include: Abstract, Introduction, Results (RFdiffusion, Chroma), Discussion, Methods. Reference papers from 2024-2025."
+                    ></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="generate_pdf" id="generate_pdf" value="true">
+                        Also generate PDF version
+                    </label>
+                    <small style="display: block; margin-top: 0.25rem; color: #666;">
+                        Creates a professionally formatted PDF alongside the markdown report
+                    </small>
+                </div>
+                
+                <button type="submit" id="submit-btn">Generate Report</button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Generating research report... This may take a few minutes.</p>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">
+                    The agents are searching papers, synthesizing findings, and writing the report.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Recent Reports ({{ total_reports }})</h2>
+            {% if reports %}
+                <ul class="reports-list">
+                    {% for report in reports %}
+                    <li class="report-item">
+                        <div class="report-title">{{ report.topic|replace("_", " ")|title }}</div>
+                        <div class="report-meta">
+                            Created: {{ report.created|timestamp_to_date }} | 
+                            Size: {{ "%.2f"|format(report.size_kb) }} KB
+                        </div>
+                        <div class="report-actions">
+                            <a href="/view/{{ report.topic }}/{{ report.report_path.split('/')[-1] }}" class="btn-view">
+                                View Report
+                            </a>
+                            <a href="/download/{{ report.topic }}/{{ report.report_path.split('/')[-1] }}" class="btn-download">
+                                Download Markdown
+                            </a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <p>No reports generated yet. Create your first research report above!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        const form = document.getElementById('research-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const loading = document.getElementById('loading');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                topic: document.getElementById('topic').value,
+                model: document.getElementById('model').value,
+                report_length: document.getElementById('report_length').value,
+                context: document.getElementById('context').value || null,
+                generate_pdf: document.getElementById('generate_pdf').checked
+            };
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            loading.classList.add('active');
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to generate report');
+                }
+                
+                const result = await response.json();
+                
+                // Redirect to view the report
+                const reportPath = result.report_path.split('/').slice(-2).join('/');
+                window.location.href = `/view/${result.topic}/${reportPath.split('/')[1]}`;
+                
+            } catch (error) {
+                alert('Error: ' + error.message);
+                submitBtn.disabled = false;
+                loading.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

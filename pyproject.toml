@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "agentic-ai"
 version = "0.1.0"
-description = "Agentic AI Workflows & Patterns - A comprehensive collection of agentic AI workflows demonstrating reflection, iterative refinement, and tool-using agents"
+description = "Agentic AI Lab - Comprehensive collection of agentic AI workflows and the Nexus superintelligent research platform"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -20,6 +20,9 @@ keywords = [
     "iterative-refinement",
     "multiagent",
     "workflows",
+    "nexus",
+    "research-platform",
+    "scientific-research",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -79,6 +82,7 @@ dependencies = [
     # === Additional Project Dependencies ===
     "pdfminer.six",
     "pymupdf",
+    "beautifulsoup4",  # HTML parsing for nexus
 ]
 
 [project.optional-dependencies]
@@ -119,6 +123,11 @@ Documentation = "https://github.com/pleiadian53/agentic-ai-lab/tree/main/docs"
 Issues = "https://github.com/pleiadian53/agentic-ai-lab/issues"
 
 [project.scripts]
+# === Nexus Platform CLI ===
+nexus-research = "nexus.cli.research:main"
+nexus-research-server = "nexus.agents.research.server.app:main"
+
+# === Legacy Workflow Scripts ===
 # CLI entry points for workflows
 run-chart-workflow = "scripts.run_chart_workflow:main"
 run-enhanced-chart-workflow = "scripts.run_enhanced_chart_workflow:main"
@@ -135,10 +144,10 @@ run-customer-service-tool-agent = "multiagent.customer_service.cli_tool_agent:ma
 zip-safe = false
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = [".", "src"]
 include = [
+    "nexus*",
     "reflection*",
-    "src*",
     "scripts*",
     "tool_use*",
     "multiagent*",
@@ -151,12 +160,15 @@ exclude = [
     "docker*",
     "static*",
     "templates*",
+    "legacy*",
     "tool_use.email_agent.notebooks*",
     "tool_use.email_agent.static*",
 ]
 
 [tool.setuptools.package-data]
 "*" = ["*.txt", "*.md", "*.yml", "*.yaml", "*.json"]
+"nexus.agents.research" = ["prompts/*.txt", "server/templates/*.html", "server/static/**/*"]
+"nexus.templates" = ["papers/*.pdf", "metadata/*.json"]
 
 # ============================================================================
 # Tool Configurations
@@ -260,7 +272,7 @@ module = [
 ignore_missing_imports = true
 
 [tool.coverage.run]
-source = ["reflection", "src", "scripts"]
+source = ["reflection", "src", "scripts", "nexus"]
 omit = [
     "*/tests/*",
     "*/test_*.py",

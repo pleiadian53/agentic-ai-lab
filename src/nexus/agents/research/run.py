@@ -4,13 +4,8 @@ import time
 from pathlib import Path
 from datetime import datetime
 
-# Add project root to path to allow imports if run directly
-sys.path.append(str(Path(__file__).parent.parent.parent))
-
-from multiagent.research_agent import pipeline
-from multiagent.research_agent import manifest
-from multiagent.research_agent import slug_utils
-from multiagent.research_agent import pdf_utils
+from nexus.agents.research import pipeline, manifest, slug_utils, pdf_utils
+from nexus.core.config import NexusConfig
 
 def main():
     parser = argparse.ArgumentParser(description="AI Research Agent CLI")
@@ -22,6 +17,8 @@ def main():
     parser.add_argument("--context", help="Additional context or style template (e.g., 'Follow Nature Methods style')", default=None)
     parser.add_argument("--output", help="Path to save the final report", default=None)
     parser.add_argument("--pdf", action="store_true", help="Also generate PDF version of the report")
+    parser.add_argument("--format", choices=["latex", "markdown", "pdf_direct"], 
+                       help="Force specific output format (overrides automatic detection)", default=None)
     
     args = parser.parse_args()
     
@@ -33,7 +30,8 @@ def main():
             args.topic, 
             model=args.model, 
             report_length=args.length,
-            context=args.context
+            context=args.context,
+            user_format=args.format
         )
         
         generation_time = time.time() - start_time
@@ -52,14 +50,13 @@ def main():
                 output_path = Path(args.output)
             else:
                 # Use unified output structure: output/research_reports/<topic_slug>/
-                project_root = Path(__file__).parent.parent.parent
-                
                 # Generate smart slug using LLM
                 print("🏷️  Generating topic slug...")
                 topic_slug = slug_utils.generate_topic_slug(args.topic, max_length=50)
                 print(f"   → {topic_slug}")
                 
-                topic_dir = project_root / "output" / "research_reports" / topic_slug
+                # Use NexusConfig for standardized path management
+                topic_dir = NexusConfig.RESEARCH_REPORTS_DIR / topic_slug
                 topic_dir.mkdir(parents=True, exist_ok=True)
                 
                 timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M')
@@ -73,20 +70,36 @@ def main():
             
             # Generate PDF if requested
             pdf_filename = None
+            format_info = results.get("format_decision", {})
+            
             if args.pdf:
                 print("\n📄 Generating PDF...")
                 pdf_path = output_path.with_suffix('.pdf')
-                success, error = pdf_utils.markdown_to_pdf(
-                    report, 
-                    pdf_path,
-                    title=args.topic
-                )
+                
+                # Use appropriate PDF generation method based on format
+                output_format = format_info.get("format", "markdown")
+                
+                if output_format == "latex":
+                    print(f"   Using LaTeX compilation (equations detected)")
+                    success, error = pdf_utils.latex_to_pdf(
+                        report, 
+                        pdf_path,
+                        title=args.topic
+                    )
+                else:
+                    print(f"   Using Markdown→PDF conversion")
+                    success, error = pdf_utils.markdown_to_pdf(
+                        report, 
+                        pdf_path,
+                        title=args.topic
+                    )
+                
                 if success:
                     pdf_filename = pdf_path.name
                     print(f"   ✓ PDF saved: {pdf_path}")
                 else:
                     print(f"   ⚠️  PDF generation failed: {error}")
-                    print(f"   ℹ️  Markdown report still available at: {output_path}")
+                    print(f"   ℹ️  Report still available at: {output_path}")
             
             # Create manifest entry
             topic_dir = output_path.parent
@@ -101,7 +114,8 @@ def main():
                 report_content=report,
                 generation_time_seconds=round(generation_time, 2),
                 plan_steps=plan_steps,
-                pdf_filename=pdf_filename
+                pdf_filename=pdf_filename,
+                format_decision=format_info  # Track format decision
             )
             
             print(f"\n📁 Saved to: {output_path}")

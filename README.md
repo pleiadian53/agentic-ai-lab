@@ -1,71 +1,213 @@
-# Agentic AI Workflows & Patterns
+# Nexus: Superintelligent Research System
 
-A comprehensive and **evolving collection** of **agentic AI workflows** demonstrating various design patterns including reflection, iterative refinement, tool-using agents, and multiagent systems. This repository includes multiple production-ready implementations for research, data visualization, SQL generation, and more.
+**Building toward superintelligent AI for scientific discovery** through an evolving collection of agentic workflows and design patterns.
 
-> **Note**: This repository is actively expanding to cover additional agentic workflow patterns including multiagent collaboration, hierarchical agents, and advanced orchestration patterns.
+📚 **[Quick Start Guide](QUICKSTART.md)** | 🏗️ **[Architecture](ARCHITECTURE.md)** | 📖 **[Full Documentation](src/nexus/agents/research/README.md)**
 
-## 🎯 What's Inside
+---
 
-This repository showcases **practical agentic AI patterns** with working implementations:
+## Vision
 
-### **1. Chart Agent** 📊
-Production-ready data visualization agent with FastAPI service, iterative refinement, and reflection.
+Nexus is our journey toward creating a **superintelligent research expert** - an AI system that combines reflection, tool use, multiagent collaboration, and advanced reasoning to push the boundaries of scientific discovery and exploration into uncharted territories. This repository documents our learning, experimentation, and production implementations as we build toward this ambitious goal.
+
+### What We're Building
+
+**Nexus Research System** - An intelligent, multi-agent research platform that:
+- 🔬 Generates comprehensive research reports with publication-quality output
+- 🧠 Combines multiple AI agents (Planner, Researcher, Writer, Editor) for intelligent orchestration
+- 🔧 Integrates diverse knowledge sources (arXiv, PubMed, Tavily, Wikipedia)
+- 📊 Produces beautiful PDFs with LaTeX equation rendering
+- 🎯 Adapts to different research domains and complexity levels
+- 🚀 Actively evolving with new capabilities (see roadmap below)
+
+### Design Patterns
+
+This repository **illustrates** key agentic AI design patterns through working implementations:
+- **Reflection**: Iterative refinement and self-evaluation
+- **Tool Use**: Integration with external knowledge and APIs
+- **Code-as-Plan**: LLM-driven code generation and execution
+- **Multiagent Systems**: Collaborative AI architectures
+- **Evaluation**: Quality assessment and convergence detection
+
+Each pattern and agent demonstrates how these principles combine to create **a superintelligent system capable of autonomous scientific discovery**.
+
+> **Note**: This is an actively evolving project. We're continuously learning, experimenting, and integrating new capabilities as we work toward true AI-powered research superintelligence.
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TB
+    subgraph "User Interface"
+        CLI[💻 CLI]
+        WEB[🌐 Web UI]
+    end
+    
+    subgraph "🎯 Nexus Core Pipeline"
+        PLAN[📋 Planner<br/>Strategy]
+        RESEARCH[🔍 Researcher<br/>Knowledge]
+        WRITE[✍️ Writer<br/>Content]
+        EDIT[📝 Editor<br/>Quality]
+    end
+    
+    subgraph "🔧 Knowledge Sources"
+        TOOLS[🌐 Tavily • 📚 arXiv<br/>🏥 PubMed • 🔬 Europe PMC<br/>📖 Wikipedia]
+    end
+    
+    subgraph "🤝 Supporting Agents"
+        CHART[📊 Chart Agent]
+        SQL[🗄️ SQL Agent]
+        SPLICE[🧬 Splice Agent]
+    end
+    
+    subgraph "Output"
+        PDF[📕 PDF + Equations]
+        MD[📝 Markdown]
+    end
+    
+    CLI --> PLAN
+    WEB --> PLAN
+    PLAN --> RESEARCH
+    RESEARCH --> TOOLS
+    RESEARCH --> WRITE
+    WRITE --> EDIT
+    EDIT --> PDF
+    EDIT --> MD
+    
+    CHART -.-> WRITE
+    SQL -.-> RESEARCH
+    SPLICE -.-> RESEARCH
+    
+    style PLAN fill:#fff4e1
+    style RESEARCH fill:#e1f5ff
+    style WRITE fill:#f0e1ff
+    style EDIT fill:#e1ffe1
+    style PDF fill:#ffe1f0
+```
+
+**See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed system design and workflows.**
+
+---
+
+## 🎯 Core System: Nexus Research Agent
+
+### **Nexus Research Agent** 🔬✨
+**Intelligent research agent** with multi-agent pipeline, PDF generation, and LaTeX equation rendering. *Active development - see roadmap below.*
+
+- **Location**: `src/nexus/agents/research/`
+- **Current Features**:
+  - **CLI & Web Interface** - Both command-line and web UI (port 8004)
+  - **Multi-agent pipeline** - Planner → Research → Writer → Editor
+  - **Tool integration** - Tavily, arXiv, PubMed, Europe PMC, Wikipedia
+  - **PDF generation** - Professional PDFs with LaTeX equation rendering
+  - **Report length options** - Brief, standard, comprehensive, technical-paper
+  - **Context guidance** - Style templates and domain-specific instructions
+  - **Manifest tracking** - Automatic metadata and version tracking
+  - **Smart slugs** - Intelligent topic-based file organization
+- **CLI**: `nexus-research "your topic" --model gpt-4o --pdf`
+- **Web UI**: [http://localhost:8004](http://localhost:8004)
+- **Docs**: `src/nexus/agents/research/README.md`
+- **Output**: `output/research_reports/<topic>/`
+
+**Roadmap** 🚀:
+- [ ] **Style Transfer** - Use example papers (e.g., `data/papers/OpenSpliceAI.pdf`) as style templates
+- [ ] **Paper2Code Integration** - Learn by doing: generate code prototypes alongside research reports
+- [ ] **GitHub Discovery** - Find and analyze paper implementations, suggest extensions
+- [ ] **Enhanced Web UI** - Progress tracking, cost estimation, improved aesthetics
+- [ ] **Uncertainty Quantification** - Confidence scores and source reliability metrics
+- [ ] **Interactive Refinement** - Iterative report improvement with user feedback
+
+---
+
+## 🤝 Supporting Agents
+
+These general-purpose agents enhance Nexus's research capabilities:
+
+### **Chart Agent** 📊
+**Visual presentation of research insights** - Helps Nexus present ideas and data visually.
+
 - **Location**: `chart_agent/`
+- **Role**: Generate publication-quality visualizations for research reports
 - **Features**:
-  - **FastAPI REST API** with Swagger UI (`http://localhost:8003/docs`)
+  - FastAPI REST API (`http://localhost:8003/docs`)
   - LLM-driven code-as-plan chart generation
-  - Iterative refinement with convergence detection
+  - Iterative refinement with reflection
   - DuckDB-based data access (TSV, CSV, Parquet)
-  - Multiple model support (GPT-4, GPT-5, o1, etc.)
-  - Reflection pattern for code improvement
-  - Comprehensive documentation and examples
-- **Server**: `chart_agent/server/chart_service.py`
-- **Examples**: `chart_agent/examples/`
+  - Multiple model support (GPT-4, GPT-5, o1)
+- **Integration**: Can be called by Nexus to create figures and visualizations
 - **Docs**: `chart_agent/docs/`
 
-### **2. Splice Agent** 🧬
-Specialized genomics agent for splice site analysis using agentic workflows.
-- **Location**: `splice_agent/`
-- **Features**:
-  - **Domain-specific analysis templates** for splice sites
-  - Biological context and genomic feature analysis
-  - FastAPI service with splice-specific endpoints (`http://localhost:8004/docs`)
-  - Template-based and exploratory analysis modes
-  - Built on chart_agent core engine
-  - Genomic data visualization and insights
-- **Server**: `splice_agent/server/splice_service.py`
-- **Examples**: `splice_agent/examples/`
-- **Docs**: `splice_agent/docs/`
+### **SQL Agent** 🗄️
+**Dataset querying and analysis** - Helps Nexus query and analyze research datasets.
 
-### **3. SQL Agent Workflow** 🗄️
-Natural language to SQL with adaptive iteration based on model strength.
 - **Location**: `reflection/sql_agent/`
+- **Role**: Natural language to SQL for data exploration
 - **Features**:
-  - Adaptive iteration (strong models: 1-2 iterations, weak models: 3-5)
+  - Adaptive iteration based on model strength
   - Convergence detection and regression handling
-  - Model-aware configuration (GPT-4 vs GPT-3.5 vs custom)
   - Event-sourced transaction database
-- **Analysis**: `reflection/sql_agent/ADAPTIVE_ITERATION_ANALYSIS.md`
-- **Notebook**: `reflection/sql_agent/sql.ipynb`
+- **Integration**: Enables Nexus to query databases for research data
+- **Docs**: `reflection/sql_agent/ADAPTIVE_ITERATION_ANALYSIS.md`
 
-### **4. Research Agent** 🔬
-Multi-step research workflow with planning, execution, and reflection.
-- **Location**: `reflection/research_agent/`, `src/`
+### **Future Supporting Agents** 🔮
+Planned general-purpose agents to expand Nexus capabilities:
+- **Email Agent** - Send research updates and summaries
+- **Code Agent** - Generate and test research code (Paper2Code integration)
+- **GitHub Agent** - Discover and analyze paper implementations
+- **Citation Agent** - Manage references and bibliography
+- **Experiment Agent** - Design and track computational experiments
+- **Market Research Agent** - Business and market analysis (to be ported)
+
+---
+
+## 🧬 Domain-Specific Research Agents
+
+Specialized agents for specific research domains (separate projects):
+
+### **Splice Agent** 🧬
+**RNA splicing and alternative splicing research** - A complex, dedicated project for computational biology.
+
+- **Project**: [splice-agent](https://github.com/yourusername/splice-agent) (separate repository)
+- **Location** (prototype): `splice_agent/`
+- **Domain**: RNA splicing, alternative splicing, genomics
+- **Complexity**: Full research area requiring dedicated development
+- **Features**:
+  - Domain-specific analysis templates for splice sites
+  - Biological context and genomic feature interpretation
+  - Integration with genomics databases
+  - Built on chart_agent core engine
+- **Status**: Active research project with ongoing development
+- **Note**: Due to the complexity of RNA splicing research, this is maintained as a separate project at `/Users/pleiadian53/work/splice-agent`
+
+### **Future Domain-Specific Agents** 🔬
+Potential specialized research agents for dedicated domains:
+- **Protein Structure Agent** - Protein folding and structure prediction
+- **Drug Discovery Agent** - Computational drug design and screening
+- **Climate Modeling Agent** - Climate science and environmental research
+- **Materials Science Agent** - Computational materials discovery
+
+---
+
+## 📚 Legacy & Learning
+
+### **Legacy Research Agent** 🔬
+Original research workflow prototype (now superseded by Nexus).
+- **Location**: `multiagent/research_agent/`, `legacy/prototype/`
+- **Purpose**: Experimentation, learning, and brainstorming new multiagent features
 - **Features**:
   - FastAPI web app with Postgres backend
   - Tool-using agents (Tavily, arXiv, Wikipedia)
-  - Planner → Research → Writer → Editor pipeline
   - Live task progress tracking
-  - Docker deployment (single container)
-- **Web UI**: [http://localhost:8000/](http://localhost:8000/)
-- **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+  - Docker deployment
+- **Note**: Use **Nexus Research Agent** for production work
 
-### **5. Visualization Agent** 📈
+### **6. Visualization Agent** 📈
 Advanced data visualization with multiple chart types and layouts.
 - **Location**: `reflection/viz_agent/`
 - **Features**: Multi-panel figures, exploratory analysis, custom styling
 
-### **6. Legacy Workflows** 📚
+### **7. Legacy Workflows** 📚
 Earlier implementations and learning materials (superseded by chart_agent/splice_agent):
 - **Chart Workflow**: `reflection/chart_workflow/` - Original chart generation prototype
 - **Note**: Use `chart_agent/` and `splice_agent/` for production work
@@ -126,48 +268,65 @@ Have a workflow pattern you'd like to see? Contributions are welcome! See the [C
 
 ```
 .
-├─ chart_agent/                 # Production chart generation agent
+├─ src/nexus/                   # 🎯 CORE: Nexus Research System
+│  ├─ agents/research/          # Research agent implementation
+│  │  ├─ server/                # FastAPI web interface (port 8004)
+│  │  ├─ docs/                  # Documentation and guides
+│  │  ├─ pipeline.py            # Multi-agent orchestration
+│  │  ├─ agents.py              # Planner, Researcher, Writer, Editor
+│  │  ├─ format_decision.py     # Intelligent format selection
+│  │  ├─ pdf_utils.py           # LaTeX PDF generation
+│  │  ├─ manifest.py            # Report metadata tracking
+│  │  └─ run.py                 # CLI entry point
+│  ├─ core/                     # Shared Nexus infrastructure
+│  │  ├─ config.py              # Centralized configuration
+│  │  └─ llm_client.py          # LLM client wrapper
+│  └─ templates/                # Report templates and styles
+│
+├─ chart_agent/                 # 📊 SUPPORTING: Visual presentation
 │  ├─ server/                   # FastAPI service (port 8003)
-│  │  ├─ chart_service.py       # Main API service
-│  │  ├─ config.py              # Configuration
-│  │  └─ schemas.py             # Pydantic models
 │  ├─ examples/                 # Example scripts and notebooks
-│  ├─ docs/                     # Comprehensive documentation
+│  ├─ docs/                     # Documentation
 │  ├─ data_access.py            # DuckDB dataset loading
 │  ├─ planning.py               # LLM-based code generation
-│  ├─ llm_client.py             # OpenAI API client
-│  └─ utils.py                  # Utility functions
+│  └─ llm_client.py             # OpenAI API client
 │
-├─ splice_agent/                # Genomics splice site analysis agent
-│  ├─ server/                   # FastAPI service (port 8004)
-│  │  ├─ splice_service.py      # Splice-specific API
-│  │  ├─ config.py              # Configuration
-│  │  └─ schemas.py             # Pydantic models
+├─ splice_agent/                # 🧬 DOMAIN-SPECIFIC: RNA splicing (prototype)
+│  ├─ server/                   # FastAPI service
 │  ├─ examples/                 # Splice analysis examples
 │  ├─ docs/                     # Documentation
-│  ├─ splice_analysis.py        # Domain-specific templates
-│  ├─ data_access.py            # Dataset loading (from chart_agent)
-│  ├─ planning.py               # Code generation (from chart_agent)
-│  └─ llm_client.py             # LLM client (from chart_agent)
+│  └─ splice_analysis.py        # Domain-specific templates
+│  # Note: Full project at /Users/pleiadian53/work/splice-agent
 │
-├─ reflection/                  # Reflection pattern implementations
-│  ├─ chart_workflow/           # Original chart generation prototype
+├─ reflection/                  # 📚 LEARNING: Design pattern examples
 │  ├─ sql_agent/                # SQL generation with adaptive iteration
-│  ├─ research_agent/           # Multi-step research workflow
-│  └─ viz_agent/                # Advanced visualization agent
+│  ├─ chart_workflow/           # Chart generation prototype
+│  ├─ research_agent/           # Research workflow experiments
+│  └─ viz_agent/                # Visualization agent
 │
-├─ multiagent/                  # Multiagent collaboration patterns
-│  └─ customer_service/         # Customer service multiagent system
+├─ multiagent/                  # 📚 LEARNING: Multiagent patterns
+│  ├─ research_agent/           # Legacy research agent (superseded by Nexus)
+│  └─ customer_service/         # Customer service system
 │
-├─ tool_use/                    # Tool-using agent patterns
+├─ eval/                        # 🎯 EVALUATION: Quality assessment & error analysis
+│  ├─ metrics/                  # Evaluation metrics and scoring
+│  ├─ error_analysis/           # Error pattern analysis
+│  ├─ benchmarks/               # Benchmark datasets and tests
+│  └─ reports/                  # Evaluation reports and insights
+│
+├─ legacy/                      # 📚 LEARNING: Historical implementations
+│  └─ prototype/                # Early prototypes and experiments
+│
+├─ output/                      # Generated outputs
+│  └─ research_reports/         # Nexus research reports
+│
+├─ data/                        # Sample datasets and papers
+│  └─ papers/                   # Example papers for style transfer
+│
+├─ dev/                         # Development documentation
+│  └─ nexus/                    # Nexus-specific development docs
 │
 ├─ docs/                        # Global documentation
-│  ├─ architecture/             # System architecture
-│  ├─ tutorials/                # Learning guides
-│  ├─ installation/             # Setup guides
-│  └─ libraries/                # Library documentation
-│
-├─ data/                        # Sample datasets
 ├─ tests/                       # Test suites
 ├─ scripts/                     # CLI tools and utilities
 ├─ environment.yml              # Mamba environment spec
@@ -279,7 +438,57 @@ curl -X POST http://localhost:8004/analyze/exploratory \
   }'
 ```
 
-### 🗄️ Quick Start: SQL Agent
+### � Quick Start: Nexus Research Agent
+
+**CLI Interface:**
+
+```bash
+# Activate environment
+mamba activate agentic-ai
+
+# Generate research report (markdown only)
+nexus-research "Physics-Informed Neural Networks for PDEs" --model openai:gpt-4o
+
+# Generate with PDF (recommended - beautiful equation rendering)
+nexus-research "quantum error correction codes" --model openai:gpt-4o --pdf
+
+# Specify report length
+nexus-research "CRISPR gene editing" --length comprehensive --pdf
+
+# Add context/style guidance
+nexus-research "protein folding" \
+  --model openai:gpt-4o \
+  --length standard \
+  --context "Follow Nature journal style. Focus on AlphaFold 3." \
+  --pdf
+
+# Output location: output/research_reports/<topic_slug>/
+```
+
+**Web Interface:**
+
+```bash
+# Start the Nexus Research Agent server
+nexus-research-server
+
+# Visit web UI at http://localhost:8004
+# Features:
+# - Interactive form for research requests
+# - Real-time generation progress
+# - Automatic PDF generation with LaTeX equations
+# - Download markdown and PDF reports
+# - Browse previous reports
+```
+
+**Report Features:**
+- ✅ **LaTeX equation rendering** - Beautiful mathematical typography in PDFs
+- ✅ **Multiple sources** - Tavily, arXiv, PubMed, Europe PMC, Wikipedia
+- ✅ **Configurable length** - Brief (2-3 pages) to Technical Paper (25-40 pages)
+- ✅ **Context guidance** - Style templates and domain-specific instructions
+- ✅ **Manifest tracking** - Automatic metadata for all reports
+- ✅ **Smart organization** - Topic-based file structure
+
+### ��️ Quick Start: SQL Agent
 
 Generate SQL queries from natural language:
 
