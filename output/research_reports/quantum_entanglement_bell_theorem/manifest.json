@@ -1,0 +1,28 @@
+{
+  "topic_directory": "quantum_entanglement_bell_theorem",
+  "created_at": "2025-11-23T17:27:09.842799",
+  "reports": [
+    {
+      "filename": "report_2025-11-23_17-27.md",
+      "generated_at": "2025-11-23T17:27:09.843133",
+      "topic": "Quantum Entanglement and Bell's Theorem",
+      "model": "openai:gpt-4o",
+      "report_length": "brief",
+      "context": null,
+      "source": "cli",
+      "metadata": {
+        "word_count": 709,
+        "generation_time_seconds": 160.51,
+        "plan_steps": 12,
+        "pdf_filename": "report_2025-11-23_17-27.pdf",
+        "format_decision": {
+          "format": "latex",
+          "reasoning": "Topic needs equations but openai:gpt-4o cannot generate PDF directly. Will use LaTeX compilation.",
+          "needs_equations": true,
+          "llm_can_pdf": false
+        }
+      }
+    }
+  ],
+  "last_updated": "2025-11-23T17:27:09.843144"
+}

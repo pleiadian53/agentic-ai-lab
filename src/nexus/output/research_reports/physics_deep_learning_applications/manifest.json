@@ -1,0 +1,22 @@
+{
+  "topic_directory": "physics_deep_learning_applications",
+  "created_at": "2025-11-22T15:10:04.710381",
+  "reports": [
+    {
+      "filename": "report_2025-11-22_15-10.md",
+      "generated_at": "2025-11-22T15:10:04.710572",
+      "topic": "physics-inspired deep learning and their applications. Include insightful equations and walk through them",
+      "model": "openai:gpt-4o",
+      "report_length": "standard",
+      "context": null,
+      "source": "cli",
+      "metadata": {
+        "word_count": 2816,
+        "generation_time_seconds": 263.32,
+        "plan_steps": 18,
+        "pdf_filename": null
+      }
+    }
+  ],
+  "last_updated": "2025-11-22T15:10:04.710819"
+}

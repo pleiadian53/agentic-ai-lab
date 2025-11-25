@@ -217,12 +217,22 @@ data/
 # Development temporary files
 dev/
 
+# Legacy code (archived, not for sharing)
+legacy/
+
 # Backup files
 backups/
 
 # Chart workflow outputs
 charts/
-output/
+
+# Output directories (selectively include research reports as examples)
+output/*
+!output/research_reports/
+output/research_reports/*
+!output/research_reports/consciousness_sentience_agi/
+!output/research_reports/quantum_entanglement_bell_theorem/
+!output/research_reports/einstein_field_equations_gravity/
 
 # Personal backup/sync scripts (contain user-specific paths)
 scripts/sync_work.py

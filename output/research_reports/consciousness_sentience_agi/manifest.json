@@ -1,0 +1,23 @@
+{
+  "topic_directory": "consciousness_sentience_agi",
+  "created_at": "2025-11-25T16:40:27.885232",
+  "reports": [
+    {
+      "filename": "report_2025-11-25_16-40.md",
+      "generated_at": "2025-11-25T16:40:27.885392",
+      "topic": "Consciousness and sentience in artificial general intelligence: philosophical frameworks, empirical tests, and new ideas",
+      "model": "openai:gpt-5.1",
+      "report_length": "comprehensive",
+      "context": "Investigate:\n- Integrated Information Theory (IIT) applied to AI systems\n- Global Workspace Theory and its relevance to AGI\n- New promising methods such as Active Inference, Continuous Learning\n- Proposed tests for machine consciousness (beyond Turing test)\n- Current debates on whether LLMs exhibit proto-consciousness\n\nPrioritize:\n- Recent philosophical papers on machine consciousness\n- Community debates on Reddit (r/singularity, r/philosophy)\n- Neuroscience perspectives on consciousness\n- Practical implications for AGI development",
+      "source": "web",
+      "metadata": {
+        "word_count": 3437,
+        "generation_time_seconds": 1080.38,
+        "plan_steps": 32,
+        "pdf_filename": "report_2025-11-25_16-40.pdf",
+        "format_decision": null
+      }
+    }
+  ],
+  "last_updated": "2025-11-25T16:40:27.885395"
+}

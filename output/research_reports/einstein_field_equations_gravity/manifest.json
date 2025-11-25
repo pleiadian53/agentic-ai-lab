@@ -1,0 +1,28 @@
+{
+  "topic_directory": "einstein_field_equations_gravity",
+  "created_at": "2025-11-23T17:37:52.095037",
+  "reports": [
+    {
+      "filename": "report_2025-11-23_17-37.md",
+      "generated_at": "2025-11-23T17:37:52.095144",
+      "topic": "Einstein's Field Equations in General Relativity",
+      "model": "openai:gpt-4o",
+      "report_length": "brief",
+      "context": null,
+      "source": "cli",
+      "metadata": {
+        "word_count": 1335,
+        "generation_time_seconds": 143.06,
+        "plan_steps": 12,
+        "pdf_filename": "report_2025-11-23_17-37.pdf",
+        "format_decision": {
+          "format": "latex",
+          "reasoning": "Topic needs equations but openai:gpt-4o cannot generate PDF directly. Will use LaTeX compilation.",
+          "needs_equations": true,
+          "llm_can_pdf": false
+        }
+      }
+    }
+  ],
+  "last_updated": "2025-11-23T17:37:52.095152"
+}

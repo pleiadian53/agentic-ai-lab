@@ -110,6 +110,16 @@ graph TB
 - **Docs**: `src/nexus/agents/research/README.md`
 - **Output**: `output/research_reports/<topic>/`
 
+**Example Reports** 📊:
+- **[AGI Consciousness](output/research_reports/consciousness_sentience_agi/)** - Comprehensive analysis of consciousness in AGI systems (3,437 words, 32 steps, gpt-5.1)
+  - Covers IIT, Global Workspace Theory, Active Inference, and proto-consciousness debates
+  - Includes Reddit community insights from r/singularity and r/philosophy
+- **[Quantum Entanglement & Bell's Theorem](output/research_reports/quantum_entanglement_bell_theorem/)** - Brief technical report with LaTeX equations (709 words, 12 steps, gpt-4o)
+  - Publication-quality PDF with proper mathematical notation
+  - Demonstrates equation rendering capabilities
+- **[Einstein's Field Equations](output/research_reports/einstein_field_equations_gravity/)** - Physics report with tensor notation (gpt-4o)
+  - Full LaTeX compilation with variable definitions and physical interpretations
+
 **Roadmap** 🚀:
 - [ ] **Style Transfer** - Use example papers (e.g., `data/papers/OpenSpliceAI.pdf`) as style templates
 - [ ] **Paper2Code Integration** - Learn by doing: generate code prototypes alongside research reports
