@@ -67,6 +67,19 @@ Examples of scripts that could go here:
 - Performance profiling
 - Cleanup utilities
 
+### 📦 Personal/Local Scripts (Not in Git)
+
+Some scripts are user-specific and excluded from version control via `.gitignore`:
+
+- **`sync_work.py`** - Personal backup script with Dropbox paths
+- **`sync_work.sh`** - Bash version of sync script
+- **`SYNC_SETUP.md`** - Setup documentation for sync scripts
+
+These scripts contain user-specific directory paths and configurations. If you want to use them:
+1. Create your own versions with your paths
+2. They won't be tracked by git (intentionally)
+3. See the script headers for usage instructions
+
 ## Adding New Scripts
 
 When adding new scripts:
@@ -100,16 +113,58 @@ All scripts should:
 - ✅ Be executable (`chmod +x`)
 - ✅ Work from any directory (use `cd "$(dirname "$0")"` if needed)
 
+## Server Management Scripts
+
+### start_research_server.sh
+
+Start the Nexus Research Agent web server.
+
+**Usage:**
+```bash
+./scripts/start_research_server.sh
+```
+
+**What it does:**
+- Checks if port 8004 is in use and stops existing server
+- Activates the `agentic-ai` conda environment
+- Starts the FastAPI server on http://localhost:8004
+- Displays server status and URLs
+
+**Features:**
+- Auto-stops conflicting servers
+- Shows API documentation URLs
+- Press Ctrl+C to stop
+
+### Stop Server
+
+The stop script is located in the server directory:
+
+**Location:** `src/nexus/agents/research/server/stop_server.sh`
+
+**Usage:**
+```bash
+./src/nexus/agents/research/server/stop_server.sh
+```
+
+**What it does:**
+- Finds process using port 8004
+- Tries graceful shutdown first (TERM signal)
+- Forces shutdown if needed (kill -9)
+- Verifies server stopped successfully
+
 ## Quick Reference
 
 ```bash
 # Setup environment (first time)
 ./scripts/install/setup-mamba.sh
 
-# Or with pip/venv
-./scripts/install/setup-venv.sh
+# Start research server
+./scripts/start_research_server.sh
 
-# Activate environment
+# Stop research server
+./src/nexus/agents/research/server/stop_server.sh
+
+# Activate environment manually
 conda activate agentic-ai          # For mamba/conda
 source .venv/bin/activate          # For venv
 ```

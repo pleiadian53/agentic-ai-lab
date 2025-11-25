@@ -214,6 +214,207 @@
             margin-bottom: 1rem;
             opacity: 0.5;
         }
+        
+        /* Progress Tracking Styles */
+        .progress-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #667eea;
+        }
+        
+        .progress-section.active {
+            display: block;
+        }
+        
+        .connection-status {
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .connection-status.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .connection-status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .connection-status.connecting {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            width: 0%;
+        }
+        
+        .progress-message {
+            text-align: center;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+            color: #333;
+        }
+        
+        .progress-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .progress-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .detail-card {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .detail-label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .detail-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .btn-cancel {
+            background: #dc3545;
+            margin-top: 1rem;
+        }
+        
+        .btn-cancel:hover {
+            background: #c82333;
+        }
+        
+        /* Step Details Styles */
+        .step-details-container {
+            margin: 1.5rem 0;
+        }
+        
+        .step-details-toggle {
+            width: 100%;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+            text-align: left;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .step-details-toggle:hover {
+            background: #e8e8e8;
+        }
+        
+        #toggle-icon {
+            display: inline-block;
+            transition: transform 0.3s;
+            font-size: 0.8rem;
+        }
+        
+        #toggle-icon.expanded {
+            transform: rotate(90deg);
+        }
+        
+        .step-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .step-details.expanded {
+            max-height: 500px;
+            transition: max-height 0.3s ease-in;
+        }
+        
+        .step-details-content {
+            padding: 1rem;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            margin-top: -8px;
+        }
+        
+        .step-detail-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-detail-text {
+            font-size: 0.9rem;
+            color: #333;
+            line-height: 1.6;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -297,6 +498,64 @@
                     The agents are searching papers, synthesizing findings, and writing the report.
                 </p>
             </div>
+            
+            <!-- Real-time Progress Tracking -->
+            <div class="progress-section" id="progress-section">
+                <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem;">📊 Generation Progress</h3>
+                
+                <!-- Connection Status -->
+                <div id="connection-status" class="connection-status disconnected">
+                    🔴 Disconnected
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill">
+                            <span id="progress-percent">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progress Message -->
+                <div id="progress-message" class="progress-message">
+                    Initializing...
+                </div>
+                
+                <!-- Details Grid -->
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-label">Current Agent</div>
+                        <div id="current-agent" class="detail-value">-</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-label">Step Progress</div>
+                        <div id="step-progress" class="detail-value">-</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-label">Time Remaining</div>
+                        <div id="time-remaining" class="detail-value">-</div>
+                    </div>
+                </div>
+                
+                <!-- Verbose Step Details (Collapsible) -->
+                <div class="step-details-container">
+                    <button class="step-details-toggle" onclick="toggleStepDetails()">
+                        <span id="toggle-icon">▶</span> Show Step Details
+                    </button>
+                    <div id="step-details" class="step-details">
+                        <div class="step-details-content">
+                            <div class="step-detail-label">Current Task:</div>
+                            <div id="current-task" class="step-detail-text">Waiting for updates...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cancel Button -->
+                <div style="text-align: center;">
+                    <button id="cancel-btn" class="btn-cancel" onclick="cancelGeneration()">Cancel Generation</button>
+                </div>
+            </div>
         </div>
         
         <div class="card">
@@ -311,11 +570,20 @@
                             Size: {{ "%.2f"|format(report.size_kb) }} KB
                         </div>
                         <div class="report-actions">
-                            <a href="/view/{{ report.topic }}/{{ report.report_path.split('/')[-1] }}" class="btn-view">
-                                View Report
+                            {% if report.pdf_path %}
+                            <a href="/view/{{ report.topic }}/{{ report.pdf_path.split('/')[-1] }}" class="btn-view" target="_blank">
+                                📄 View PDF
                             </a>
+                            <a href="/download/{{ report.topic }}/{{ report.pdf_path.split('/')[-1] }}" class="btn-download">
+                                ⬇️ Download PDF
+                            </a>
+                            {% else %}
+                            <a href="/view/{{ report.topic }}/{{ report.report_path.split('/')[-1] }}" class="btn-view">
+                                📝 View Markdown
+                            </a>
+                            {% endif %}
                             <a href="/download/{{ report.topic }}/{{ report.report_path.split('/')[-1] }}" class="btn-download">
-                                Download Markdown
+                                📝 Download Markdown
                             </a>
                         </div>
                     </li>
@@ -336,6 +604,10 @@
         const form = document.getElementById('research-form');
         const submitBtn = document.getElementById('submit-btn');
         const loading = document.getElementById('loading');
+        const progressSection = document.getElementById('progress-section');
+        
+        let eventSource = null;
+        let sessionId = null;
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -348,9 +620,10 @@
                 generate_pdf: document.getElementById('generate_pdf').checked
             };
             
-            // Show loading state
+            // Show loading and progress section
             submitBtn.disabled = true;
             loading.classList.add('active');
+            progressSection.classList.add('active');
             
             try {
                 const response = await fetch('/api/generate', {
@@ -367,22 +640,263 @@
                 }
                 
                 const result = await response.json();
+                sessionId = result.session_id;
                 
-                // Redirect to PDF if available (better for equations), otherwise markdown
-                if (result.pdf_path) {
-                    // Extract filename from PDF path
-                    const pdfFilename = result.pdf_path.split('/').pop();
-                    window.location.href = `/view/${result.topic}/${pdfFilename}`;
+                // Connect to SSE for progress updates
+                if (sessionId) {
+                    connectToProgressStream(sessionId);
                 } else {
-                    // Fallback to markdown view
-                    const reportPath = result.report_path.split('/').slice(-2).join('/');
-                    window.location.href = `/view/${result.topic}/${reportPath.split('/')[1]}`;
+                    throw new Error('No session_id returned from server');
                 }
                 
             } catch (error) {
                 alert('Error: ' + error.message);
                 submitBtn.disabled = false;
                 loading.classList.remove('active');
+                progressSection.classList.remove('active');
+            }
+        });
+        
+        function connectToProgressStream(sessionId) {
+            // Create EventSource connection
+            eventSource = new EventSource(`/api/progress/${sessionId}`);
+            
+            // Connection opened
+            eventSource.onopen = function() {
+                console.log('SSE connection established');
+                updateConnectionStatus('connected');
+            };
+            
+            // Handle incoming messages
+            eventSource.onmessage = function(event) {
+                try {
+                    const update = JSON.parse(event.data);
+                    console.log('Progress update:', update);
+                    
+                    // Update UI
+                    updateProgressUI(update);
+                    
+                    // Check if complete or error
+                    if (update.stage === 'complete') {
+                        handleComplete(update);
+                    } else if (update.stage === 'error') {
+                        handleError(update);
+                    }
+                    
+                } catch (error) {
+                    console.error('Error parsing update:', error);
+                }
+            };
+            
+            // Handle connection errors
+            eventSource.onerror = function(error) {
+                console.error('SSE Error:', error);
+                updateConnectionStatus('disconnected');
+                
+                // Close connection
+                if (eventSource) {
+                    eventSource.close();
+                    eventSource = null;
+                }
+            };
+        }
+        
+        function updateProgressUI(update) {
+            // Update progress bar
+            const percent = update.progress_percent || 0;
+            const progressFill = document.getElementById('progress-fill');
+            const progressPercent = document.getElementById('progress-percent');
+            
+            progressFill.style.width = percent + '%';
+            progressPercent.textContent = percent + '%';
+            
+            // Update message
+            const message = document.getElementById('progress-message');
+            message.textContent = update.message || 'Processing...';
+            message.className = 'progress-message';  // Reset class
+            
+            // Update agent
+            if (update.agent) {
+                const agentEmojis = {
+                    'planner': '📋',
+                    'research': '🔍',
+                    'writer': '✍️',
+                    'editor': '📝'
+                };
+                const emoji = agentEmojis[update.agent] || '🤖';
+                const agentName = update.agent.charAt(0).toUpperCase() + update.agent.slice(1);
+                document.getElementById('current-agent').textContent = emoji + ' ' + agentName;
+            }
+            
+            // Update step progress
+            if (update.step_number && update.total_steps) {
+                document.getElementById('step-progress').textContent = 
+                    `${update.step_number}/${update.total_steps}`;
+            }
+            
+            // Update time remaining
+            if (update.estimated_time_remaining !== undefined) {
+                const minutes = Math.floor(update.estimated_time_remaining / 60);
+                const seconds = update.estimated_time_remaining % 60;
+                document.getElementById('time-remaining').textContent = 
+                    `~${minutes}m ${seconds}s`;
+            }
+            
+            // Update step details (verbose mode)
+            const currentTask = document.getElementById('current-task');
+            if (update.message) {
+                currentTask.textContent = update.message;
+            }
+        }
+        
+        async function handleComplete(update) {
+            console.log('Generation complete!');
+            
+            // Close SSE connection
+            if (eventSource) {
+                eventSource.close();
+                eventSource = null;
+            }
+            
+            // Update UI
+            const message = document.getElementById('progress-message');
+            message.textContent = '✅ ' + (update.message || 'Complete!');
+            message.className = 'progress-message success';
+            
+            updateConnectionStatus('disconnected');
+            
+            // Fetch the final result
+            try {
+                const response = await fetch(`/api/result/${sessionId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch result');
+                }
+                const result = await response.json();
+                
+                // Show success message with links instead of redirecting
+                const topic = result.topic || 'report';
+                const pdfFilename = result.pdf_path ? result.pdf_path.split('/').pop() : null;
+                const mdFilename = result.report_path ? result.report_path.split('/').pop() : null;
+                
+                let linksHtml = '<div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">';
+                if (pdfFilename) {
+                    linksHtml += `<a href="/view/${topic}/${pdfFilename}" target="_blank" style="padding: 0.75rem 1.5rem; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">📄 View PDF</a>`;
+                    linksHtml += `<a href="/download/${topic}/${pdfFilename}" style="padding: 0.75rem 1.5rem; background: #48bb78; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">⬇️ Download PDF</a>`;
+                }
+                if (mdFilename) {
+                    linksHtml += `<a href="/download/${topic}/${mdFilename}" style="padding: 0.75rem 1.5rem; background: #4299e1; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">📝 Download Markdown</a>`;
+                }
+                linksHtml += '</div>';
+                
+                message.innerHTML = `✅ Report generation complete! Saved to ${topic}<br>${linksHtml}`;
+                
+                // Reset form after a delay so user can see the success message
+                setTimeout(() => {
+                    // Hide progress section
+                    progressSection.classList.remove('active');
+                    
+                    // Reset form
+                    submitBtn.disabled = false;
+                    loading.classList.remove('active');
+                    form.reset();
+                    
+                    // Reload page to show new report in list
+                    window.location.reload();
+                }, 5000);
+                
+            } catch (error) {
+                console.error('Error fetching result:', error);
+                message.textContent = '⚠️ Complete but failed to fetch result';
+                message.className = 'progress-message';
+                
+                // Re-enable form on error
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    loading.classList.remove('active');
+                }, 3000);
+            }
+        }
+        
+        function handleError(update) {
+            console.error('Generation error:', update.message);
+            
+            // Close SSE connection
+            if (eventSource) {
+                eventSource.close();
+                eventSource = null;
+            }
+            
+            // Update UI
+            const message = document.getElementById('progress-message');
+            message.textContent = '❌ ' + (update.message || 'Error occurred');
+            message.className = 'progress-message error';
+            
+            updateConnectionStatus('disconnected');
+            
+            // Re-enable form
+            submitBtn.disabled = false;
+            loading.classList.remove('active');
+        }
+        
+        function cancelGeneration() {
+            console.log('Cancelling generation...');
+            
+            // Close SSE connection
+            if (eventSource) {
+                eventSource.close();
+                eventSource = null;
+            }
+            
+            // Update UI
+            const message = document.getElementById('progress-message');
+            message.textContent = 'Cancelled by user';
+            message.className = 'progress-message';
+            
+            updateConnectionStatus('disconnected');
+            
+            // Reset form
+            submitBtn.disabled = false;
+            loading.classList.remove('active');
+            progressSection.classList.remove('active');
+        }
+        
+        function updateConnectionStatus(status) {
+            const statusElement = document.getElementById('connection-status');
+            
+            switch (status) {
+                case 'connected':
+                    statusElement.textContent = '🟢 Connected';
+                    statusElement.className = 'connection-status connected';
+                    break;
+                case 'disconnected':
+                    statusElement.textContent = '🔴 Disconnected';
+                    statusElement.className = 'connection-status disconnected';
+                    break;
+                case 'connecting':
+                    statusElement.textContent = '🟡 Connecting...';
+                    statusElement.className = 'connection-status connecting';
+                    break;
+            }
+        }
+        
+        // Toggle step details visibility
+        function toggleStepDetails() {
+            const stepDetails = document.getElementById('step-details');
+            const toggleIcon = document.getElementById('toggle-icon');
+            
+            if (stepDetails.classList.contains('expanded')) {
+                stepDetails.classList.remove('expanded');
+                toggleIcon.classList.remove('expanded');
+            } else {
+                stepDetails.classList.add('expanded');
+                toggleIcon.classList.add('expanded');
+            }
+        }
+        
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            if (eventSource) {
+                eventSource.close();
             }
         });
     </script>

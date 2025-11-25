@@ -1,0 +1,504 @@
+#!/usr/bin/env python3
+"""
+Sync work directory to Dropbox for backup.
+Files are synced as-is (markdown stays as .md, PDFs stay as .pdf).
+
+BASIC USAGE:
+  ./sync_work.py              # Sync files as-is
+  ./sync_work.py -n           # Dry run (preview only)
+  ./sync_work.py -v           # Verbose output
+  ./sync_work.py --help       # See all options
+
+SYNC OPTIONS:
+  ./sync_work.py --no-delete        # Don't delete removed files
+  ./sync_work.py --no-progress      # Disable progress display
+  ./sync_work.py --src ~/my-work --dest ~/Dropbox/backup  # Custom paths
+
+COMBINED EXAMPLES:
+  ./sync_work.py -nv                # Dry-run with verbose output
+  ./sync_work.py --no-delete        # Sync without deleting removed files
+
+REQUIREMENTS:
+  - rsync (built-in on macOS/Linux)
+
+"""
+
+import argparse
+import subprocess
+import sys
+import shutil
+from datetime import datetime
+from pathlib import Path
+from typing import List, Tuple
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Sync work directory to Dropbox with selective file inclusion",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  %(prog)s --dry-run          # Preview what will be synced
+  %(prog)s                    # Perform actual sync
+  %(prog)s --verbose          # Show detailed output
+  %(prog)s --no-delete        # Sync without deleting removed files
+        """
+    )
+    
+    parser.add_argument(
+        '-n', '--dry-run',
+        action='store_true',
+        help='Preview changes without actually syncing'
+    )
+    
+    parser.add_argument(
+        '-v', '--verbose',
+        action='store_true',
+        help='Show verbose output'
+    )
+    
+    parser.add_argument(
+        '--no-delete',
+        action='store_true',
+        help='Do not delete files in destination that are not in source'
+    )
+    
+    parser.add_argument(
+        '--no-progress',
+        action='store_true',
+        help='Disable progress display'
+    )
+    
+    parser.add_argument(
+        '--src',
+        type=str,
+        default=str(Path.home() / 'work'),
+        help='Source directory (default: ~/work)'
+    )
+    
+    parser.add_argument(
+        '--dest',
+        type=str,
+        default=str(Path.home() / 'Dropbox' / 'work_MBP_M1'),
+        help='Destination directory (default: ~/Dropbox/work_MBP_M1)'
+    )
+    
+    
+    args = parser.parse_args()
+    
+    # Validate paths
+    src = Path(args.src)
+    dest = Path(args.dest)
+    
+    if not src.exists():
+        print(f"ERROR: Source directory does not exist: {src}", file=sys.stderr)
+        return 1
+    
+    if not dest.exists():
+        print(f"ERROR: Destination directory does not exist: {dest}", file=sys.stderr)
+        print("Is Dropbox running?", file=sys.stderr)
+        return 1
+    
+    # Check for PDF conversion dependencies
+    if args.convert_md_to_pdf:
+        if not shutil.which('pandoc'):
+            print("WARNING: pandoc not found. Markdown to PDF conversion disabled.", file=sys.stderr)
+            print("Install with: mamba install -c conda-forge pandoc", file=sys.stderr)
+            args.convert_md_to_pdf = False
+    
+    # Setup logging
+    log_dir = Path.home() / 'Library' / 'Logs' / 'work_rsync'
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_file = log_dir / f"sync_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+    
+    # Build rsync command
+    rsync_opts = [
+        'rsync',
+        '-a',  # archive mode
+        '-h',  # human-readable
+    ]
+    
+    if args.verbose:
+        rsync_opts.append('-v')
+    
+    if not args.no_delete:
+        rsync_opts.append('--delete')
+    
+    if not args.no_progress:
+        rsync_opts.append('--progress')
+    
+    if args.dry_run:
+        rsync_opts.append('--dry-run')
+    
+    # IMPORTANT: Order matters in rsync!
+    # Excludes must come BEFORE includes for directories
+    
+    # Exclude junk/build/cache directories FIRST
+    exclude_dirs = [
+        '--exclude', '.DS_Store',
+        '--exclude', '._*',
+        '--exclude', '.Trash/',
+        '--exclude', 'node_modules/',
+        '--exclude', '.git/',
+        '--exclude', '.idea/',
+        '--exclude', '.vscode/',
+        '--exclude', '__pycache__/',
+        '--exclude', '.venv/',
+        '--exclude', '.cache/',
+        '--exclude', 'tmp/',
+        '--exclude', 'checkpoints/',
+        '--exclude', 'data/',
+    ]
+    
+    # Include patterns
+    include_patterns = [
+        '--include', '*/',  # all directories (after exclusions above)
+        '--include', '*.py',
+        '--include', '*.R',
+        '--include', '*.ipynb',
+        '--include', '*.md',
+        '--include', '*.pdf',
+        '--include', '*.txt',
+        '--include', '*.json',
+        '--include', '*.yaml',
+        '--include', '*.yml',
+        '--include', '*.toml',
+        '--include', '*.cpp',
+        '--include', '*.h',
+        '--include', '*.sh',
+        '--include', '*.png',
+        '--include', '*.jpg',
+        '--include', '*.jpeg',
+        '--include', '*.svg',
+    ]
+    
+    # Exclude patterns - large genomic datasets and archives
+    exclude_files = [
+        '--exclude', '*.fa',
+        '--exclude', '*.fasta',
+        '--exclude', '*.gtf',
+        '--exclude', '*.bam',
+        '--exclude', '*.bai',
+        '--exclude', '*.cram',
+        '--exclude', '*.vcf',
+        '--exclude', '*.gz',
+        '--exclude', '*.tar',
+        '--exclude', '*.zip',
+        '--exclude', '*.xz',
+        '--exclude', '*.7z',
+        '--exclude', '*.bt2',
+        '--exclude', '*.mmi',
+        '--exclude', '*.db',
+        '--exclude', '*.pyc',
+    ]
+    
+    # Exclude everything else
+    exclude_rest = ['--exclude', '*']
+    
+    # Combine all options in the correct order
+    rsync_opts.extend(exclude_dirs)      # 1. Exclude unwanted dirs first
+    rsync_opts.extend(include_patterns)  # 2. Include what we want
+    rsync_opts.extend(exclude_files)     # 3. Exclude unwanted file types
+    rsync_opts.extend(exclude_rest)      # 4. Exclude everything else
+    
+    # Add source and destination (with trailing slash for source)
+    rsync_opts.append(f"{src}/")
+    rsync_opts.append(str(dest))
+    
+    # Print summary
+    print("=" * 60)
+    if args.dry_run:
+        print("DRY RUN MODE - No files will be changed")
+        print("=" * 60)
+    print(f"Source:       {src}")
+    print(f"Destination:  {dest}")
+    print(f"Delete mode:  {'ON' if not args.no_delete else 'OFF'}")
+    print(f"Log file:     {log_file}")
+    print("=" * 60)
+    print()
+    
+    # Run rsync and capture output
+    try:
+        with open(log_file, 'w') as log:
+            # Use tee-like behavior: write to both stdout and log file
+            process = subprocess.Popen(
+                rsync_opts,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                universal_newlines=True
+            )
+            
+            for line in process.stdout:
+                print(line, end='')
+                log.write(line)
+            
+            exit_code = process.wait()
+        
+        print()
+        print("=" * 60)
+        if exit_code == 0:
+            print(f"✓ Sync completed successfully at {datetime.now()}")
+            if args.dry_run:
+                print("  (This was a dry run - no changes were made)")
+        else:
+            print(f"✗ Sync failed with exit code {exit_code}")
+            print(f"  Check log file: {log_file}")
+        print("=" * 60)
+        
+        return exit_code
+        
+    except KeyboardInterrupt:
+        print("\n\nSync interrupted by user")
+        return 130
+    except Exception as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 1
+
+
+
+if __name__ == '__main__':
+    sys.exit(main())
+    """
+    Convert markdown files to PDF in the destination directory.
+    
+    EDGE CASE HANDLING:
+    If a .pdf file with the same name already exists in the source directory,
+    the converted PDF will be named with a '_doc' suffix to avoid overwriting
+    the original PDF (e.g., README.md → README_doc.pdf instead of README.pdf).
+    
+    Args:
+        src: Source directory
+        dest: Destination directory
+        dry_run: If True, only preview conversions
+        keep_md: If True, keep original .md files
+    
+    Returns:
+        List of (md_file, pdf_file) tuples that were converted
+    """
+    converted = []
+    
+    # Find all markdown files in source
+    md_files = list(src.rglob('*.md'))
+    
+    for md_file in md_files:
+        # Skip excluded directories
+        if any(part in str(md_file) for part in [
+            'node_modules', '.git', '.venv', '__pycache__',
+            '.cache', 'tmp', 'checkpoints', 'data'
+        ]):
+            continue
+        
+        # Calculate destination path
+        rel_path = md_file.relative_to(src)
+        dest_md = dest / rel_path
+        
+        # EDGE CASE: Check if a PDF with the same name exists in SOURCE
+        # This prevents overwriting original PDFs (papers, diagrams, etc.)
+        source_pdf = md_file.with_suffix('.pdf')
+        if source_pdf.exists():
+            # Use '_doc' suffix to distinguish converted markdown from original PDF
+            dest_pdf = dest_md.with_suffix('').with_suffix('.pdf')
+            dest_pdf = dest_pdf.parent / f"{dest_pdf.stem}_doc.pdf"
+            suffix_note = " (→ _doc.pdf to avoid conflict)"
+        else:
+            dest_pdf = dest_md.with_suffix('.pdf')
+            suffix_note = ""
+        
+        # Check if conversion is needed
+        if dest_pdf.exists() and dest_md.exists():
+            # Skip if PDF is newer than source MD
+            if dest_pdf.stat().st_mtime > md_file.stat().st_mtime:
+                continue
+        
+        if dry_run:
+            output_name = dest_pdf.name if not suffix_note else f"{dest_pdf.stem}.pdf"
+            print(f"  [DRY RUN] Would convert: {rel_path} → {output_name}{suffix_note}")
+            converted.append((md_file, dest_pdf))
+        else:
+            try:
+                # Ensure destination directory exists
+                dest_pdf.parent.mkdir(parents=True, exist_ok=True)
+                
+                # Convert using pandoc with colored syntax highlighting
+                # Use system-wide xelatex (macOS default location)
+                xelatex_path = '/Library/TeX/texbin/xelatex'
+                result = subprocess.run(
+                    [
+                        'pandoc',
+                        str(md_file),
+                        '-o', str(dest_pdf),
+                        f'--pdf-engine={xelatex_path}',
+                        '-V', 'geometry:margin=1in',
+                        '-V', 'fontsize=11pt',
+                        # Use tango style for beautiful colored syntax highlighting
+                        '--syntax-highlighting=tango'
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=60  # Increased timeout for larger files
+                )
+                
+                if result.returncode == 0:
+                    output_name = dest_pdf.name
+                    print(f"  ✓ {rel_path} → {output_name}{suffix_note}")
+                    converted.append((md_file, dest_pdf))
+                else:
+                    # Extract meaningful error from pandoc/LaTeX output
+                    stderr = result.stderr.strip()
+                    
+                    # Look for specific error patterns
+                    if "! LaTeX Error:" in stderr:
+                        # Extract LaTeX error
+                        error_start = stderr.find("! LaTeX Error:")
+                        error_end = stderr.find("\n", error_start + 100)
+                        error_msg = stderr[error_start:error_end] if error_end > 0 else stderr[error_start:error_start+100]
+                    elif "Error producing PDF" in stderr:
+                        # Look for the line before "Error producing PDF"
+                        lines = stderr.split('\n')
+                        for i, line in enumerate(lines):
+                            if "Error producing PDF" in line and i > 0:
+                                error_msg = lines[i-1]
+                                break
+                        else:
+                            error_msg = "Error producing PDF (see log for details)"
+                    else:
+                        # Show first meaningful line
+                        error_lines = [l for l in stderr.split('\n') if l.strip() and not l.startswith('[')]
+                        error_msg = error_lines[0] if error_lines else stderr.split('\n')[0]
+                    
+                    print(f"  ✗ Failed: {rel_path}")
+                    print(f"    Reason: {error_msg[:200]}")  # Limit to 200 chars
+            
+            except subprocess.TimeoutExpired:
+                print(f"  ✗ Timeout: {rel_path} (>60s)")
+            except Exception as e:
+                print(f"  ✗ Error: {rel_path}")
+                print(f"    {type(e).__name__}: {e}")
+    
+    return converted
+
+
+def convert_markdown_files_in_place(
+    dest: Path,
+    dry_run: bool = False
+) -> List[Tuple[Path, Path]]:
+    """
+    Convert markdown files to PDF in the destination directory (update existing).
+    
+    EDGE CASE HANDLING:
+    If a .pdf file with the same name already exists alongside the .md file,
+    the converted PDF will be named with a '_doc' suffix to avoid overwriting
+    the original PDF (e.g., README.md → README_doc.pdf instead of README.pdf).
+    
+    Args:
+        dest: Destination directory
+        dry_run: If True, only preview conversions
+    
+    Returns:
+        List of (md_file, pdf_file) tuples that were converted
+    """
+    converted = []
+    
+    # Find all markdown files in destination
+    md_files = list(dest.rglob('*.md'))
+    
+    for md_file in md_files:
+        # Skip excluded directories
+        if any(part in str(md_file) for part in [
+            'node_modules', '.git', '.venv', '__pycache__',
+            '.cache', 'tmp', 'checkpoints', 'data'
+        ]):
+            continue
+        
+        # EDGE CASE: Check if a PDF with the same name already exists
+        # This prevents overwriting original PDFs (papers, diagrams, etc.)
+        pdf_file = md_file.with_suffix('.pdf')
+        
+        # Check if there's a non-converted PDF (one that existed before conversion)
+        # We detect this by checking if a _doc.pdf version exists
+        doc_pdf_file = md_file.parent / f"{md_file.stem}_doc.pdf"
+        
+        if pdf_file.exists() and not doc_pdf_file.exists():
+            # Original PDF exists and no _doc version yet
+            # This suggests the PDF is an original file, not a conversion
+            # Use _doc suffix for the conversion
+            pdf_file = doc_pdf_file
+            suffix_note = " (→ _doc.pdf to avoid conflict)"
+        else:
+            suffix_note = ""
+        
+        # Check if conversion is needed
+        if pdf_file.exists():
+            # Skip if PDF is newer than MD
+            if pdf_file.stat().st_mtime > md_file.stat().st_mtime:
+                continue
+        
+        rel_path = md_file.relative_to(dest)
+        
+        if dry_run:
+            output_name = pdf_file.name
+            print(f"  [DRY RUN] Would convert: {rel_path} → {output_name}{suffix_note}")
+            converted.append((md_file, pdf_file))
+        else:
+            try:
+                # Convert using pandoc with colored syntax highlighting
+                # Use system-wide xelatex (macOS default location)
+                xelatex_path = '/Library/TeX/texbin/xelatex'
+                result = subprocess.run(
+                    [
+                        'pandoc',
+                        str(md_file),
+                        '-o', str(pdf_file),
+                        f'--pdf-engine={xelatex_path}',
+                        '-V', 'geometry:margin=1in',
+                        '-V', 'fontsize=11pt',
+                        # Use tango style for beautiful colored syntax highlighting
+                        '--syntax-highlighting=tango'
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=60  # Increased timeout for larger files
+                )
+                
+                if result.returncode == 0:
+                    output_name = pdf_file.name
+                    print(f"  ✓ {rel_path} → {output_name}{suffix_note}")
+                    converted.append((md_file, pdf_file))
+                else:
+                    # Extract meaningful error from pandoc/LaTeX output
+                    stderr = result.stderr.strip()
+                    
+                    # Look for specific error patterns
+                    if "! LaTeX Error:" in stderr:
+                        # Extract LaTeX error
+                        error_start = stderr.find("! LaTeX Error:")
+                        error_end = stderr.find("\n", error_start + 100)
+                        error_msg = stderr[error_start:error_end] if error_end > 0 else stderr[error_start:error_start+100]
+                    elif "Error producing PDF" in stderr:
+                        # Look for the line before "Error producing PDF"
+                        lines = stderr.split('\n')
+                        for i, line in enumerate(lines):
+                            if "Error producing PDF" in line and i > 0:
+                                error_msg = lines[i-1]
+                                break
+                        else:
+                            error_msg = "Error producing PDF (see log for details)"
+                    else:
+                        # Show first meaningful line
+                        error_lines = [l for l in stderr.split('\n') if l.strip() and not l.startswith('[')]
+                        error_msg = error_lines[0] if error_lines else stderr.split('\n')[0]
+                    
+                    print(f"  ✗ Failed: {rel_path}")
+                    print(f"    Reason: {error_msg[:200]}")  # Limit to 200 chars
+            
+            except subprocess.TimeoutExpired:
+                print(f"  ✗ Timeout: {rel_path} (>60s)")
+            except Exception as e:
+                print(f"  ✗ Error: {rel_path}")
+                print(f"    {type(e).__name__}: {e}")
+    
+    return converted
+
+
+if __name__ == '__main__':
+    sys.exit(main())

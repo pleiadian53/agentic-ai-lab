@@ -223,3 +223,8 @@ backups/
 # Chart workflow outputs
 charts/
 output/
+
+# Personal backup/sync scripts (contain user-specific paths)
+scripts/sync_work.py
+scripts/sync_work.sh
+scripts/SYNC_SETUP.md

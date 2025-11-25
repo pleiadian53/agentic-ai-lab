@@ -4,6 +4,8 @@ import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
 from tavily import TavilyClient
 import wikipedia
+import json
+from typing import Optional
 
 # Load environment variables
 load_dotenv()
@@ -315,8 +317,227 @@ def europe_pmc_search_tool(query: str, max_results: int = 5) -> list[dict]:
             })
             
         return results
+    
+    except requests.exceptions.RequestException as e:
+        return [{"error": f"Europe PMC API request failed: {str(e)}"}]
     except Exception as e:
-        return [{"error": str(e)}]
+        return [{"error": f"Europe PMC search failed: {str(e)}"}]
+
+
+def reddit_search_tool(query: str, subreddit: str | None = None, max_results: int = 10, sort: str = "relevance") -> list[dict]:
+    """
+    Searches Reddit for discussions, insights, and community perspectives.
+    
+    This tool searches Reddit, which is excellent for finding:
+    - Cutting-edge technology discussions (AGI, AI safety, emerging tech)
+    - Community insights and real-world experiences
+    - Speculative and experimental topics
+    - Technical deep-dives and explanations
+    - Niche and non-mainstream subjects
+    
+    Particularly useful for topics like:
+    - AGI and superintelligence (/r/singularity, /r/artificial)
+    - AI safety and alignment (/r/ControlProblem)
+    - Machine learning discussions (/r/MachineLearning)
+    - Futurism and emerging tech (/r/Futurology)
+    - Fringe science and speculation (/r/HighStrangeness)
+    
+    Args:
+        query: Search keywords. Examples:
+            - "AGI consciousness debate"
+            - "fractal neural networks"
+            - "sentient AI ethics"
+        subreddit: Optional subreddit to restrict search to (e.g., "singularity")
+        max_results: Maximum number of posts to return. Default is 10.
+        sort: Sort order - "relevance", "hot", "top", "new". Default is "relevance".
+    
+    Returns:
+        List of dictionaries, each containing:
+            - title (str): Post title
+            - author (str): Reddit username
+            - subreddit (str): Subreddit name
+            - score (int): Upvote score
+            - num_comments (int): Number of comments
+            - url (str): URL to the Reddit post
+            - selftext (str): Post body text (if text post)
+            - created_utc (float): Unix timestamp of creation
+        
+        Returns list with single error dict on failure.
+    
+    Example:
+        >>> results = reddit_search_tool("AGI safety", subreddit="singularity")
+        >>> print(results[0]["title"])
+        'New developments in AGI alignment research'
+    
+    Note:
+        - Uses Reddit's JSON API (no authentication required for read-only)
+        - Results include both posts and their metadata
+        - Useful for gauging community sentiment and finding discussions
+    """
+    try:
+        # Build URL
+        if subreddit:
+            url = f"https://www.reddit.com/r/{subreddit}/search.json"
+        else:
+            url = "https://www.reddit.com/search.json"
+        
+        # Parameters
+        params = {
+            "q": query,
+            "limit": max_results,
+            "sort": sort,
+            "raw_json": 1  # Prevent HTML encoding
+        }
+        
+        if subreddit:
+            params["restrict_sr"] = "on"
+        
+        # Make request
+        headers = {"User-Agent": "Nexus Research Agent/1.0"}
+        response = requests.get(url, params=params, headers=headers, timeout=10)
+        response.raise_for_status()
+        
+        data = response.json()
+        
+        # Parse results
+        results = []
+        for post in data.get("data", {}).get("children", []):
+            post_data = post.get("data", {})
+            results.append({
+                "title": post_data.get("title", ""),
+                "author": post_data.get("author", ""),
+                "subreddit": post_data.get("subreddit", ""),
+                "score": post_data.get("score", 0),
+                "num_comments": post_data.get("num_comments", 0),
+                "url": f"https://www.reddit.com{post_data.get('permalink', '')}",
+                "selftext": post_data.get("selftext", "")[:500],  # Limit text length
+                "created_utc": post_data.get("created_utc", 0)
+            })
+        
+        if not results:
+            return [{"message": "No Reddit posts found for the given query."}]
+        
+        return results
+    
+    except requests.exceptions.RequestException as e:
+        return [{"error": f"Reddit API request failed: {str(e)}"}]
+    except Exception as e:
+        return [{"error": f"Reddit search failed: {str(e)}"}]
+
+
+def semantic_scholar_search_tool(query: str, max_results: int = 10, fields: Optional[list[str]] = None) -> list[dict]:
+    """
+    Searches Semantic Scholar for academic papers using AI-powered relevance.
+    
+    Semantic Scholar is an AI-powered research tool that:
+    - Finds papers across all scientific disciplines
+    - Uses machine learning to rank by relevance
+    - Provides citation context and influence metrics
+    - Covers papers that might not be in arXiv
+    - Includes preprints, conference papers, and journals
+    
+    Particularly strong for:
+    - Computer science and AI research
+    - Cross-disciplinary connections
+    - Finding influential papers
+    - Recent preprints and working papers
+    - Papers with high citation counts
+    
+    Args:
+        query: Search keywords. Examples:
+            - "transformer architecture attention mechanism"
+            - "fractal dimension machine learning"
+            - "consciousness artificial intelligence"
+        max_results: Maximum number of papers to return. Default is 10.
+        fields: Optional list of fields to include. If None, uses default set.
+            Available: title, authors, year, abstract, citationCount, 
+            influentialCitationCount, url, venue, publicationTypes
+    
+    Returns:
+        List of dictionaries, each containing:
+            - paperId (str): Semantic Scholar paper ID
+            - title (str): Paper title
+            - authors (list[dict]): Author information with names and IDs
+            - year (int): Publication year
+            - abstract (str): Paper abstract
+            - citationCount (int): Number of citations
+            - influentialCitationCount (int): Number of influential citations
+            - url (str): URL to Semantic Scholar page
+            - venue (str): Publication venue (journal/conference)
+            - publicationTypes (list[str]): Types (e.g., JournalArticle, Conference)
+        
+        Returns list with single error dict on failure.
+    
+    Example:
+        >>> results = semantic_scholar_search_tool("neural architecture search")
+        >>> print(results[0]["title"])
+        >>> print(f"Citations: {results[0]['citationCount']}")
+    
+    Note:
+        - Free API with generous rate limits
+        - Results ranked by AI-powered relevance
+        - Includes citation metrics for assessing impact
+    """
+    try:
+        # Default fields if not specified
+        if fields is None:
+            fields = [
+                "paperId", "title", "authors", "year", "abstract",
+                "citationCount", "influentialCitationCount", 
+                "url", "venue", "publicationTypes"
+            ]
+        
+        # API endpoint
+        url = "https://api.semanticscholar.org/graph/v1/paper/search"
+        
+        # Parameters
+        params = {
+            "query": query,
+            "limit": max_results,
+            "fields": ",".join(fields)
+        }
+        
+        # Make request
+        headers = {"User-Agent": "Nexus Research Agent/1.0"}
+        response = requests.get(url, params=params, headers=headers, timeout=15)
+        response.raise_for_status()
+        
+        data = response.json()
+        
+        # Parse results
+        papers = data.get("data", [])
+        
+        if not papers:
+            return [{"message": "No papers found for the given query."}]
+        
+        # Format results
+        results = []
+        for paper in papers:
+            # Extract author names
+            authors = [
+                {"name": author.get("name", "Unknown"), "authorId": author.get("authorId")}
+                for author in paper.get("authors", [])
+            ]
+            
+            results.append({
+                "paperId": paper.get("paperId", ""),
+                "title": paper.get("title", ""),
+                "authors": authors,
+                "year": paper.get("year"),
+                "abstract": paper.get("abstract", "")[:1000] if paper.get("abstract") else None,  # Limit length
+                "citationCount": paper.get("citationCount", 0),
+                "influentialCitationCount": paper.get("influentialCitationCount", 0),
+                "url": paper.get("url", ""),
+                "venue": paper.get("venue", ""),
+                "publicationTypes": paper.get("publicationTypes", [])
+            })
+        
+        return results
+    
+    except requests.exceptions.RequestException as e:
+        return [{"error": f"Semantic Scholar API request failed: {str(e)}"}]
+    except Exception as e:
+        return [{"error": f"Semantic Scholar search failed: {str(e)}"}]
 
 
 # --- Tool Definitions (Schemas) ---
@@ -325,7 +546,7 @@ arxiv_tool_def = {
     "type": "function",
     "function": {
         "name": "arxiv_search_tool",
-        "description": "Searches for research papers on arXiv by query string.",
+        "description": "Searches arXiv for research papers in physics, math, CS, and related fields.",
         "parameters": {
             "type": "object",
             "properties": {
@@ -335,8 +556,63 @@ arxiv_tool_def = {
                 },
                 "max_results": {
                     "type": "integer",
-                    "description": "Maximum number of results to return.",
+                    "description": "Maximum number of papers to return.",
                     "default": 5
+                }
+            },
+            "required": ["query"]
+        }
+    }
+}
+
+reddit_tool_def = {
+    "type": "function",
+    "function": {
+        "name": "reddit_search_tool",
+        "description": "Searches Reddit for discussions, community insights, and cutting-edge topics (AGI, AI safety, experimental tech, fringe science).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Search keywords for Reddit discussions."
+                },
+                "subreddit": {
+                    "type": ["string", "null"],
+                    "description": "Optional subreddit to search within (e.g., 'singularity', 'MachineLearning'). Leave null to search all subreddits."
+                },
+                "max_results": {
+                    "type": "integer",
+                    "description": "Maximum number of posts to return.",
+                    "default": 10
+                },
+                "sort": {
+                    "type": "string",
+                    "description": "Sort order: 'relevance', 'hot', 'top', 'new'.",
+                    "default": "relevance"
+                }
+            },
+            "required": ["query"]
+        }
+    }
+}
+
+semantic_scholar_tool_def = {
+    "type": "function",
+    "function": {
+        "name": "semantic_scholar_search_tool",
+        "description": "Searches Semantic Scholar for academic papers using AI-powered relevance ranking. Covers all disciplines with citation metrics.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Search keywords for academic papers."
+                },
+                "max_results": {
+                    "type": "integer",
+                    "description": "Maximum number of papers to return.",
+                    "default": 10
                 }
             },
             "required": ["query"]
@@ -423,11 +699,27 @@ tool_mapping = {
     "tavily_search_tool": tavily_search_tool,
     "arxiv_search_tool": arxiv_search_tool,
     "wikipedia_search_tool": wikipedia_search_tool,
-    "europe_pmc_search_tool": europe_pmc_search_tool
+    "europe_pmc_search_tool": europe_pmc_search_tool,
+    "reddit_search_tool": reddit_search_tool,
+    "semantic_scholar_search_tool": semantic_scholar_search_tool
 }
 
 # List of callables for aisuite
-aisuite_tools = [arxiv_search_tool, tavily_search_tool, wikipedia_search_tool, europe_pmc_search_tool]
+aisuite_tools = [
+    arxiv_search_tool, 
+    tavily_search_tool, 
+    wikipedia_search_tool, 
+    europe_pmc_search_tool,
+    reddit_search_tool,
+    semantic_scholar_search_tool
+]
 
 # List of definitions for Responses API (GPT-5)
-responses_tool_defs = [arxiv_tool_def, tavily_tool_def, wikipedia_tool_def, europe_pmc_tool_def]
+responses_tool_defs = [
+    arxiv_tool_def, 
+    tavily_tool_def, 
+    wikipedia_tool_def, 
+    europe_pmc_tool_def,
+    reddit_tool_def,
+    semantic_scholar_tool_def
+]

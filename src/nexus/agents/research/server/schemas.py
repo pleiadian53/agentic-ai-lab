@@ -112,6 +112,7 @@ class ResearchResponse(BaseModel):
         default_factory=list,
         description="History of agent executions - list of [step, output] tuples"
     )
+    session_id: Optional[str] = Field(None, description="Session ID for progress tracking via SSE")
     error: Optional[str] = Field(None, description="Error message if generation failed")
     
     model_config = {

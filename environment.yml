@@ -11,8 +11,9 @@ dependencies:
   - openai
   - markdown
   - requests
-  - weasyprint  # PDF generation (fallback)
-  - pandoc      # LaTeX-based PDF generation with proper equation rendering
+  - weasyprint  # PDF generation (markdown without equations)
+  - pandoc      # Document converter (requires LaTeX engine)
+  - tectonic    # Modern LaTeX engine for equation rendering (recommended)
   
   # === Web Framework + API ===
   # Used by: tool_use/ml_agent, tool_use/email_agent, chart_agent/server, nexus agents

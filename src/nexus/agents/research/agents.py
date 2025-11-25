@@ -1,6 +1,7 @@
 import json
 import ast
 from datetime import datetime
+from typing import Optional
 from aisuite import Client
 
 from . import tools
@@ -323,7 +324,13 @@ agent_registry = {
     "writer_agent": writer_agent,
 }
 
-def executor_agent(plan_steps: list[str], model: str = "openai:gpt-4o", format_instructions: str = ""):
+def executor_agent(
+    plan_steps: list[str], 
+    model: str = "openai:gpt-4o", 
+    format_instructions: str = "", 
+    verbose: bool = True,
+    progress_tracker: Optional['ProgressTracker'] = None  # This value can be of type ProgressTracker, or it can be None
+):
     """
     Routes each task to the correct sub-agent.
     
@@ -331,14 +338,19 @@ def executor_agent(plan_steps: list[str], model: str = "openai:gpt-4o", format_i
         plan_steps: List of research plan steps
         model: LLM model to use
         format_instructions: Format-specific instructions for writer agent
+        verbose: Show detailed progress (default True)
+        progress_tracker: Optional progress tracker for real-time updates
     """
+    from .progress import AgentType
+    from typing import Optional
+    
     history = []
 
-    print("==================================")
-    print("🎯 Executor Agent")
-    print("==================================")
-
     for i, step in enumerate(plan_steps):
+        if verbose:
+            print(f"\n{'┌'+'─'*68+'┐'}")
+            print(f"│ 📍 Step {i+1}/{len(plan_steps)}: {step[:60]+'...' if len(step) > 60 else step:<60} │")
+            print(f"{'└'+'─'*68+'┘'}")
         agent_decision_prompt = f"""
 You are an execution manager for a multi-agent research team.
 
@@ -376,7 +388,32 @@ Your next task is:
 {task}
 """
 
-            print(f"\n🛠️ Executing with agent: `{agent_name}` on task: {task}")
+            # Map agent names to types and info
+            agent_type_map = {
+                "research_agent": AgentType.RESEARCH,
+                "writer_agent": AgentType.WRITER,
+                "editor_agent": AgentType.EDITOR
+            }
+            
+            agent_info_map = {
+                "research_agent": ("🔍", "Research Agent", "Gathering knowledge"),
+                "writer_agent": ("✍️", "Writer Agent", "Generating content"),
+                "editor_agent": ("📝", "Editor Agent", "Refining quality")
+            }
+            
+            # Report progress
+            if progress_tracker:
+                progress_tracker.update_step(
+                    step_number=i+1,
+                    total_steps=len(plan_steps),
+                    agent=agent_type_map.get(agent_name, AgentType.RESEARCH),
+                    message=f"{task[:100]}"
+                )
+            
+            if verbose:
+                emoji, name, action = agent_info_map.get(agent_name, ("🤖", agent_name, "Processing"))
+                print(f"{emoji} {name}: {action}")
+                print(f"   Task: {task[:80]+'...' if len(task) > 80 else task}")
 
             if agent_name in agent_registry:
                 # Pass format_instructions to writer_agent and editor_agent
@@ -387,11 +424,16 @@ Your next task is:
                 else:
                     output = agent_registry[agent_name](enriched_task, model=model)
                 history.append((step, agent_name, output))
+                
+                if verbose:
+                    # Show abbreviated output
+                    output_preview = output[:200] + "..." if len(output) > 200 else output
+                    print(f"   ✅ Complete ({len(output)} chars)")
             else:
                 output = f"⚠️ Unknown agent: {agent_name}"
                 history.append((step, agent_name, output))
-
-            print(f"✅ Output:\n{output}")
+                if verbose:
+                    print(f"   ❌ Error: Unknown agent")
             
         except Exception as e:
             print(f"❌ Execution Error at step {i}: {e}")

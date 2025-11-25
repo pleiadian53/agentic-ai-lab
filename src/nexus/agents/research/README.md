@@ -107,10 +107,31 @@ nexus-research "protein folding" \
 ### Web Interface
 
 ```bash
+# Activate environment first
+mamba activate agentic-ai
+
 # Start the server
 nexus-research-server
 
 # Visit http://localhost:8004
+```
+
+**Alternative methods:**
+```bash
+# Using the start script (auto-activates environment)
+./scripts/start_research_server.sh
+
+# Or run directly with Python
+python -m nexus.agents.research.server.app
+```
+
+**Stopping the server:**
+```bash
+# Using the stop script (graceful shutdown)
+./scripts/stop_research_server.sh
+
+# Or manually
+lsof -ti:8004 | xargs kill -9
 ```
 
 **Web Features:**

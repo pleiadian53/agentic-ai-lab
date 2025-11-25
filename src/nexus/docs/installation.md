@@ -166,9 +166,189 @@ pip install -e .
 export PYTHONPATH=/path/to/agentic-ai-lab/src
 ```
 
-### WeasyPrint Issues
+### LaTeX Engine Setup (For Equation Rendering in PDFs)
 
-WeasyPrint requires system dependencies:
+The Research Agent generates reports with mathematical equations in LaTeX format. To render these properly in PDFs, you need a LaTeX engine.
+
+> **Note:** This is for Nexus Research Agent only. If you're using `scripts/sync_work.py` for backup/mobile reading, see `scripts/SYNC_SETUP.md` for different requirements.
+
+#### Option 1: Tectonic (Recommended - Already Included)
+
+Tectonic is a modern, self-contained LaTeX engine that's already included in the conda environment:
+
+```bash
+# Verify Tectonic is installed
+mamba run -n agentic-ai tectonic --version
+
+# If not installed, add it:
+mamba install -n agentic-ai -c conda-forge tectonic
+```
+
+**Benefits**:
+- ✅ Self-contained - downloads packages automatically
+- ✅ Fast - single-pass compilation
+- ✅ No system dependencies required
+- ✅ Works across all platforms
+
+#### Option 2: System-Wide LaTeX (Alternative)
+
+If you prefer a full LaTeX distribution:
+
+**macOS**:
+```bash
+# Install MacTeX (full) or BasicTeX (minimal)
+brew install --cask mactex        # Full (~4GB)
+# OR
+brew install --cask basictex      # Minimal (~100MB)
+
+# Add to PATH
+export PATH="/Library/TeX/texbin:$PATH"
+```
+
+**Ubuntu/Debian**:
+```bash
+# Install TeX Live
+sudo apt-get install texlive-xetex texlive-latex-extra texlive-fonts-recommended
+```
+
+**Windows**:
+```bash
+# Install MiKTeX
+# Download from: https://miktex.org/download
+```
+
+#### Verifying LaTeX Installation
+
+Test that LaTeX compilation works:
+
+```bash
+# Test with Tectonic (in conda environment)
+mamba run -n agentic-ai tectonic --help
+
+# Test with system LaTeX
+xelatex --version
+# OR
+pdflatex --version
+```
+
+### PDF Generation Troubleshooting
+
+#### Issue: PDF Shows Raw LaTeX Code
+
+**Symptoms**: PDF displays `\documentclass`, `\begin{document}`, etc. instead of rendered content.
+
+**Cause**: LaTeX engine not available or not being used correctly.
+
+**Solution**:
+1. Verify Tectonic is installed:
+   ```bash
+   mamba list -n agentic-ai | grep tectonic
+   ```
+
+2. If missing, install it:
+   ```bash
+   mamba install -n agentic-ai -c conda-forge tectonic
+   ```
+
+3. Restart the research server:
+   ```bash
+   ./scripts/stop_research_server.sh
+   ./scripts/start_research_server.sh
+   ```
+
+4. Check server logs for:
+   ```
+   Detected LaTeX format, using LaTeX compiler...
+   ✓ PDF generated using Tectonic: ...
+   ```
+
+#### Issue: Tectonic Compilation Fails
+
+**Symptoms**: Error message "Tectonic compilation failed"
+
+**Solutions**:
+
+1. **Check internet connection** - Tectonic downloads packages on first use
+2. **Clear Tectonic cache**:
+   ```bash
+   rm -rf ~/.cache/Tectonic
+   ```
+3. **Try manual compilation**:
+   ```bash
+   # Test with a simple LaTeX file
+   echo '\documentclass{article}\begin{document}Hello\end{document}' > test.tex
+   mamba run -n agentic-ai tectonic test.tex
+   ```
+
+#### Issue: Equations Not Rendering
+
+**Symptoms**: Equations appear as plain text or show errors
+
+**Common Causes**:
+1. Missing LaTeX packages (Tectonic auto-downloads these)
+2. Invalid LaTeX syntax in equations
+3. Using markdown converter instead of LaTeX compiler
+
+**Solutions**:
+
+1. **Verify format detection**:
+   - Check that report starts with `\documentclass`
+   - Server logs should show "Detected LaTeX format"
+
+2. **Test equation syntax**:
+   ```latex
+   % Inline math
+   $E = mc^2$
+   
+   % Display math
+   $$\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}$$
+   ```
+
+3. **Check server logs** for compilation errors:
+   ```bash
+   # View logs in real-time
+   tail -f /path/to/server/logs
+   ```
+
+#### Issue: "xelatex not found" Error
+
+**Cause**: System LaTeX not in PATH (only relevant if not using Tectonic)
+
+**Solution**:
+```bash
+# macOS - Add MacTeX to PATH
+export PATH="/Library/TeX/texbin:$PATH"
+echo 'export PATH="/Library/TeX/texbin:$PATH"' >> ~/.zshrc
+
+# Linux - Install TeX Live
+sudo apt-get install texlive-xetex
+
+# Verify
+which xelatex
+```
+
+#### Testing PDF Generation
+
+Test the complete pipeline:
+
+```bash
+# Generate a test report with equations
+nexus-research "quantum mechanics and Schrödinger equation" \
+  --length brief \
+  --pdf
+
+# Check the output
+ls -lh output/research_reports/*/report_*.pdf
+```
+
+**Expected output**:
+- PDF file created successfully
+- Equations rendered properly (not raw LaTeX)
+- Professional formatting with proper fonts
+
+### WeasyPrint Issues (Fallback for Markdown PDFs)
+
+WeasyPrint is used for markdown-to-PDF conversion (without equations). It requires system dependencies:
 
 **macOS**:
 ```bash

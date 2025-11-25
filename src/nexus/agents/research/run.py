@@ -19,8 +19,15 @@ def main():
     parser.add_argument("--pdf", action="store_true", help="Also generate PDF version of the report")
     parser.add_argument("--format", choices=["latex", "markdown", "pdf_direct"], 
                        help="Force specific output format (overrides automatic detection)", default=None)
+    parser.add_argument("--verbose", action="store_true", default=True, 
+                       help="Show detailed progress (default: True)")
+    parser.add_argument("--quiet", action="store_true", 
+                       help="Minimal output (overrides --verbose)")
     
     args = parser.parse_args()
+    
+    # Determine verbose mode
+    verbose = args.verbose and not args.quiet
     
     try:
         # Track generation time
@@ -31,7 +38,8 @@ def main():
             model=args.model, 
             report_length=args.length,
             context=args.context,
-            user_format=args.format
+            user_format=args.format,
+            verbose=verbose
         )
         
         generation_time = time.time() - start_time
@@ -40,10 +48,12 @@ def main():
         plan_steps = len(results.get("plan", []))
         
         if report:
-            print("\n✅ Final Report Generated:\n")
-            print("="*60)
-            print(report)
-            print("="*60)
+            if verbose:
+                print(f"\n{'='*70}")
+                print(f"✅ REPORT GENERATION COMPLETE")
+                print(f"{'='*70}\n")
+            elif not args.quiet:
+                print("\n✅ Report generated successfully")
             
             # Determine output location
             if args.output:

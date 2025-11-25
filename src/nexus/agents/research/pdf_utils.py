@@ -17,6 +17,48 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def fix_common_latex_errors(latex_content: str) -> Tuple[str, list[str]]:
+    """
+    Automatically fix common LaTeX syntax errors.
+    
+    Args:
+        latex_content: LaTeX source code
+        
+    Returns:
+        Tuple of (fixed_content, list_of_fixes_applied)
+    """
+    import re
+    
+    fixes_applied = []
+    content = latex_content
+    
+    # Fix 1: \labeleq: → \label{eq:
+    pattern = r'\\labeleq:(\w+)'
+    if re.search(pattern, content):
+        content = re.sub(pattern, r'\\label{eq:\1}', content)
+        fixes_applied.append("Fixed \\labeleq: → \\label{eq:}")
+    
+    # Fix 2: \begineq: → \begin{eq:
+    pattern = r'\\begineq:(\w+)'
+    if re.search(pattern, content):
+        content = re.sub(pattern, r'\\begin{eq:\1}', content)
+        fixes_applied.append("Fixed \\begineq: → \\begin{eq:}")
+    
+    # Fix 3: Missing closing braces in \label
+    pattern = r'\\label\{([^}]+)$'
+    if re.search(pattern, content, re.MULTILINE):
+        content = re.sub(pattern, r'\\label{\1}', content, flags=re.MULTILINE)
+        fixes_applied.append("Added missing closing brace in \\label")
+    
+    # Fix 4: Comma after equation in \label (should be period or nothing)
+    pattern = r'(\\label\{eq:[^}]+\}),\s*\n'
+    if re.search(pattern, content):
+        content = re.sub(pattern, r'\1.\n', content)
+        fixes_applied.append("Fixed comma after \\label in equation")
+    
+    return content, fixes_applied
+
+
 def markdown_to_pdf(
     markdown_content: str,
     output_path: Path,
@@ -219,10 +261,10 @@ def latex_to_pdf(
     author: str = "Nexus Research Agent"
 ) -> Tuple[bool, Optional[str]]:
     """
-    Compile LaTeX source directly to PDF using XeLaTeX.
+    Compile LaTeX source directly to PDF.
     
     This is the preferred method for documents with mathematical equations.
-    Requires XeLaTeX to be installed and in PATH.
+    Tries Tectonic first (modern, self-contained), then falls back to XeLaTeX.
     
     Args:
         latex_content: Complete LaTeX document source
@@ -233,6 +275,84 @@ def latex_to_pdf(
     Returns:
         Tuple of (success: bool, error_message: Optional[str])
     """
+    # Auto-fix common LaTeX errors
+    fixed_content, fixes = fix_common_latex_errors(latex_content)
+    if fixes:
+        logger.info(f"🔧 Auto-fixed {len(fixes)} LaTeX error(s):")
+        for fix in fixes:
+            logger.info(f"   - {fix}")
+    
+    # Try Tectonic first (modern, self-contained LaTeX engine)
+    success, error = _compile_with_tectonic(fixed_content, output_path)
+    if success:
+        return True, None
+    
+    logger.info(f"Tectonic failed ({error}), trying XeLaTeX...")
+    
+    # Fall back to XeLaTeX
+    return _compile_with_xelatex(fixed_content, output_path)
+
+
+def _compile_with_tectonic(
+    latex_content: str,
+    output_path: Path
+) -> Tuple[bool, Optional[str]]:
+    """Compile LaTeX using Tectonic (modern, self-contained engine)."""
+    try:
+        import re
+        
+        # Clean content
+        cleaned_content = latex_content.strip()
+        if cleaned_content.startswith('```'):
+            cleaned_content = re.sub(r'^```(?:latex)?\s*\n', '', cleaned_content)
+            cleaned_content = re.sub(r'\n```\s*$', '', cleaned_content)
+        
+        doc_match = re.search(r'\\documentclass', cleaned_content)
+        if doc_match:
+            cleaned_content = cleaned_content[doc_match.start():]
+        
+        # Create temporary directory
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            tex_file = tmpdir_path / "document.tex"
+            
+            with open(tex_file, 'w', encoding='utf-8') as f:
+                f.write(cleaned_content)
+            
+            # Compile with Tectonic
+            result = subprocess.run(
+                ['tectonic', 'document.tex'],
+                cwd=tmpdir_path,
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+            
+            if result.returncode != 0:
+                return False, f"Tectonic compilation failed: {result.stderr[:200]}"
+            
+            # Move PDF to output location
+            pdf_file = tmpdir_path / "document.pdf"
+            if pdf_file.exists():
+                shutil.copy(pdf_file, output_path)
+                logger.info(f"✓ PDF generated using Tectonic: {output_path}")
+                return True, None
+            else:
+                return False, "PDF file was not generated"
+                
+    except FileNotFoundError:
+        return False, "tectonic not found"
+    except subprocess.TimeoutExpired:
+        return False, "Tectonic compilation timed out (>60s)"
+    except Exception as e:
+        return False, f"Tectonic compilation failed: {str(e)}"
+
+
+def _compile_with_xelatex(
+    latex_content: str,
+    output_path: Path
+) -> Tuple[bool, Optional[str]]:
+    """Compile LaTeX using XeLaTeX (traditional engine)."""
     logger.info("Compiling LaTeX to PDF with XeLaTeX...")
     
     try:

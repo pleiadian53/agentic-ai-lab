@@ -51,6 +51,7 @@ def get_available_reports() -> list[dict]:
         List of report metadata dictionaries with keys:
         - topic: Research topic (directory name)
         - report_path: Path to the markdown report
+        - pdf_path: Path to the PDF report (if exists)
         - created: Creation timestamp
         - size_kb: File size in kilobytes
     """
@@ -66,9 +67,14 @@ def get_available_reports() -> list[dict]:
             
         # Look for markdown files
         for md_file in topic_dir.glob("*.md"):
+            # Check if corresponding PDF exists
+            pdf_file = md_file.with_suffix('.pdf')
+            pdf_path = str(pdf_file.relative_to(OUTPUT_DIR)) if pdf_file.exists() else None
+            
             reports.append({
                 "topic": topic_dir.name,
                 "report_path": str(md_file.relative_to(OUTPUT_DIR)),
+                "pdf_path": pdf_path,
                 "created": md_file.stat().st_mtime,
                 "size_kb": md_file.stat().st_size / 1024
             })

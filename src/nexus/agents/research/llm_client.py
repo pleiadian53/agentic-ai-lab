@@ -131,16 +131,52 @@ def call_llm_with_tools(
             except Exception as e:
                 return f"[Agent Error: {e}]"
 
-    # === Path A: Chat API (aisuite) ===
+    # === Path A: Chat API (OpenAI native with manual tool handling) ===
     else:
         try:
-            response = client.chat.completions.create(
-                model=aisuite_model,
-                messages=messages,
-                tools=aisuite_tools,
-                tool_choice="auto",
-                max_turns=12
-            )
-            return response.choices[0].message.content
+            # Use OpenAI client directly to avoid aisuite's auto-schema issues
+            import openai
+            native_client = openai.OpenAI()
+            
+            # Use our manually-defined schemas
+            max_turns = 12
+            for turn in range(max_turns):
+                response = native_client.chat.completions.create(
+                    model=openai_model,
+                    messages=messages,
+                    tools=responses_tool_defs,
+                    tool_choice="auto"
+                )
+                
+                message = response.choices[0].message
+                
+                # If no tool calls, we're done
+                if not message.tool_calls:
+                    return message.content
+                
+                # Add assistant message to history
+                messages.append(message)
+                
+                # Execute tool calls
+                for tool_call in message.tool_calls:
+                    func_name = tool_call.function.name
+                    args = json.loads(tool_call.function.arguments)
+                    
+                    print(f"📞 Tool Call: {func_name}")
+                    
+                    if func_name in tool_mapping:
+                        result = tool_mapping[func_name](**args)
+                    else:
+                        result = {"error": f"Unknown tool: {func_name}"}
+                    
+                    # Add tool response to messages
+                    messages.append({
+                        "role": "tool",
+                        "tool_call_id": tool_call.id,
+                        "content": json.dumps(result)
+                    })
+            
+            return message.content if message.content else "[Max turns reached]"
+            
         except Exception as e:
             return f"[Agent Error: {e}]"
