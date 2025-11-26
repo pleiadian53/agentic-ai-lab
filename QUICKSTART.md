@@ -372,14 +372,43 @@ LOG_LEVEL=INFO
 - **LaTeX Details:** `src/nexus/agents/research/docs/installation/LATEX_SETUP.md`
 - **API Reference:** Start web server and visit `/docs`
 
-### Explore Examples
+### Explore Example Reports
+
+The repository includes 4 example reports demonstrating Nexus capabilities:
+
+**1. All-Atom Biomolecular Design** (`output/research_reports/all_atom_biomolecular_design/`)
+- Cutting-edge 2025 AI/ML for molecular design (3,849 words, 25 steps, gpt-5.1)
+- Covers RFdiffusion3, Boltz-2, AlphaFold3 breakthroughs
+- Diffusion models, transformer architectures, drug discovery applications
+- Demonstrates multi-source synthesis (arXiv, PubMed, web)
+
+**2. AGI Consciousness & Sentience** (`output/research_reports/consciousness_sentience_agi/`)
+- Methodological approaches to consciousness detection (3,833 words, 26 steps, gpt-5.1)
+- Focuses on technical frameworks: IIT, Global Workspace Theory, Active Inference
+- Empirical tests and measurement approaches
+- Multi-source research with Reddit community insights
+
+**3. Quantum Entanglement & Bell's Theorem** (`output/research_reports/quantum_entanglement_bell_theorem/`)
+- Brief 709-word technical report with LaTeX equations (gpt-4o)
+- Publication-quality PDF with proper mathematical notation
+- Shows equation rendering capabilities
+
+**4. Einstein's Field Equations** (`output/research_reports/einstein_field_equations_gravity/`)
+- Physics report with tensor notation and LaTeX compilation (gpt-4o)
+- Variable definitions and physical interpretations
+- Demonstrates advanced equation handling
 
 ```bash
-# Browse example reports
+# Browse all example reports
 ls output/research_reports/
 
-# View a report
-open output/research_reports/<topic>/report_*.pdf
+# View example PDFs
+open output/research_reports/all_atom_biomolecular_design/report_*.pdf
+open output/research_reports/consciousness_sentience_agi/report_*.pdf
+open output/research_reports/quantum_entanglement_bell_theorem/report_*.pdf
+
+# Read the markdown source
+cat output/research_reports/all_atom_biomolecular_design/report_*.md
 ```
 
 ### Customize

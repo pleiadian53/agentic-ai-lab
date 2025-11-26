@@ -61,6 +61,51 @@ def planner_agent(topic: str, model: str = "openai:o4-mini", report_length: str 
     
     spec = length_specs.get(report_length, length_specs["standard"])
     
+    # Analyze topic intent to determine focus
+    topic_lower = topic.lower()
+    context_lower = (context or "").lower()
+    
+    # Detect technical/methodological focus keywords
+    technical_keywords = [
+        "framework", "method", "test", "empirical", "technique", "algorithm",
+        "implementation", "approach", "model", "architecture", "mechanism",
+        "measurement", "evaluation", "experiment", "protocol", "procedure"
+    ]
+    
+    # Detect ethical/societal focus keywords
+    ethical_keywords = [
+        "ethics", "ethical", "governance", "policy", "regulation", "safety",
+        "implications", "impact", "societal", "moral", "responsibility"
+    ]
+    
+    technical_score = sum(1 for kw in technical_keywords if kw in topic_lower or kw in context_lower)
+    ethical_score = sum(1 for kw in ethical_keywords if kw in topic_lower or kw in context_lower)
+    
+    # Determine primary focus
+    if technical_score > ethical_score:
+        focus_guidance = """
+🎯 PRIMARY FOCUS: Technical/Methodological Content
+- Prioritize: Frameworks, methods, empirical tests, technical approaches, implementations
+- Emphasize: How things work, what can be tested, new ideas and techniques
+- De-emphasize: Ethical implications, governance, policy (unless explicitly requested)
+- Allocate: 70-80% technical content, 20-30% broader context/implications
+"""
+    elif ethical_score > technical_score:
+        focus_guidance = """
+🎯 PRIMARY FOCUS: Ethical/Societal Implications
+- Prioritize: Ethical considerations, governance frameworks, societal impact
+- Emphasize: Implications, responsibilities, policy recommendations
+- Balance: Technical background with ethical analysis
+- Allocate: 60-70% ethical/societal content, 30-40% technical foundation
+"""
+    else:
+        focus_guidance = """
+🎯 BALANCED FOCUS: Technical and Broader Context
+- Balance: Technical depth with contextual implications
+- Cover: Methods, frameworks, applications, and their broader significance
+- Allocate: 50-60% technical content, 40-50% context and implications
+"""
+    
     prompt = f"""
 You are a senior research strategist orchestrating a team of specialized agents.
 
@@ -72,6 +117,8 @@ Generate a valid Python list of strings, where each string is one atomic step in
 - Structure: {spec['sections']}
 - Depth: {spec['depth']}
 - Plan complexity: {spec['steps']}
+
+{focus_guidance}
 """
     
     if context:
@@ -297,13 +344,19 @@ Your editorial expertise covers:
 - Style consistency: Maintain professional tone and formatting standards
 
 Your editorial approach:
-1. Identify strengths to preserve
-2. Diagnose weaknesses (structure, clarity, evidence, style)
-3. Provide specific, actionable improvements
-4. Rewrite sections that need substantial revision
+1. Review the draft for strengths and weaknesses
+2. Make specific improvements to structure, clarity, evidence, and style
+3. Rewrite sections that need substantial revision
+4. Return the COMPLETE EDITED REPORT with all improvements applied
 5. Ensure the final product meets publication standards
 
-Be constructive but rigorous. Your goal is to elevate good writing to excellence."""
+CRITICAL OUTPUT REQUIREMENT:
+- Your output MUST be the full, final, publication-ready document
+- Do NOT return editorial commentary, feedback, or instructions
+- Do NOT include meta-discussion about the editing process
+- Return ONLY the polished, complete report itself
+
+Be constructive but rigorous. Your goal is to elevate good writing to excellence and deliver the final product."""
     
     # Add format-specific instructions if provided
     if format_instructions:

@@ -119,10 +119,29 @@ def generate_research_report(
     # Extract final report if possible (usually the last step)
     final_output = history[-1][-1] if history else ""
     
+    # Validate and fix output if needed
+    from . import output_validator
+    validated_output, warnings = output_validator.validate_and_fix_report(
+        final_output, 
+        topic, 
+        auto_fix=True
+    )
+    
+    # Log any warnings
+    if warnings:
+        if verbose:
+            print(f"\n{'─'*70}")
+            print("⚠️  OUTPUT VALIDATION")
+            print(f"{'─'*70}")
+            for warning in warnings:
+                print(f"   {warning}")
+            print()
+    
     return {
         "topic": topic,
         "plan": steps,
         "history": history,
-        "final_report": final_output,
+        "final_report": validated_output,
+        "validation_warnings": warnings,  # Track validation issues
         "format_decision": format_info  # Track format decision in output
     }

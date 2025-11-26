@@ -111,9 +111,14 @@ graph TB
 - **Output**: `output/research_reports/<topic>/`
 
 **Example Reports** 📊:
-- **[AGI Consciousness](output/research_reports/consciousness_sentience_agi/)** - Comprehensive analysis of consciousness in AGI systems (3,437 words, 32 steps, gpt-5.1)
-  - Covers IIT, Global Workspace Theory, Active Inference, and proto-consciousness debates
-  - Includes Reddit community insights from r/singularity and r/philosophy
+- **[All-Atom Biomolecular Design](output/research_reports/all_atom_biomolecular_design/)** - Cutting-edge 2025 AI/ML for molecular design (3,849 words, 25 steps, gpt-5.1)
+  - Covers RFdiffusion3, Boltz-2, AlphaFold3 breakthroughs
+  - Diffusion models, transformer architectures, drug discovery applications
+  - Demonstrates multi-source synthesis (arXiv, PubMed, web)
+- **[AGI Consciousness & Sentience](output/research_reports/consciousness_sentience_agi/)** - Methodological approaches to consciousness detection (3,833 words, 26 steps, gpt-5.1)
+  - Focuses on technical frameworks: IIT, Global Workspace Theory, Active Inference
+  - Empirical tests and measurement approaches
+  - Multi-source research with Reddit community insights
 - **[Quantum Entanglement & Bell's Theorem](output/research_reports/quantum_entanglement_bell_theorem/)** - Brief technical report with LaTeX equations (709 words, 12 steps, gpt-4o)
   - Publication-quality PDF with proper mathematical notation
   - Demonstrates equation rendering capabilities

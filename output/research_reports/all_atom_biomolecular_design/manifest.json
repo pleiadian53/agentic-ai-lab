@@ -1,0 +1,23 @@
+{
+  "topic_directory": "all_atom_biomolecular_design",
+  "created_at": "2025-11-25T23:30:57.901280",
+  "reports": [
+    {
+      "filename": "report_2025-11-25_23-30.md",
+      "generated_at": "2025-11-25T23:30:57.902002",
+      "topic": "All-atom generative models for biomolecular design: RFdiffusion3, Boltz-2, and the convergence of structure prediction with binding affinity in drug discovery",
+      "model": "openai:gpt-5.1",
+      "report_length": "comprehensive",
+      "context": "Focus on 2025 breakthroughs, unsolved problems in all-atom molecular design. \nPrioritize: RFdiffusion3's unified all-atom framework (proteins, DNA, RNA, ligands), Boltz-2's structure-affinity co-prediction (20 seconds, GPU-based), AlphaFold3's multi-component complexes. \n\nInclude: Diffusion model architectures, sparse attention mechanisms, atom-level conditioning (H-bonds, solvent accessibility), training on PDB + AlphaFold data, experimental validation results, 10x speed improvements over RFdiffusion2, drug discovery timeline reductions (42\u219218 months), comparison with physics-based FEP calculations. Emphasize technical methods, model architectures, and computational efficiency.",
+      "source": "web",
+      "metadata": {
+        "word_count": 3849,
+        "generation_time_seconds": 846.62,
+        "plan_steps": 25,
+        "pdf_filename": "report_2025-11-25_23-30.pdf",
+        "format_decision": null
+      }
+    }
+  ],
+  "last_updated": "2025-11-25T23:30:57.902188"
+}

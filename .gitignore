@@ -230,6 +230,7 @@ charts/
 output/*
 !output/research_reports/
 output/research_reports/*
+!output/research_reports/all_atom_biomolecular_design/
 !output/research_reports/consciousness_sentience_agi/
 !output/research_reports/quantum_entanglement_bell_theorem/
 !output/research_reports/einstein_field_equations_gravity/
