@@ -383,14 +383,14 @@ The repository includes 4 example reports demonstrating Nexus capabilities:
 - Covers RFdiffusion3, Boltz-2, AlphaFold3 breakthroughs
 - Diffusion models, transformer architectures, drug discovery applications
 - Demonstrates multi-source synthesis (arXiv, PubMed, web)
-- [⬇️ Download PDF](https://github.com/pleiadian53/agentic-ai-lab/raw/main/output/research_reports/all_atom_biomolecular_design/report_2025-11-25_23-30.pdf)
+- [⬇️ Download PDF](https://github.com/pleiadian53/agentic-ai-lab/raw/main/output/research_reports/all_atom_biomolecular_design/report_2025-11-25_23-30.pdf) | [📝 LaTeX Source](output/research_reports/all_atom_biomolecular_design/report_2025-11-25_23-30.tex)
 
 **2. AGI Consciousness & Sentience** (`output/research_reports/consciousness_sentience_agi/`)
 - Methodological approaches to consciousness detection (3,833 words, 26 steps, gpt-5.1)
 - Focuses on technical frameworks: IIT, Global Workspace Theory, Active Inference
 - Empirical tests and measurement approaches
 - Multi-source research with Reddit community insights
-- [⬇️ Download PDF](https://github.com/pleiadian53/agentic-ai-lab/raw/main/output/research_reports/consciousness_sentience_agi/report_2025-11-25_23-04.pdf)
+- [⬇️ Download PDF](https://github.com/pleiadian53/agentic-ai-lab/raw/main/output/research_reports/consciousness_sentience_agi/report_2025-11-25_23-04.pdf) | [📝 LaTeX Source](output/research_reports/consciousness_sentience_agi/report_2025-11-25_23-04.tex)
 
 **3. Quantum Entanglement & Bell's Theorem** (`output/research_reports/quantum_entanglement_bell_theorem/`)
 - Brief 709-word technical report with LaTeX equations (gpt-4o)
