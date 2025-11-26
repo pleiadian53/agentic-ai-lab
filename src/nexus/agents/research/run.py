@@ -106,11 +106,18 @@ def main():
                     # Also generate Markdown preview for GitHub
                     if success:
                         print(f"   Generating Markdown preview for GitHub...")
-                        from . import latex_to_markdown
+                        from . import pandoc_converter
                         md_preview_path = output_path.with_suffix('.md')
-                        if latex_to_markdown.generate_markdown_preview(report, md_preview_path):
+                        
+                        # Try Pandoc first, fallback to custom converter
+                        success_md, method = pandoc_converter.generate_markdown_preview(
+                            report, md_preview_path, prefer_pandoc=True
+                        )
+                        
+                        if success_md:
                             markdown_preview_filename = md_preview_path.name
-                            print(f"   ✓ Markdown preview saved: {md_preview_path}")
+                            converter_name = "Pandoc" if method == "pandoc" else "custom converter"
+                            print(f"   ✓ Markdown preview saved: {md_preview_path} (using {converter_name})")
                         else:
                             print(f"   ⚠️  Markdown preview generation failed")
                 else:
