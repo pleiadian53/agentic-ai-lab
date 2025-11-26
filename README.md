@@ -111,19 +111,29 @@ graph TB
 - **Output**: `output/research_reports/<topic>/`
 
 **Example Reports** 📊:
+
+> 📱 **Note**: PDFs are best viewed by downloading or using the GitHub mobile app. Click the download links below to view in your PDF reader.
+
 - **[All-Atom Biomolecular Design](output/research_reports/all_atom_biomolecular_design/)** - Cutting-edge 2025 AI/ML for molecular design (3,849 words, 25 steps, gpt-5.1)
   - Covers RFdiffusion3, Boltz-2, AlphaFold3 breakthroughs
   - Diffusion models, transformer architectures, drug discovery applications
   - Demonstrates multi-source synthesis (arXiv, PubMed, web)
+  - [⬇️ Download PDF](https://github.com/pleiadian53/agentic-ai-lab/raw/main/output/research_reports/all_atom_biomolecular_design/report_2025-11-25_23-30.pdf) | [📝 LaTeX Source](output/research_reports/all_atom_biomolecular_design/report_2025-11-25_23-30.tex)
+
 - **[AGI Consciousness & Sentience](output/research_reports/consciousness_sentience_agi/)** - Methodological approaches to consciousness detection (3,833 words, 26 steps, gpt-5.1)
   - Focuses on technical frameworks: IIT, Global Workspace Theory, Active Inference
   - Empirical tests and measurement approaches
   - Multi-source research with Reddit community insights
+  - [⬇️ Download PDF](https://github.com/pleiadian53/agentic-ai-lab/raw/main/output/research_reports/consciousness_sentience_agi/report_2025-11-25_23-04.pdf) | [📝 LaTeX Source](output/research_reports/consciousness_sentience_agi/report_2025-11-25_23-04.tex)
+
 - **[Quantum Entanglement & Bell's Theorem](output/research_reports/quantum_entanglement_bell_theorem/)** - Brief technical report with LaTeX equations (709 words, 12 steps, gpt-4o)
   - Publication-quality PDF with proper mathematical notation
   - Demonstrates equation rendering capabilities
+  - [⬇️ Download PDF](https://github.com/pleiadian53/agentic-ai-lab/raw/main/output/research_reports/quantum_entanglement_bell_theorem/report_2025-11-23_17-27.pdf)
+
 - **[Einstein's Field Equations](output/research_reports/einstein_field_equations_gravity/)** - Physics report with tensor notation (gpt-4o)
   - Full LaTeX compilation with variable definitions and physical interpretations
+  - [⬇️ Download PDF](https://github.com/pleiadian53/agentic-ai-lab/raw/main/output/research_reports/einstein_field_equations_gravity/report_2025-11-23_17-37.pdf)
 
 **Roadmap** 🚀:
 - [ ] **Style Transfer** - Use example papers (e.g., `data/papers/OpenSpliceAI.pdf`) as style templates

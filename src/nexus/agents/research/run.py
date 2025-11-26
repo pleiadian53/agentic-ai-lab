@@ -70,7 +70,12 @@ def main():
                 topic_dir.mkdir(parents=True, exist_ok=True)
                 
                 timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M')
-                filename = f"report_{timestamp}.md"
+                
+                # Use appropriate file extension based on format
+                format_info = results.get("format_decision", {})
+                output_format = format_info.get("format", "markdown")
+                file_extension = ".tex" if output_format == "latex" else ".md"
+                filename = f"report_{timestamp}{file_extension}"
                 output_path = topic_dir / filename
             
             # Save report

@@ -212,7 +212,12 @@ def run_generation_task(session_id: str, request: ResearchRequest):
         # Save report to file
         tracker.update(ProgressStage.SAVING, "Saving report...")
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M')
-        report_filename = f"report_{timestamp}.md"
+        
+        # Use appropriate file extension based on format
+        format_info = result.get("format_decision", {})
+        output_format = format_info.get("format", "markdown")
+        file_extension = ".tex" if output_format == "latex" else ".md"
+        report_filename = f"report_{timestamp}{file_extension}"
         report_path = config.get_output_path(topic_slug, report_filename)
         
         with open(report_path, 'w') as f:
@@ -262,7 +267,8 @@ def run_generation_task(session_id: str, request: ResearchRequest):
             report_content=result["final_report"],
             generation_time_seconds=round(generation_time, 2),
             plan_steps=plan_steps,
-            pdf_filename=pdf_filename
+            pdf_filename=pdf_filename,
+            format_decision=format_info  # Track format decision
         )
         
         logger.info(f"✓ Report saved to: {report_path}")
