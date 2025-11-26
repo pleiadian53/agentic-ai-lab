@@ -225,6 +225,7 @@ def run_generation_task(session_id: str, request: ResearchRequest):
         
         # Generate PDF if requested
         pdf_filename = None
+        markdown_preview_filename = None
         if request.generate_pdf:
             logger.info("Generating PDF...")
             pdf_path = report_path.with_suffix('.pdf')
@@ -240,6 +241,17 @@ def run_generation_task(session_id: str, request: ResearchRequest):
                     pdf_path,
                     title=request.topic
                 )
+                
+                # Also generate Markdown preview for GitHub
+                if success:
+                    logger.info("Generating Markdown preview for GitHub...")
+                    from .. import latex_to_markdown
+                    md_preview_path = report_path.with_suffix('.md')
+                    if latex_to_markdown.generate_markdown_preview(content, md_preview_path):
+                        markdown_preview_filename = md_preview_path.name
+                        logger.info(f"✓ Markdown preview saved: {md_preview_path}")
+                    else:
+                        logger.warning("⚠️  Markdown preview generation failed")
             else:
                 logger.info("Detected Markdown format, using markdown converter...")
                 success, error = pdf_utils.markdown_to_pdf(

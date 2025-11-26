@@ -85,6 +85,7 @@ def main():
             
             # Generate PDF if requested
             pdf_filename = None
+            markdown_preview_filename = None
             format_info = results.get("format_decision", {})
             
             if args.pdf:
@@ -101,6 +102,17 @@ def main():
                         pdf_path,
                         title=args.topic
                     )
+                    
+                    # Also generate Markdown preview for GitHub
+                    if success:
+                        print(f"   Generating Markdown preview for GitHub...")
+                        from . import latex_to_markdown
+                        md_preview_path = output_path.with_suffix('.md')
+                        if latex_to_markdown.generate_markdown_preview(report, md_preview_path):
+                            markdown_preview_filename = md_preview_path.name
+                            print(f"   ✓ Markdown preview saved: {md_preview_path}")
+                        else:
+                            print(f"   ⚠️  Markdown preview generation failed")
                 else:
                     print(f"   Using Markdown→PDF conversion")
                     success, error = pdf_utils.markdown_to_pdf(
