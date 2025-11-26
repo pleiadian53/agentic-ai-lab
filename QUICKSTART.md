@@ -217,10 +217,35 @@ sudo tlmgr install <package-name>
 
 ## 📊 Output Structure
 
-Generated reports are saved in:
+### Organized by Agent Type
+
+The project uses a structured output hierarchy to support multiple specialized agents:
+
+```
+output/
+├── research_reports/        # Nexus Research Agent outputs
+│   └── <topic-slug>/
+│       ├── report_*.md      # Markdown preview (GitHub-friendly)
+│       ├── report_*.pdf     # Publication-quality PDF
+│       ├── report_*.tex     # LaTeX source (for LaTeX reports)
+│       └── manifest.json    # Metadata and tracking
+├── sql_queries/            # SQL Agent outputs (future)
+├── code_prototypes/        # Paper2Code outputs (future)
+├── email_drafts/           # Email Agent outputs (future)
+└── charts/                 # Chart Agent visualizations (future)
+```
+
+**Why this structure?**
+- **Scalability**: Each agent type has its own namespace
+- **Organization**: Easy to find outputs by agent and topic
+- **Flexibility**: Different agents can have different output formats
+- **Tracking**: Each directory contains manifests for provenance
+
+### Research Report Structure
+
 ```
 output/research_reports/<topic-slug>/
-├── report_YYYY-MM-DD_HH-MM.md      # Markdown source
+├── report_YYYY-MM-DD_HH-MM.md      # Markdown preview (Pandoc-generated)
 ├── report_YYYY-MM-DD_HH-MM.pdf     # PDF output (if --pdf used)
 ├── report_YYYY-MM-DD_HH-MM.tex     # LaTeX source (if applicable)
 └── manifest.json                    # Metadata and tracking
@@ -231,7 +256,7 @@ output/research_reports/<topic-slug>/
 - Model used and parameters
 - Format decision and reasoning
 - Word count and plan steps
-- Source tracking
+- Source tracking (CLI, web, API)
 
 ---
 
@@ -251,27 +276,47 @@ nexus-research "Quantum Entanglement" \
 ### 2. Math-Heavy Topic (Production)
 
 ```bash
-# Physics/Math topics need LaTeX
+# Physics/Math topics need LaTeX - use latest models for best quality
 nexus-research "Schrödinger Equation and Wave Mechanics" \
-  --model openai:gpt-4o \
+  --model openai:gpt-5.1 \
+  --length standard \
+  --pdf
+
+# Or use Claude Opus 4.5 for world-class coding and reasoning (Nov 2025)
+nexus-research "Schrödinger Equation and Wave Mechanics" \
+  --model anthropic:claude-opus-4.5 \
   --length standard \
   --pdf
 ```
 
-**Output:** PDF with properly rendered equations
+**Output:** PDF with properly rendered equations, state-of-the-art analysis
 
 ### 3. Comprehensive Review (Publication)
 
 ```bash
-# Detailed technical paper
+# Detailed technical paper - use most capable models
 nexus-research "Deep Learning for Protein Structure Prediction" \
-  --model openai:gpt-4o \
+  --model openai:gpt-5.1 \
+  --length comprehensive \
+  --context "Follow Nature Methods style, include recent AlphaFold advances" \
+  --pdf
+
+# Or use Gemini 3 Pro for state-of-the-art multimodal reasoning (Nov 2025)
+nexus-research "Deep Learning for Protein Structure Prediction" \
+  --model google:gemini-3-pro \
+  --length comprehensive \
+  --context "Follow Nature Methods style, include recent AlphaFold advances" \
+  --pdf
+
+# Or use Claude Opus 4.5 for best-in-world coding and agents
+nexus-research "Deep Learning for Protein Structure Prediction" \
+  --model anthropic:claude-opus-4.5 \
   --length comprehensive \
   --context "Follow Nature Methods style, include recent AlphaFold advances" \
   --pdf
 ```
 
-**Output:** 15-25 page technical paper with citations
+**Output:** 15-25 page technical paper with citations, publication-quality
 
 ### 4. Domain-Specific Research
 
@@ -315,14 +360,16 @@ result = sql_workflow.execute("Show top 10 customers by revenue")
 
 ### Splice Agent (Genomics)
 
+> **Note**: A basic version of the splice agent is included here as an example of a specialized domain agent. Full development continues in the separate [agentic-spliceai](https://github.com/pleiadian53/agentic-spliceai) repository with advanced genomics capabilities.
+
 ```bash
-# Start Splice Agent server
+# Start Splice Agent server (basic version)
 python -m splice_agent.server.splice_service
 
 # Access at http://localhost:8004/docs
 ```
 
-**Integration:** Specialized genomics analysis for biology research
+**Integration:** Domain-specific genomics analysis for splice site prediction for biology research
 
 ---
 
