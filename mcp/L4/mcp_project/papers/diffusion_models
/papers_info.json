@@ -1,0 +1,66 @@
+{
+  "2312.03397v1": {
+    "title": "Generalized Contrastive Divergence: Joint Training of Energy-Based Model and Diffusion Model through Inverse Reinforcement Learning",
+    "authors": [
+      "Sangwoong Yoon",
+      "Dohyun Kwon",
+      "Himchan Hwang",
+      "Yung-Kyun Noh",
+      "Frank C. Park"
+    ],
+    "summary": "We present Generalized Contrastive Divergence (GCD), a novel objective function for training an energy-based model (EBM) and a sampler simultaneously. GCD generalizes Contrastive Divergence (Hinton, 2002), a celebrated algorithm for training EBM, by replacing Markov Chain Monte Carlo (MCMC) distribution with a trainable sampler, such as a diffusion model. In GCD, the joint training of EBM and a diffusion model is formulated as a minimax problem, which reaches an equilibrium when both models converge to the data distribution. The minimax learning with GCD bears interesting equivalence to inverse reinforcement learning, where the energy corresponds to a negative reward, the diffusion model is a policy, and the real data is expert demonstrations. We present preliminary yet promising results showing that joint training is beneficial for both EBM and a diffusion model. GCD enables EBM training without MCMC while improving the sample quality of a diffusion model.",
+    "pdf_url": "https://arxiv.org/pdf/2312.03397v1",
+    "published": "2023-12-06"
+  },
+  "2401.08741v1": {
+    "title": "Fixed Point Diffusion Models",
+    "authors": [
+      "Xingjian Bai",
+      "Luke Melas-Kyriazi"
+    ],
+    "summary": "We introduce the Fixed Point Diffusion Model (FPDM), a novel approach to image generation that integrates the concept of fixed point solving into the framework of diffusion-based generative modeling. Our approach embeds an implicit fixed point solving layer into the denoising network of a diffusion model, transforming the diffusion process into a sequence of closely-related fixed point problems. Combined with a new stochastic training method, this approach significantly reduces model size, reduces memory usage, and accelerates training. Moreover, it enables the development of two new techniques to improve sampling efficiency: reallocating computation across timesteps and reusing fixed point solutions between timesteps. We conduct extensive experiments with state-of-the-art models on ImageNet, FFHQ, CelebA-HQ, and LSUN-Church, demonstrating substantial improvements in performance and efficiency. Compared to the state-of-the-art DiT model, FPDM contains 87% fewer parameters, consumes 60% less memory during training, and improves image generation quality in situations where sampling computation or time is limited. Our code and pretrained models are available at https://lukemelas.github.io/fixed-point-diffusion-models.",
+    "pdf_url": "https://arxiv.org/pdf/2401.08741v1",
+    "published": "2024-01-16"
+  },
+  "2403.04279v1": {
+    "title": "Controllable Generation with Text-to-Image Diffusion Models: A Survey",
+    "authors": [
+      "Pu Cao",
+      "Feng Zhou",
+      "Qing Song",
+      "Lu Yang"
+    ],
+    "summary": "In the rapidly advancing realm of visual generation, diffusion models have revolutionized the landscape, marking a significant shift in capabilities with their impressive text-guided generative functions. However, relying solely on text for conditioning these models does not fully cater to the varied and complex requirements of different applications and scenarios. Acknowledging this shortfall, a variety of studies aim to control pre-trained text-to-image (T2I) models to support novel conditions. In this survey, we undertake a thorough review of the literature on controllable generation with T2I diffusion models, covering both the theoretical foundations and practical advancements in this domain. Our review begins with a brief introduction to the basics of denoising diffusion probabilistic models (DDPMs) and widely used T2I diffusion models. We then reveal the controlling mechanisms of diffusion models, theoretically analyzing how novel conditions are introduced into the denoising process for conditional generation. Additionally, we offer a detailed overview of research in this area, organizing it into distinct categories from the condition perspective: generation with specific conditions, generation with multiple conditions, and universal controllable generation. For an exhaustive list of the controllable generation literature surveyed, please refer to our curated repository at \\url{https://github.com/PRIV-Creation/Awesome-Controllable-T2I-Diffusion-Models}.",
+    "pdf_url": "https://arxiv.org/pdf/2403.04279v1",
+    "published": "2024-03-07"
+  },
+  "2405.03150v2": {
+    "title": "Video Diffusion Models: A Survey",
+    "authors": [
+      "Andrew Melnik",
+      "Michal Ljubljanac",
+      "Cong Lu",
+      "Qi Yan",
+      "Weiming Ren",
+      "Helge Ritter"
+    ],
+    "summary": "Diffusion generative models have recently become a powerful technique for creating and modifying high-quality, coherent video content. This survey provides a comprehensive overview of the critical components of diffusion models for video generation, including their applications, architectural design, and temporal dynamics modeling. The paper begins by discussing the core principles and mathematical formulations, then explores various architectural choices and methods for maintaining temporal consistency. A taxonomy of applications is presented, categorizing models based on input modalities such as text prompts, images, videos, and audio signals. Advancements in text-to-video generation are discussed to illustrate the state-of-the-art capabilities and limitations of current approaches. Additionally, the survey summarizes recent developments in training and evaluation practices, including the use of diverse video and image datasets and the adoption of various evaluation metrics to assess model performance. The survey concludes with an examination of ongoing challenges, such as generating longer videos and managing computational costs, and offers insights into potential future directions for the field. By consolidating the latest research and developments, this survey aims to serve as a valuable resource for researchers and practitioners working with video diffusion models. Website: https://github.com/ndrwmlnk/Awesome-Video-Diffusion-Models",
+    "pdf_url": "https://arxiv.org/pdf/2405.03150v2",
+    "published": "2024-05-06"
+  },
+  "2311.03226v1": {
+    "title": "LDM3D-VR: Latent Diffusion Model for 3D VR",
+    "authors": [
+      "Gabriela Ben Melech Stan",
+      "Diana Wofk",
+      "Estelle Aflalo",
+      "Shao-Yen Tseng",
+      "Zhipeng Cai",
+      "Michael Paulitsch",
+      "Vasudev Lal"
+    ],
+    "summary": "Latent diffusion models have proven to be state-of-the-art in the creation and manipulation of visual outputs. However, as far as we know, the generation of depth maps jointly with RGB is still limited. We introduce LDM3D-VR, a suite of diffusion models targeting virtual reality development that includes LDM3D-pano and LDM3D-SR. These models enable the generation of panoramic RGBD based on textual prompts and the upscaling of low-resolution inputs to high-resolution RGBD, respectively. Our models are fine-tuned from existing pretrained models on datasets containing panoramic/high-resolution RGB images, depth maps and captions. Both models are evaluated in comparison to existing related methods.",
+    "pdf_url": "https://arxiv.org/pdf/2311.03226v1",
+    "published": "2023-11-06"
+  }
+}

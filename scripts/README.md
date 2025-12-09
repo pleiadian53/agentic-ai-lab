@@ -152,6 +152,54 @@ The stop script is located in the server directory:
 - Forces shutdown if needed (kill -9)
 - Verifies server stopped successfully
 
+## Utility Scripts
+
+### md_to_pdf.py
+
+Convert Markdown documents to professional PDFs using Pandoc and XeLaTeX.
+
+**Usage:**
+```bash
+# Basic conversion
+python scripts/md_to_pdf.py docs/README.md
+
+# With custom title and author
+python scripts/md_to_pdf.py docs/README.md \
+    --title "Nexus Research Agent" \
+    --author "Agentic AI Lab"
+
+# Specify output path
+python scripts/md_to_pdf.py docs/README.md -o output/documentation.pdf
+
+# Generate LaTeX only (for debugging)
+python scripts/md_to_pdf.py docs/README.md --latex-only
+```
+
+**Requirements:**
+- Pandoc: `brew install pandoc`
+- XeLaTeX: See `src/nexus/agents/research/docs/installation/LATEX_SETUP.md`
+- pypandoc (optional): `pip install pypandoc`
+
+**Features:**
+- 📑 Automatic table of contents
+- 🔢 Numbered sections
+- 🔗 Clickable hyperlinks
+- 📄 Professional formatting
+- ⚡ Works with or without pypandoc
+
+**Examples:**
+```bash
+# Convert Nexus README
+python scripts/md_to_pdf.py src/nexus/README.md
+
+# Convert research report
+python scripts/md_to_pdf.py output/research_reports/my_report/report.md \
+    --title "Research Report" --author "Nexus Agent"
+
+# Debug LaTeX issues
+python scripts/md_to_pdf.py docs/ARCHITECTURE.md --latex-only
+```
+
 ## Quick Reference
 
 ```bash
@@ -163,6 +211,9 @@ The stop script is located in the server directory:
 
 # Stop research server
 ./src/nexus/agents/research/server/stop_server.sh
+
+# Convert markdown to PDF
+python scripts/md_to_pdf.py docs/README.md
 
 # Activate environment manually
 conda activate agentic-ai          # For mamba/conda

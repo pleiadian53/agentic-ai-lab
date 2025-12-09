@@ -1,0 +1,37 @@
+# MCP Educational Package - Mamba/Conda Environment
+# Standalone environment for Model Context Protocol tutorials
+#
+# Usage:
+#   mamba env create -f environment.yml
+#   mamba activate mcp-tutorials
+#
+# Or use the parent project environment (agentic-ai) which includes these deps
+
+name: mcp-tutorials
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  # Python version (matches parent project)
+  - python=3.11
+  - pip
+
+  # === Core MCP Dependencies ===
+  # Packages available via conda-forge
+  - python-dotenv>=1.1.0
+
+  # Packages only available via pip
+  - pip:
+    # MCP SDK and Anthropic client
+    - anthropic>=0.51.0
+    - mcp>=1.7.1
+    
+    # PDF processing for examples
+    - pypdf2>=3.0.1
+    
+    # arXiv API for research examples
+    - arxiv>=2.2.0
+    
+    # uv - fast Python package installer (optional, used in some lessons)
+    - uv

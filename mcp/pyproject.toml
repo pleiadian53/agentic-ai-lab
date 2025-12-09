@@ -1,0 +1,95 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-tutorials"
+version = "0.1.0"
+description = "Model Context Protocol (MCP) Educational Tutorials - Learn to build MCP servers, clients, and integrations"
+readme = "readme.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Agentic AI Contributors"}
+]
+keywords = [
+    "mcp",
+    "model-context-protocol",
+    "anthropic",
+    "claude",
+    "ai-agents",
+    "tutorials",
+    "educational",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Education",
+]
+
+# Core dependencies (synced with requirements.txt)
+dependencies = [
+    # === MCP Core ===
+    "anthropic>=0.51.0",
+    "mcp>=1.7.1",
+    
+    # === PDF Processing ===
+    "pypdf2>=3.0.1",
+    
+    # === Research Tools ===
+    "arxiv>=2.2.0",
+    
+    # === Utilities ===
+    "python-dotenv>=1.1.0",
+]
+
+[project.optional-dependencies]
+# Development tools
+dev = [
+    "pytest>=7.0",
+    "black>=23.0",
+    "ruff>=0.1.0",
+]
+
+# Fast package installer (used in some lessons)
+tools = [
+    "uv",
+]
+
+# All optional dependencies
+all = [
+    "mcp-tutorials[dev,tools]",
+]
+
+[project.urls]
+Homepage = "https://github.com/pleiadian53/agentic-ai-lab"
+Repository = "https://github.com/pleiadian53/agentic-ai-lab/tree/main/mcp"
+Documentation = "https://github.com/pleiadian53/agentic-ai-lab/tree/main/mcp/readme.md"
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["L*"]
+exclude = ["tests*", "Appendix*"]
+
+# ============================================================================
+# Tool Configurations (minimal, inherits from parent project where applicable)
+# ============================================================================
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "W", "F", "I", "B", "C4", "UP"]
+ignore = ["E501", "B008"]

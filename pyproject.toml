@@ -39,7 +39,8 @@ classifiers = [
 dependencies = [
     # === Agent + LLM Tools ===
     "aisuite==0.1.11",
-    "anthropic",
+    "anthropic>=0.51.0",
+    "arxiv>=2.2.0",
     "docstring-parser",
     "markdown",
     "mistralai",
@@ -83,6 +84,11 @@ dependencies = [
     "pdfminer.six",
     "pymupdf",
     "beautifulsoup4",  # HTML parsing for nexus
+    
+    # === MCP (Model Context Protocol) ===
+    # Used by: mcp/ tutorials and future MCP integrations
+    "mcp>=1.7.1",
+    "pypdf2>=3.0.1",
 ]
 
 [project.optional-dependencies]
@@ -151,6 +157,7 @@ include = [
     "scripts*",
     "tool_use*",
     "multiagent*",
+    "mcp*",
 ]
 exclude = [
     "tests*",

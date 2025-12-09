@@ -51,7 +51,8 @@ dependencies:
   - pip:
     # Agent & LLM specific packages not in conda-forge
     - aisuite==0.1.11
-    - anthropic
+    - anthropic>=0.51.0
+    - arxiv>=2.2.0        # arXiv API (used by mcp tutorials, research)
     - docstring-parser
     - mistralai
     - pypandoc  # Python wrapper for pandoc (LaTeX PDF generation)
@@ -68,3 +69,8 @@ dependencies:
     - wikipedia
     - pdfminer.six
     - pymupdf
+    
+    # === MCP (Model Context Protocol) ===
+    # Used by: mcp/ tutorials and future MCP integrations
+    - mcp>=1.7.1
+    - pypdf2>=3.0.1

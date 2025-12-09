@@ -239,3 +239,18 @@ output/research_reports/*
 scripts/sync_work.py
 scripts/sync_work.sh
 scripts/SYNC_SETUP.md
+
+# LaTeX compilation byproducts
+*.aux
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.idx
+*.ind
+*.ilg
+*.lof
+*.lot

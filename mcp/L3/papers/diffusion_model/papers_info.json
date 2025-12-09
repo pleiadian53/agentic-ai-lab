@@ -1,0 +1,58 @@
+{
+  "2401.05779v4": {
+    "title": "Erasing Undesirable Influence in Diffusion Models",
+    "authors": [
+      "Jing Wu",
+      "Trung Le",
+      "Munawar Hayat",
+      "Mehrtash Harandi"
+    ],
+    "summary": "Diffusion models are highly effective at generating high-quality images but pose risks, such as the unintentional generation of NSFW (not safe for work) content. Although various techniques have been proposed to mitigate unwanted influences in diffusion models while preserving overall performance, achieving a balance between these goals remains challenging. In this work, we introduce EraseDiff, an algorithm designed to preserve the utility of the diffusion model on retained data while removing the unwanted information associated with the data to be forgotten. Our approach formulates this task as a constrained optimization problem using the value function, resulting in a natural first-order algorithm for solving the optimization problem. By altering the generative process to deviate away from the ground-truth denoising trajectory, we update parameters for preservation while controlling constraint reduction to ensure effective erasure, striking an optimal trade-off. Extensive experiments and thorough comparisons with state-of-the-art algorithms demonstrate that EraseDiff effectively preserves the model's utility, efficacy, and efficiency.",
+    "pdf_url": "https://arxiv.org/pdf/2401.05779v4",
+    "published": "2024-01-11"
+  },
+  "1905.04004v2": {
+    "title": "Well-posedness of a cross-diffusion population model with nonlocal diffusion",
+    "authors": [
+      "Gonzalo Galiano",
+      "Juli\u00e1n Velasco"
+    ],
+    "summary": "We prove the existence and uniqueness of solution of a nonlocal cross-diffusion competitive population model for two species. The model may be considered as a version, or even an approximation, of the paradigmatic Shigesada-Kawasaki-Teramoto cross-diffusion model, in which the usual diffusion differential operator is replaced by an integral diffusion operator. The proof of existence of solutions is based on a compactness argument, while the uniqueness of solution is achieved through a duality technique.",
+    "pdf_url": "https://arxiv.org/pdf/1905.04004v2",
+    "published": "2019-05-10"
+  },
+  "1109.2262v1": {
+    "title": "Diffusion in LanCoIn3n+2 phases studied by perturbed angular correlation",
+    "authors": [
+      "Randal Newhouse",
+      "Gary S. Collins"
+    ],
+    "summary": "Jump frequencies of 111In/Cd tracer atoms were measured for a series of layered phases LanCoIn3n+2 using the technique of perturbed angular correlation of gamma rays (PAC). The frequencies were determined by analysis of nuclear quadrupole relaxation produced by fluctuating electric field gradients. Samples were synthesized having nominal values n= 1, 2, 3, 5 and \\infty, with n=\\infty corresponding to the L12 phase LaIn3. The phases form heuristically from LaIn3 by replacing every (n+1)th (100) mixed plane of La and In atoms with a plane of Co-atoms. For the n=1 phase, LaCoIn5, jump frequencies were too small to detect. Two signals were observed, one for indium atoms next to the Co-planes and the other for more distant indium atoms. No relaxation was observed for atoms next to the Co-planes, indicating that there is no diffusion across the Co-planes. With increasing n, jump rates for the other In-atoms increased toward values observed for LaIn3. Jump frequency activation enthalpies for n= 3 and 5 were observed to be the same as for n=\\infty, suggesting the same diffusion mechanism. However, the jump-frequency prefactors were found to be smaller for small n, which is attributed to reductions in the connectivity of the diffusion sublattice. We conclude that diffusion in the layered phases is remarkably similar to diffusion in LaIn3 once the reduced connectivity is taken into account.",
+    "pdf_url": "https://arxiv.org/pdf/1109.2262v1",
+    "published": "2011-09-10"
+  },
+  "2402.03687v3": {
+    "title": "Pard: Permutation-Invariant Autoregressive Diffusion for Graph Generation",
+    "authors": [
+      "Lingxiao Zhao",
+      "Xueying Ding",
+      "Leman Akoglu"
+    ],
+    "summary": "Graph generation has been dominated by autoregressive models due to their simplicity and effectiveness, despite their sensitivity to ordering. Yet diffusion models have garnered increasing attention, as they offer comparable performance while being permutation-invariant. Current graph diffusion models generate graphs in a one-shot fashion, but they require extra features and thousands of denoising steps to achieve optimal performance. We introduce PARD, a Permutation-invariant Auto Regressive Diffusion model that integrates diffusion models with autoregressive methods. PARD harnesses the effectiveness and efficiency of the autoregressive model while maintaining permutation invariance without ordering sensitivity. Specifically, we show that contrary to sets, elements in a graph are not entirely unordered and there is a unique partial order for nodes and edges. With this partial order, PARD generates a graph in a block-by-block, autoregressive fashion, where each block's probability is conditionally modeled by a shared diffusion model with an equivariant network. To ensure efficiency while being expressive, we further propose a higher-order graph transformer, which integrates transformer with PPGN. Like GPT, we extend the higher-order graph transformer to support parallel training of all blocks. Without any extra features, PARD achieves state-of-the-art performance on molecular and non-molecular datasets, and scales to large datasets like MOSES containing 1.9M molecules. Pard is open-sourced at https://github.com/LingxiaoShawn/Pard.",
+    "pdf_url": "https://arxiv.org/pdf/2402.03687v3",
+    "published": "2024-02-06"
+  },
+  "2303.07909v3": {
+    "title": "Text-to-image Diffusion Models in Generative AI: A Survey",
+    "authors": [
+      "Chenshuang Zhang",
+      "Chaoning Zhang",
+      "Mengchun Zhang",
+      "In So Kweon",
+      "Junmo Kim"
+    ],
+    "summary": "This survey reviews the progress of diffusion models in generating images from text, ~\\textit{i.e.} text-to-image diffusion models. As a self-contained work, this survey starts with a brief introduction of how diffusion models work for image synthesis, followed by the background for text-conditioned image synthesis. Based on that, we present an organized review of pioneering methods and their improvements on text-to-image generation. We further summarize applications beyond image generation, such as text-guided generation for various modalities like videos, and text-guided image editing. Beyond the progress made so far, we discuss existing challenges and promising future directions.",
+    "pdf_url": "https://arxiv.org/pdf/2303.07909v3",
+    "published": "2023-03-14"
+  }
+}
