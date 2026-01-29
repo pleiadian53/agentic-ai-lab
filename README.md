@@ -191,19 +191,74 @@ Planned general-purpose agents to expand Nexus capabilities:
 Specialized agents for specific research domains (separate projects):
 
 ### **Splice Agent** 🧬
-**RNA splicing and alternative splicing research** - A complex, dedicated project for computational biology.
+**Autonomous AI Agents for Intelligent Splice Site Prediction & Validation**
 
 - **Project**: [agentic-spliceai](https://github.com/pleiadian53/agentic-spliceai) (separate repository)
-- **Location**: `/Users/pleiadian53/work/agentic-spliceai`
-- **Domain**: RNA splicing, alternative splicing, genomics
-- **Complexity**: Full research area requiring dedicated development
-- **Features**:
-  - Domain-specific analysis templates for splice sites
-  - Biological context and genomic feature interpretation
-  - Integration with genomics databases
-  - Built on chart_agent core engine
-- **Status**: Active research project with ongoing development
-- **Note**: Due to the complexity of RNA splicing research, this is maintained as a separate project in the same workspace
+- **Domain**: Alternative splicing, splice site prediction, RNA biology, disease genomics
+- **Architecture**: Three-layer design for extensible splice prediction
+  
+  ```
+  ┌─────────────────────────────────────────────┐
+  │  AGENTIC LAYER (WIP)                        │
+  │  • Literature Validation Agent              │
+  │  • Expression Evidence Agent                │
+  │  • Clinical Annotation Agent                │
+  │  • Nexus Research Agent (from agentic-ai-lab)│
+  └──────────────────┬──────────────────────────┘
+                     │
+  ┌──────────────────┴──────────────────────────┐
+  │  META LAYER                                 │
+  │  • Multimodal deep learning fusion          │
+  │  • DNA sequence + base model scores         │
+  │  • Recalibration and refinement             │
+  └──────────────────┬──────────────────────────┘
+                     │
+  ┌──────────────────┴──────────────────────────┐
+  │  BASE LAYER ✅                              │
+  │  • SpliceAI & OpenSpliceAI support          │
+  │  • Extensible base model protocol           │
+  │  • Per-nucleotide splice predictions        │
+  └─────────────────────────────────────────────┘
+  ```
+
+- **Key Innovation**: Combines traditional splice prediction with autonomous AI agents that validate predictions against literature, expression databases, and clinical evidence
+
+- **Integration with Agentic AI Lab**:
+  - **Nexus Research Agent**: Generates comprehensive research reports on splicing mechanisms, literature reviews, and background research
+  - **Chart Generation**: Uses agentic-ai-lab's chart agent engine for domain-specific splice site visualizations
+  - **Multi-Agent Pipeline**: Leverages planner → researcher → writer → editor workflow
+
+- **Current Status** (Phase 2):
+  - ✅ **Phase 1 Complete**: Base layer working - SpliceAI & OpenSpliceAI predictions
+  - 🚧 **Phase 2 Active**: Data preparation module, workflow orchestration
+  - 📅 **Phase 3 Planned**: Meta layer integration (multimodal deep learning)
+  - 📅 **Phase 4 Future**: Agentic validation layer with external knowledge integration
+
+- **Base Models Supported**:
+  - **SpliceAI** (Keras/TensorFlow) - Original splice prediction model
+  - **OpenSpliceAI** (PyTorch) - Modern reimplementation
+  - **Extensible Protocol** - Any model following standard I/O (one-hot DNA → splice probabilities)
+
+- **Analysis Capabilities**:
+  - Domain-specific templates (high alternative splicing, genomic distribution, exon complexity)
+  - AI-powered exploratory analysis with LLM-generated visualizations
+  - Biological context interpretation and publication-ready charts
+  - REST API service for integration with genomics pipelines
+
+- **Data Formats**: Supports TSV, CSV, Parquet, SQLite for splice site annotations
+
+- **Research Tools**:
+  - Nexus Research Agent for literature search and report generation
+  - Automated cross-referencing with PubMed, arXiv, genomics databases
+  - LaTeX-formatted reports with proper citations
+
+- **Use Cases**:
+  - Alternative splicing research and isoform diversity analysis
+  - Disease genomics and splice site mutation analysis
+  - Drug discovery targeting splicing mechanisms
+  - Evolutionary biology and splice site conservation studies
+
+- **Why Separate Repository**: RNA splicing research requires specialized infrastructure (genomic resources, pre-trained models, biological databases) and has its own development lifecycle independent of general agentic AI workflows
 
 ### **Future Domain-Specific Agents** 🔬
 Potential specialized research agents for dedicated domains:
