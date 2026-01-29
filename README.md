@@ -193,8 +193,8 @@ Specialized agents for specific research domains (separate projects):
 ### **Splice Agent** 🧬
 **RNA splicing and alternative splicing research** - A complex, dedicated project for computational biology.
 
-- **Project**: [splice-agent](https://github.com/yourusername/splice-agent) (separate repository)
-- **Location** (prototype): `splice_agent/`
+- **Project**: [agentic-spliceai](https://github.com/pleiadian53/agentic-spliceai) (separate repository)
+- **Location**: `/Users/pleiadian53/work/agentic-spliceai`
 - **Domain**: RNA splicing, alternative splicing, genomics
 - **Complexity**: Full research area requiring dedicated development
 - **Features**:
@@ -203,7 +203,7 @@ Specialized agents for specific research domains (separate projects):
   - Integration with genomics databases
   - Built on chart_agent core engine
 - **Status**: Active research project with ongoing development
-- **Note**: Due to the complexity of RNA splicing research, this is maintained as a separate project at `/Users/pleiadian53/work/splice-agent`
+- **Note**: Due to the complexity of RNA splicing research, this is maintained as a separate project in the same workspace
 
 ### **Future Domain-Specific Agents** 🔬
 Potential specialized research agents for dedicated domains:

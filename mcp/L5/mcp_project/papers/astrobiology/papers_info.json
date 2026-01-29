@@ -1,0 +1,142 @@
+{
+  "2004.11312v3": {
+    "title": "What's in a name: The etymology of astrobiology",
+    "authors": [
+      "Manasvi Lingam",
+      "Abraham Loeb"
+    ],
+    "summary": "Astrobiology has been gaining increasing scientific prominence and public attention as the search for life beyond Earth continues to make significant headway on multiple fronts. In view of these recent developments, the fascinating and dynamic etymology of astrobiology is elucidated, and thus shown to encompass a plethora of vivid characters drawn from different continents, religions, ideologies and centuries.",
+    "pdf_url": "https://arxiv.org/pdf/2004.11312v3",
+    "published": "2020-04-23"
+  },
+  "0707.0808v1": {
+    "title": "The Cyborg Astrobiologist: Porting from a wearable computer to the Astrobiology Phone-cam",
+    "authors": [
+      "Alexandra Bartolo",
+      "Patrick C. McGuire",
+      "Kenneth P. Camilleri",
+      "Christopher Spiteri",
+      "Jonathan C. Borg",
+      "Philip J. Farrugia",
+      "Jens Ormo",
+      "Javier Gomez-Elvira",
+      "Jose Antonio Rodriguez-Manfredi",
+      "Enrique Diaz-Martinez",
+      "Helge Ritter",
+      "Robert Haschke",
+      "Markus Oesker",
+      "Joerg Ontrup"
+    ],
+    "summary": "We have used a simple camera phone to significantly improve an `exploration system' for astrobiology and geology. This camera phone will make it much easier to develop and test computer-vision algorithms for future planetary exploration. We envision that the `Astrobiology Phone-cam' exploration system can be fruitfully used in other problem domains as well.",
+    "pdf_url": "https://arxiv.org/pdf/0707.0808v1",
+    "published": "2007-07-05"
+  },
+  "2102.05009v2": {
+    "title": "Theoretical constraints imposed by gradient detection and dispersal on microbial size in astrobiological environments",
+    "authors": [
+      "Manasvi Lingam"
+    ],
+    "summary": "The capacity to sense gradients efficiently and acquire information about the ambient environment confers many advantages like facilitating movement toward nutrient sources or away from toxic chemicals. The amplified dispersal evinced by organisms endowed with motility is possibly beneficial in related contexts. Hence, the connections between information acquisition, motility, and microbial size are explored from an explicitly astrobiological standpoint. By using prior theoretical models, the constraints on organism size imposed by gradient detection and motility are elucidated in the form of simple heuristic scaling relations. It is argued that environments such as alkaline hydrothermal vents, which are distinguished by the presence of steep gradients, might be conducive to the existence of \"small\" microbes (with radii of $\\gtrsim 0.1$ $\u03bc$m) in principle, when only the above two factors are considered; other biological functions (e.g., metabolism and genetic exchange) could, however, regulate the lower bound on microbial size and elevate it. The derived expressions are potentially applicable to a diverse array of settings, including those entailing solvents other than water; for example, the lakes and seas of Titan. The paper concludes with a brief exposition of how this formalism may be of practical and theoretical value to astrobiology.",
+    "pdf_url": "https://arxiv.org/pdf/2102.05009v2",
+    "published": "2021-02-09"
+  },
+  "astro-ph/0511180v1": {
+    "title": "Astrobiologically Interesting Stars within 10 parsecs of the Sun",
+    "authors": [
+      "G. F. Porto de Mello",
+      "E. F. del Peloso",
+      "L. Ghezzi"
+    ],
+    "summary": "The existence of life based on carbon chemistry and water oceans relies upon planetary properties, chiefly climate stability, and stellar properties, such as mass, age, metallicity and Galactic orbits. The latter can be well constrained with present knowledge. We present a detailed, up-to-date compilation of the atmospheric parameters, chemical composition, multiplicity and degree of chromospheric activity for the astrobiologically interesting solar-type stars within 10 parsecs of the Sun. We determine their state of evolution, masses, ages and space velocities, and produce an optimized list of candidates that merit serious scientific consideration by the future space-based interferometry probes aimed at directly detecting Earth-sized extrasolar planets and seeking spectroscopic infrared biomarkers as evidence of photosynthetic life. The initially selected stars number 33 solar-type within the population of 182 stars (excluding late M-dwarfs) closer than 10 pc. A comprehensive and detailed data compilation for these objects is still essentially lacking: a considerable amount of recent data has so far gone unexplored in this context. We present 13 objects as the nearest \"biostars\", after eliminating multiple stars, young, chromospherically active, hard X-ray emitting stars, and low metallicity objects. Three of these \"biostars\", HD 1581, 109358 and 115617, closely reproduce most of the solar properties and are considered as premier targets. We show that approximately 7% of the nearby stars are optimally interesting targets for exobiology.",
+    "pdf_url": "https://arxiv.org/pdf/astro-ph/0511180v1",
+    "published": "2005-11-07"
+  },
+  "2309.01924v2": {
+    "title": "Information Transmission via Molecular Communication in Astrobiological Environments",
+    "authors": [
+      "Manasvi Lingam"
+    ],
+    "summary": "The ubiquity of information transmission via molecular communication between cells is comprehensively documented on Earth; this phenomenon might even have played a vital role in the origin(s) and early evolution of life. Motivated by these considerations, a simple model for molecular communication entailing the diffusion of signaling molecules from transmitter to receiver is elucidated. The channel capacity $C$ (maximal rate of information transmission) and an optimistic heuristic estimate of the actual information transmission rate $\\mathcal{I}$ are derived for this communication system; the two quantities, especially the latter, are demonstrated to be broadly consistent with laboratory experiments and more sophisticated theoretical models. The channel capacity exhibits a potentially weak dependence on environmental parameters, whereas the actual information transmission rate may scale with the intercellular distance $d$ as $\\mathcal{I} \\propto d^{-4}$ and could vary substantially across settings. These two variables are roughly calculated for diverse astrobiological environments, ranging from Earth's upper oceans ($C \\sim 3.1 \\times 10^3$ bits/s; $\\mathcal{I} \\sim 4.7 \\times 10^{-2}$ bits/s) and deep sea hydrothermal vents ($C \\sim 4.2 \\times 10^3$ bits/s; $\\mathcal{I} \\sim 1.2 \\times 10^{-1}$ bits/s) to the hydrocarbon lakes and seas of Titan ($C \\sim 3.8 \\times 10^3$ bits/s; $\\mathcal{I} \\sim 2.6 \\times 10^{-1}$ bits/s).",
+    "pdf_url": "https://arxiv.org/pdf/2309.01924v2",
+    "published": "2023-09-05"
+  },
+  "1310.3851v1": {
+    "title": "Sustainability and the Astrobiological Perspective: Framing Human Futures in a Planetary Context",
+    "authors": [
+      "Adam Frank",
+      "Woodruff Sullivan"
+    ],
+    "summary": "We explore how questions related to developing a sustainable human civilization can be cast in terms of astrobiology. In particular we show how ongoing astrobiological studies of the coupled relationship between life, planets and their co-evolution can inform new perspectives and direct new studies in sustainability science. Using the Drake Equation as a vehicle to explore the gamut of astrobiology, we focus on its most import factor for sustainability: the mean lifetime <L> of an ensemble of Species with Energy-Intensive Technology (SWEIT). We then cast the problem into the language of dynamical system theory and introduce the concept of a trajectory bundle for SWEIT evolution and discuss how astrobiological results usefully inform the creation of dynamical equations, their constraints and initial conditions. Three specific examples of how astrobiological considerations can be folded into discussions of sustainability are discussed: (1) concepts of planetary habitability, (2) mass extinctions and their possible relation to the current, so-called Anthropocene epoch, and (3) today's changes in atmospheric chemisty (and the climate change it entails) in the context of pervious epochs of biosphere-driven atmospheric and climate alteration (i.e. the Great Oxidation Event).",
+    "pdf_url": "https://arxiv.org/pdf/1310.3851v1",
+    "published": "2013-10-14"
+  },
+  "1801.04868v1": {
+    "title": "SETI is Part of Astrobiology",
+    "authors": [
+      "Jason T. Wright"
+    ],
+    "summary": "\"Traditional SETI is not part of astrobiology\" declares the NASA Astrobiology Strategy 2015 document. This is incorrect. In this white paper, I argue that SETI$-$seen as the search for technosignatures characteristic of the future of life in the universe$-$is a neglected complement to the search for biosignatures in NASA's astrobiology portfolio, and may offer the more fruitful avenue to the discovery of life elsewhere in the universe, as recognized by the Astro2010 decadal survey. I rebut six erroneous perceptions that may contribute to the field's absence from NASA's astrobiology strategy, and argue that since SETI is, quite obviously, part of astrobiology, SETI practitioners should at the very least be expressly encouraged to compete on a level playing field with practitioners of other subfields for NASA astrobiology resources.",
+    "pdf_url": "https://arxiv.org/pdf/1801.04868v1",
+    "published": "2018-01-15"
+  },
+  "1703.06239v1": {
+    "title": "Widening Perspectives: The Intellectual and Social Benefits of Astrobiology (Regardless of Whether Extraterrestrial Life is Discovered or Not)",
+    "authors": [
+      "Ian A. Crawford"
+    ],
+    "summary": "Astrobiology is usually defined as the study of the origin, evolution, distribution, and future of life in the universe. As such it is inherently interdisciplinary and cannot help but engender a worldview infused by cosmic and evolutionary perspectives. Both these attributes of the study of astrobiology are, and will increasingly prove to be, beneficial to society regardless of whether extraterrestrial life is discovered or not.",
+    "pdf_url": "https://arxiv.org/pdf/1703.06239v1",
+    "published": "2017-03-18"
+  },
+  "1801.00052v2": {
+    "title": "The Astrobiology of the Anthropocene",
+    "authors": [
+      "Jacob Haqq-Misra",
+      "Sanjoy Som",
+      "Brendan Mullan",
+      "Rafael Loureiro",
+      "Edward Schwieterman",
+      "Lauren Seyler",
+      "Haritina Mogosanu",
+      "Adam Frank",
+      "Eric Wolf",
+      "Duncan Forgan",
+      "Charles Cockell",
+      "Woodruff Sullivan"
+    ],
+    "summary": "Human influence on the biosphere has been evident at least since the development of widespread agriculture, and some stratigraphers have suggested that the activities of modern civilization indicate a geological epoch transition. The study of the anthropocene as a geological epoch, and its implication for the future of energy-intensive civilizations, is an emerging transdisciplinary field in which astrobiology can play a leading role. Habitability research of Earth, Mars, and exoplanets examines extreme cases relevant for understanding climate change as a planetary process. Energy-intensive civilizations will also face thermodynamic limits to growth, which provides an important constraint for estimating the longevity of human civilization and guiding the search for extraterrestrial intelligence. We recommend that missions concepts such as LUVOIR, HabEx, and OST be pursued in order to make significant progress toward understanding the future evolution of life on our planet and the possible evolution of technological, energy-intensive life elsewhere in the universe.",
+    "pdf_url": "https://arxiv.org/pdf/1801.00052v2",
+    "published": "2017-12-29"
+  },
+  "astro-ph/0610926v1": {
+    "title": "The Astrobiology Primer: An Outline of General Knowledge - Version 1, 2006",
+    "authors": [
+      "L. J. Mix",
+      "J. C. Armstrong",
+      "A. M. Mandell",
+      "A. C. Mosier",
+      "J. Raymond",
+      "S. N. Raymond",
+      "F. J. Stewart",
+      "K. von Braun",
+      "O. Zhaxybayeva",
+      "L. Billings",
+      "V. Cameron",
+      "M. Claire",
+      "G. J. Dick",
+      "S. D. Domagal-Goldman",
+      "E. J. Javaux",
+      "O. J. Johnson",
+      "C. Laws",
+      "M. S. Race",
+      "J. Rask",
+      "J. D. Rummel",
+      "R. T. Schelble",
+      "S. Vance",
+      ";"
+    ],
+    "summary": "Astrobiology, the study of life as a planetary phenomenon, aims to understand the fundamental nature of life on earth and the possibility of life elsewhere. To achieve this goal, astrobiologists have initiated unprecedented communication between the disciplines of astronomy, biology, chemistry, and geology. The Astrobiology Primer has been created as a reference tool for those who are interested in the interdisciplinary field of astrobiology. The field incorporates many diverse research endeavors, but it is our hope that this slim volume will present the reader with all he or she needs to know to become involved and to understand, at least at a fundamental level, the state of the art. Because of the great diversity of material, each section was written by a different author with a different expertise. The Primer was constructed collaboratively. Ninety researchers from around the world contributed information with regard to what they expected from other astrobiologists and what they would like to know themselves but still had difficulty understanding (see Contributors). Those submissions were read and considered by the Editors who produced a list of seven general categories of knowledge, represented by the seven chapters in the Primer: 1) Stellar Formation and Evolution, 2) Planetary Formation and Evolution, 3) Astrobiogeochemistry and the Origin of Life, 4) Evolution of Life through Time, 5) Planet Detection & Characterization, 6) Diversity of Life, and 7) Science in Space. No one volume, of course, can contain the vast amount of information brought to play in astrobiology, but we believe that the Primer will provide a forum and a language around which the community will have the opportunity to develop a consensus about central issues.",
+    "pdf_url": "https://arxiv.org/pdf/astro-ph/0610926v1",
+    "published": "2006-10-31"
+  }
+}

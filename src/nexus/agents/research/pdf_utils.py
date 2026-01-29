@@ -17,48 +17,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def fix_common_latex_errors(latex_content: str) -> Tuple[str, list[str]]:
-    """
-    Automatically fix common LaTeX syntax errors.
-    
-    Args:
-        latex_content: LaTeX source code
-        
-    Returns:
-        Tuple of (fixed_content, list_of_fixes_applied)
-    """
-    import re
-    
-    fixes_applied = []
-    content = latex_content
-    
-    # Fix 1: \labeleq: → \label{eq:
-    pattern = r'\\labeleq:(\w+)'
-    if re.search(pattern, content):
-        content = re.sub(pattern, r'\\label{eq:\1}', content)
-        fixes_applied.append("Fixed \\labeleq: → \\label{eq:}")
-    
-    # Fix 2: \begineq: → \begin{eq:
-    pattern = r'\\begineq:(\w+)'
-    if re.search(pattern, content):
-        content = re.sub(pattern, r'\\begin{eq:\1}', content)
-        fixes_applied.append("Fixed \\begineq: → \\begin{eq:}")
-    
-    # Fix 3: Missing closing braces in \label
-    pattern = r'\\label\{([^}]+)$'
-    if re.search(pattern, content, re.MULTILINE):
-        content = re.sub(pattern, r'\\label{\1}', content, flags=re.MULTILINE)
-        fixes_applied.append("Added missing closing brace in \\label")
-    
-    # Fix 4: Comma after equation in \label (should be period or nothing)
-    pattern = r'(\\label\{eq:[^}]+\}),\s*\n'
-    if re.search(pattern, content):
-        content = re.sub(pattern, r'\1.\n', content)
-        fixes_applied.append("Fixed comma after \\label in equation")
-    
-    return content, fixes_applied
-
-
 def markdown_to_pdf(
     markdown_content: str,
     output_path: Path,
@@ -275,22 +233,15 @@ def latex_to_pdf(
     Returns:
         Tuple of (success: bool, error_message: Optional[str])
     """
-    # Auto-fix common LaTeX errors
-    fixed_content, fixes = fix_common_latex_errors(latex_content)
-    if fixes:
-        logger.info(f"🔧 Auto-fixed {len(fixes)} LaTeX error(s):")
-        for fix in fixes:
-            logger.info(f"   - {fix}")
-    
     # Try Tectonic first (modern, self-contained LaTeX engine)
-    success, error = _compile_with_tectonic(fixed_content, output_path)
+    success, error = _compile_with_tectonic(latex_content, output_path)
     if success:
         return True, None
     
     logger.info(f"Tectonic failed ({error}), trying XeLaTeX...")
     
     # Fall back to XeLaTeX
-    return _compile_with_xelatex(fixed_content, output_path)
+    return _compile_with_xelatex(latex_content, output_path)
 
 
 def _compile_with_tectonic(
