@@ -1,0 +1,45 @@
+name: image-retrieval
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python version (match project)
+  - python=3.11
+  - pip
+
+  # === Notebook Experience ===
+  - jupyter
+  - ipykernel
+  - ipywidgets
+
+  # === Core Data / ML (conda-forge for binary builds) ===
+  - numpy
+  - pandas
+  - scikit-learn
+  - plotly
+
+  # === PyTorch (macOS ARM64 — MPS support included by default) ===
+  # For Linux/CUDA (RunPod), use environment-runpod.yml instead
+  - pytorch=2.5.*
+  - torchvision=0.20.*
+
+  # === Document Processing ===
+  - pyarrow
+  - poppler           # Required by pdf2image for PDF rendering
+
+  # === Pip-only packages ===
+  - pip:
+    # --- Retrieval Models ---
+    - fastembed>=0.7.3                  # ColBERT and dense embedding models
+    - "colpali-engine[interpretability] @ git+https://github.com/kacperlukawski/colpali.git@feature/colsmol-patches"
+    - transformers>=4.53.1              # HuggingFace model backbone
+
+    # --- Vector Database ---
+    - qdrant-client>=1.15.1             # Qdrant vector DB client
+
+    # --- Document Processing ---
+    - pdf2image>=1.17.0                 # PDF page to image conversion
+
+    # --- LLM / API (for RAG lessons) ---
+    - openai>=2.2.0
+    - python-dotenv>=1.0.1

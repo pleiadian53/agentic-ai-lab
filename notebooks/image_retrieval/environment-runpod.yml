@@ -1,0 +1,50 @@
+name: image-retrieval
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python version (match project)
+  - python=3.11
+  - pip
+
+  # === Notebook Experience ===
+  - jupyter
+  - ipykernel
+  - ipywidgets
+
+  # === Core Data / ML (conda-forge for binary builds) ===
+  - numpy
+  - pandas
+  - scikit-learn
+  - plotly
+
+  # === PyTorch (Linux/CUDA — installed via pip, see below) ===
+  # PyTorch is NOT included here to avoid conda/pip CUDA conflicts.
+  # Install after env creation:
+  #   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+  # For A40/A100 pods, CUDA 12.1 is recommended. Adjust cu121 → cu124 if needed.
+
+  # === Document Processing ===
+  - pyarrow
+  - poppler           # Required by pdf2image for PDF rendering
+
+  # === Pip-only packages ===
+  - pip:
+    # --- PyTorch with CUDA ---
+    - torch>=2.5.1
+    - torchvision>=0.20.1
+
+    # --- Retrieval Models ---
+    - fastembed>=0.7.3                  # ColBERT and dense embedding models
+    - "colpali-engine[interpretability] @ git+https://github.com/kacperlukawski/colpali.git@feature/colsmol-patches"
+    - transformers>=4.53.1              # HuggingFace model backbone
+
+    # --- Vector Database ---
+    - qdrant-client>=1.15.1             # Qdrant vector DB client
+
+    # --- Document Processing ---
+    - pdf2image>=1.17.0                 # PDF page to image conversion
+
+    # --- LLM / API (for RAG lessons) ---
+    - openai>=2.2.0
+    - python-dotenv>=1.0.1
