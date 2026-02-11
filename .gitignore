@@ -254,3 +254,16 @@ scripts/SYNC_SETUP.md
 *.ilg
 *.lof
 *.lot
+
+# Large data files (should not be in git)
+*.csv
+*.joblib
+*.dump
+*.db
+*.pkl
+*.pickle
+*.parquet
+*.h5
+*.hdf5
+*.sqlite
+*.sqlite3
