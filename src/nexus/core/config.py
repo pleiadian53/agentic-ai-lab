@@ -9,50 +9,18 @@ import os
 from pathlib import Path
 from typing import Optional
 
-def _find_project_root(marker_name: str = "agentic-ai-lab") -> Path:
-    """
-    Find project root by searching for a directory with the given name.
-    
-    This is more robust than counting parent directories, as it works
-    regardless of where the code is located in the project structure.
-    
-    Args:
-        marker_name: Name of the project root directory
-        
-    Returns:
-        Path to project root
-        
-    Raises:
-        RuntimeError: If project root cannot be found
-    """
-    current = Path(__file__).resolve()
-    
-    # Traverse up the directory tree
-    for parent in [current] + list(current.parents):
-        if parent.name == marker_name:
-            return parent
-    
-    # Fallback: look for common project markers
-    for parent in [current] + list(current.parents):
-        # Check for common project root indicators
-        if any((parent / marker).exists() for marker in ['.git', 'pyproject.toml', 'setup.py']):
-            return parent
-    
-    raise RuntimeError(
-        f"Could not find project root. Expected directory named '{marker_name}' "
-        f"or a directory containing .git, pyproject.toml, or setup.py"
-    )
+from agentic_core.paths import find_project_root, PROJECT_ROOT, DATA_DIR, OUTPUT_DIR
 
 
 class NexusConfig:
     """Global configuration for Nexus platform."""
     
-    # Base paths
-    ROOT_DIR = _find_project_root("agentic-ai-lab")
+    # Base paths (from agentic_core.paths)
+    ROOT_DIR = PROJECT_ROOT
     SRC_DIR = ROOT_DIR / "src"
     NEXUS_DIR = SRC_DIR / "nexus"
-    OUTPUT_DIR = ROOT_DIR / "output"  # Standardized output directory
-    DATA_DIR = ROOT_DIR / "data"
+    OUTPUT_DIR = OUTPUT_DIR
+    DATA_DIR = DATA_DIR
     
     # Research outputs (standardized path)
     RESEARCH_REPORTS_DIR = OUTPUT_DIR / "research_reports"

@@ -70,6 +70,12 @@ dependencies:
     - pdfminer.six
     - pymupdf
     
+    # === RAG (Retrieval-Augmented Generation) ===
+    # Used by: rag/ sub-project, notebooks/RAG/ course materials
+    - together>=1.4.0        # Together.ai SDK (LLM API for RAG course)
+    - adjustText             # Label placement for embedding visualizations
+    - sentence-transformers  # Embedding models (used in C1M2+)
+    
     # === MCP (Model Context Protocol) ===
     # Used by: mcp/ tutorials and future MCP integrations
     - mcp>=1.7.1

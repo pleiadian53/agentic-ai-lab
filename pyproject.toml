@@ -152,6 +152,7 @@ zip-safe = false
 [tool.setuptools.packages.find]
 where = [".", "src"]
 include = [
+    "agentic_core*",
     "nexus*",
     "reflection*",
     "scripts*",
