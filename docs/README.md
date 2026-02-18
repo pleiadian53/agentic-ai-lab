@@ -96,11 +96,59 @@ Developer guides and collaboration standards.
 
 ---
 
-### 📋 [Documentation](./DOCUMENTATION_ORGANIZATION.md)
+### 🗂️ Documentation Meta
 
-- **[Documentation Organization](./DOCUMENTATION_ORGANIZATION.md)** - How documentation is structured
-- **[Documentation Structure](./DOCUMENTATION_STRUCTURE.md)** - Technical documentation hierarchy
-- **[Documentation Example](./DOCUMENTATION_GUIDES_EXAMPLE.md)** - Example from another project
+- **[Directory Structure](./STRUCTURE.md)** - Full tree view of `docs/` and how it maps to `dev/`
+- **[Documentation Example](./DOCUMENTATION_GUIDES_EXAMPLE.md)** - Doc structure example from a reference project
+
+---
+
+### 🔍 [RAG](./RAG/)
+
+Retrieval-Augmented Generation techniques and reference docs.
+
+- **[ANN](./RAG/ANN/)** - Approximate nearest neighbor search
+- **[Semantic Search Beyond Text](./RAG/semantic_search_beyond_text/)** - Multimodal and cross-modal search
+- **[Sentence Transformers](./RAG/sentence_transformer/)** - Sentence embedding models
+
+---
+
+### 🕸️ [Knowledge Graphs](./knowledge_graph/)
+
+Neo4j, Cypher, and knowledge graph construction docs.
+
+---
+
+### 🔢 [Multi-Vector Retrieval](./multivector_retrieval/)
+
+- **[Multi-Vector Text Retrieval](./multivector_retrieval/01_multivector_text_retrieval.md)**
+- **[Clustering in High Dimensions](./multivector_retrieval/02_clustering_in_high_dimensions.md)**
+
+---
+
+### 🤗 [HuggingFace](./huggingface/)
+
+- **[Model Download Troubleshooting](./huggingface/model_download_troubleshooting.md)**
+
+---
+
+### 🔌 [Responses API](./responses_api/)
+
+OpenAI Responses API reference and usage notes.
+
+---
+
+### 🚀 [Applications](./applications/)
+
+Shareable documentation for active applications.
+
+- **[Nexus](./applications/nexus/README.md)** - Research agent: architecture, integration roadmap, KG integration
+
+---
+
+### 📦 [Products](./products/)
+
+Documentation for graduated, stable products.
 
 ---
 

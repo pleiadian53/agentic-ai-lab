@@ -70,11 +70,22 @@ dependencies:
     - pdfminer.six
     - pymupdf
     
+    # === Knowledge Graph (Neo4j + LangChain) ===
+    # Used by: knowledge_graph/ sub-project, notebooks/knowledge_graph/
+    - langchain>=0.3.0           # LangChain core
+    - langchain-community>=0.3.0 # LangChain community integrations (RAG, etc.)
+    - langchain-neo4j>=0.3.0     # Neo4jGraph (official successor to langchain_community.graphs.Neo4jGraph)
+    - neo4j>=5.0.0               # Official Neo4j Python driver
+
     # === RAG (Retrieval-Augmented Generation) ===
-    # Used by: rag/ sub-project, notebooks/RAG/ course materials
-    - together>=1.4.0        # Together.ai SDK (LLM API for RAG course)
+    # Used by: rag/ sub-project, notebooks/RAG/
+    - together>=1.4.0        # Together.ai SDK (LLM API)
     - adjustText             # Label placement for embedding visualizations
-    - sentence-transformers  # Embedding models (used in C1M2+)
+    - sentence-transformers  # Embedding models
+    - weaviate-client>=4.0   # Weaviate vector DB client
+    - FlagEmbedding          # BGE reranker models
+    - flask                  # Local embedding/reranking server
+    - psutil                 # Process management
     
     # === MCP (Model Context Protocol) ===
     # Used by: mcp/ tutorials and future MCP integrations
