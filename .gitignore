@@ -262,9 +262,19 @@ scripts/SYNC_SETUP.md
 *.dump
 *.db
 *.pkl
+*.pkz
 *.pickle
 *.parquet
 *.h5
 *.hdf5
 *.sqlite
 *.sqlite3
+
+# Database commit logs and temporary files
+*.commitlog.d/
+*.wal
+*.bloom
+
+# Weaviate vector database runtime data (recreated when running notebooks)
+**/.collections/
+*.cna
