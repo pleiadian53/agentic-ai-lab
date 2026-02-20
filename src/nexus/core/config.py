@@ -33,6 +33,31 @@ class NexusConfig:
     # Knowledge paths
     KNOWLEDGE_DIR = OUTPUT_DIR / "knowledge"
     KNOWLEDGE_GRAPH_PATH = KNOWLEDGE_DIR / "graph.db"
+
+    # OpenClaw workspace root.
+    # Override with OPENCLAW_WORKSPACE to point at a different installation prefix
+    # (e.g. a shared network mount or a non-default install path) while keeping the
+    # sub-directory structure identical across all users.
+    OPENCLAW_WORKSPACE: Path = Path(
+        os.getenv("OPENCLAW_WORKSPACE", str(Path.home() / ".openclaw" / "workspace"))
+    )
+
+    # Personal knowledge base (shared with OpenClaw/Lyra when available).
+    # Resolution order (highest to lowest priority):
+    #   1. NEXUS_KB_PATH  — full path override (power users / CI)
+    #   2. OPENCLAW_WORKSPACE — prefix override; appends the standard sub-path
+    #   3. Default: ~/.openclaw/workspace/knowledge/agentic-ai-lab/kb
+    KB_DIR: Path = Path(
+        os.getenv(
+            "NEXUS_KB_PATH",
+            str(
+                Path(os.getenv("OPENCLAW_WORKSPACE", str(Path.home() / ".openclaw" / "workspace")))
+                / "knowledge"
+                / "agentic-ai-lab"
+                / "kb"
+            ),
+        )
+    )
     
     # API Keys (from environment)
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")

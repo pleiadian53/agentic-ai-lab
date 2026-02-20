@@ -7,6 +7,8 @@ import wikipedia
 import json
 from typing import Optional
 
+from nexus.knowledge.kb import KnowledgeBase
+
 # Load environment variables
 load_dotenv()
 
@@ -540,6 +542,60 @@ def semantic_scholar_search_tool(query: str, max_results: int = 10, fields: Opti
         return [{"error": f"Semantic Scholar search failed: {str(e)}"}]
 
 
+def query_knowledge_base_tool(query: str, top_k: int = 5) -> list[dict]:
+    """
+    Searches the personal knowledge base for items relevant to the query.
+
+    The knowledge base contains URLs, papers, blog posts, and notes that have
+    been previously ingested (via Telegram ``kb add <url>`` or the ``kb_add``
+    CLI script).  Use this tool *before* searching the web to surface
+    already-accumulated context and avoid redundant work.
+
+    Args:
+        query: Natural-language question or keyword string describing what
+            you are looking for.  Examples:
+            - "agentic memory systems"
+            - "RNA splicing transformer models"
+            - "OpenClaw best practices"
+        top_k: Maximum number of results to return.  Default is 5.
+
+    Returns:
+        List of dictionaries, each containing:
+            - file (str): KB item filename (``YYYY-MM-DD__<slug>.md``)
+            - title (str): Item title
+            - url (str): Source URL
+            - date (str): Date ingested
+            - tags (list[str]): Topic tags
+            - summary (str): Short summary
+            - excerpt (str): Snippet from the matching region of the full text
+            - score (int): Number of query-term matches (higher is better)
+
+        Returns an empty list when the KB is empty or nothing matches.
+        Returns a list with a single error dict on unexpected failure.
+
+    Example:
+        >>> results = query_knowledge_base_tool("efficient LLM inference")
+        >>> for r in results:
+        ...     print(r["title"], "—", r["url"])
+        'Mistral 7B — https://arxiv.org/abs/2310.06825'
+
+    Note:
+        - Search is lexical (term frequency); semantic/vector search is planned
+          for a future release once the KB reaches ~50 items.
+        - The KB location defaults to
+          ``~/.openclaw/workspace/knowledge/agentic-ai-lab/kb/`` and can be
+          overridden with the ``NEXUS_KB_PATH`` environment variable.
+    """
+    try:
+        kb = KnowledgeBase()
+        results = kb.search(query, top_k=top_k)
+        if not results:
+            return [{"message": f"No KB items matched '{query}'. KB may be empty or no relevant items have been ingested yet."}]
+        return results
+    except Exception as e:
+        return [{"error": f"Knowledge base search failed: {str(e)}"}]
+
+
 # --- Tool Definitions (Schemas) ---
 
 arxiv_tool_def = {
@@ -694,6 +750,33 @@ wikipedia_tool_def = {
     }
 }
 
+knowledge_base_tool_def = {
+    "type": "function",
+    "function": {
+        "name": "query_knowledge_base_tool",
+        "description": (
+            "Searches the personal knowledge base for previously ingested items "
+            "(papers, blog posts, notes, URLs). Use this FIRST before searching "
+            "the web to surface already-accumulated context."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "Natural-language question or keyword string."
+                },
+                "top_k": {
+                    "type": "integer",
+                    "description": "Maximum number of results to return.",
+                    "default": 5
+                }
+            },
+            "required": ["query"]
+        }
+    }
+}
+
 # Tool mapping for execution
 tool_mapping = {
     "tavily_search_tool": tavily_search_tool,
@@ -701,25 +784,28 @@ tool_mapping = {
     "wikipedia_search_tool": wikipedia_search_tool,
     "europe_pmc_search_tool": europe_pmc_search_tool,
     "reddit_search_tool": reddit_search_tool,
-    "semantic_scholar_search_tool": semantic_scholar_search_tool
+    "semantic_scholar_search_tool": semantic_scholar_search_tool,
+    "query_knowledge_base_tool": query_knowledge_base_tool,
 }
 
 # List of callables for aisuite
 aisuite_tools = [
-    arxiv_search_tool, 
-    tavily_search_tool, 
-    wikipedia_search_tool, 
+    arxiv_search_tool,
+    tavily_search_tool,
+    wikipedia_search_tool,
     europe_pmc_search_tool,
     reddit_search_tool,
-    semantic_scholar_search_tool
+    semantic_scholar_search_tool,
+    query_knowledge_base_tool,
 ]
 
 # List of definitions for Responses API (GPT-5)
 responses_tool_defs = [
-    arxiv_tool_def, 
-    tavily_tool_def, 
-    wikipedia_tool_def, 
+    arxiv_tool_def,
+    tavily_tool_def,
+    wikipedia_tool_def,
     europe_pmc_tool_def,
     reddit_tool_def,
-    semantic_scholar_tool_def
+    semantic_scholar_tool_def,
+    knowledge_base_tool_def,
 ]

@@ -49,5 +49,6 @@ Mature components will graduate to `src/agentic_core/` or `src/nexus/` as knowle
 ## Related
 
 - `notebooks/knowledge_graph/` — Lesson notebooks and scratch space for KG experiments
+- `examples/knowledge_graph` - Example scripts and experimenatal playgrounds for KG
 - `rag/` — RAG sub-project (KG-backed retrieval is a natural integration point)
 - `src/nexus/` — Nexus Research Agent (eventual consumer of KG components)
