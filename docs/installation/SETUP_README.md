@@ -111,7 +111,6 @@ jupyter notebook
 - **Detailed Setup**: `docs/ENVIRONMENT_SETUP.md`
 - **Checklist**: `docs/SETUP_CHECKLIST.md`
 - **Learning Roadmap**: `docs/AGENTIC_ROADMAP.md`
-- **Status**: `dev/SETUP_STATUS.md`
 
 ## 🆘 Need Help?
 

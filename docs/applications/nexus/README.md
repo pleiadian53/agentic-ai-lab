@@ -1,7 +1,6 @@
 # Nexus Research Agent — Documentation
 
 > **Status**: Active development. This documentation grows as features stabilize.  
-> For private dev notes and session logs, see `dev/applications/nexus/`.  
 > For quick-start instructions, see the project-level `QUICKSTART.md`.
 
 ---
@@ -60,7 +59,6 @@ Phase 4 (vision):     Full R&D loop — ingest → query → synthesize → prop
 
 ## Related
 
-- Dev notes: `dev/applications/nexus/`
 - Quick start: `QUICKSTART.md`
 - Source: `src/nexus/`
 - KG subproject: `knowledge_graph/`

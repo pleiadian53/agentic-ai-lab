@@ -1,8 +1,6 @@
 # docs/ — Directory Structure
 
 Visual overview of the shareable documentation space.
-For private dev notes, see `../dev/README.md`.
-
 **Last Updated:** February 2026
 
 ---
@@ -93,7 +91,6 @@ docs/
 | Space | Purpose | Audience |
 |---|---|---|
 | `docs/` | Shareable, publication-quality documentation | Collaborators, public |
-| `dev/` | Private, informal dev notes and session logs | Self only |
 
 ### Within docs/: Three Layers
 
@@ -107,12 +104,9 @@ docs/
 **Layer 3 — Lifecycle-based** (application/product documentation):
 `applications/<app>/`, `products/<app>/`
 
-### Lifecycle Flow (dev/ → docs/)
+### Lifecycle Flow
 
 ```
-dev/incubator/<idea>/         ← uncommitted idea
-dev/applications/<app>/       ← private dev notes (active)
-         ↕ written in parallel
 docs/applications/<app>/      ← shareable docs (active)
          ↓ on graduation
 docs/products/<app>/          ← shareable docs (stable)

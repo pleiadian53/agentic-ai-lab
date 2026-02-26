@@ -602,6 +602,6 @@ jupyter nbconvert --to html --execute notebook.ipynb
 
 - [Complete Dependencies](DEPENDENCIES.md)
 - [Data Science Tools](DATA_SCIENCE.md)
-- [Environment Setup](../ENVIRONMENT_SETUP.md)
+- [Environment Setup](../installation/ENVIRONMENT_SETUP.md)
 - [IPyWidgets Documentation](https://ipywidgets.readthedocs.io/)
 - [Jupyter Documentation](https://jupyter.org/documentation)

@@ -432,7 +432,7 @@ A subtle but important point: dimensionality reduction and clustering are not in
 
 These clustering concepts connect directly to the retrieval pipeline:
 
-**MUVERA** (Multi-Vector Retrieval via Aggregation), introduced in the [L1 helper utilities](../../notebooks/image_retrieval/colbert/helper.py), uses **SimHash clustering** to group token embeddings into fixed clusters before aggregation. This is a form of high-dimensional clustering applied to 128-dimensional ColBERT token vectors, where:
+**MUVERA** (Multi-Vector Retrieval via Aggregation), introduced in the L1 helper utilities (`notebooks/image_retrieval/colbert/helper.py`), uses **SimHash clustering** to group token embeddings into fixed clusters before aggregation. This is a form of high-dimensional clustering applied to 128-dimensional ColBERT token vectors, where:
 
 - SimHash acts as an extremely fast locality-sensitive hash (binary projection)
 - Tokens are assigned to $2^k$ clusters based on the sign pattern of random projections

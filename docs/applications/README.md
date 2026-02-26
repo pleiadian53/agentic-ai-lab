@@ -22,8 +22,6 @@ Documents here should:
 ## Lifecycle
 
 ```
-dev/applications/<app>/   ← rough dev notes (private)
-        ↓
 docs/applications/<app>/  ← polished, shareable docs (this directory)
         ↓ (on graduation)
 docs/products/<app>/      ← product documentation
@@ -31,6 +29,6 @@ docs/products/<app>/      ← product documentation
 
 ## Applications
 
-| App | Status | Dev Notes | Source |
-|---|---|---|---|
-| `nexus` | Active | `dev/applications/nexus/` | `src/nexus/` |
+| App | Status | Source |
+|---|---|---|
+| `nexus` | Active | `src/nexus/` |

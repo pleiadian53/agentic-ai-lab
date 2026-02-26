@@ -278,3 +278,5 @@ scripts/SYNC_SETUP.md
 # Weaviate vector database runtime data (recreated when running notebooks)
 **/.collections/
 *.cna
+.windsurf/
+tasks/

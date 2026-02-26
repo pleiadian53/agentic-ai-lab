@@ -2,7 +2,7 @@
 
 > **Series**: Multi-Vector Image Retrieval
 > **Part**: 01 — Foundations
-> **Next**: [L1 Notebook — ColBERT Multi-Vector Text Retrieval](../../notebooks/image_retrieval/colbert/L1.ipynb)
+> **Next**: `notebooks/image_retrieval/colbert/L1.ipynb` — ColBERT Multi-Vector Text Retrieval
 
 This document covers the foundational concepts needed before diving into the hands-on ColBERT notebook. The ideas span geometry, algorithms, and systems design — the machinery behind modern retrieval and RAG-style models. They form a coherent mental model rather than isolated definitions, because they only make sense together.
 
@@ -199,7 +199,7 @@ This architecture is not specific to text or images. The same spine underlies RA
 
 ## Next Steps
 
-The [L1 notebook](../../notebooks/image_retrieval/colbert/L1.ipynb) puts these concepts into practice:
+The `notebooks/image_retrieval/colbert/L1.ipynb` notebook puts these concepts into practice:
 
 - **Section 1–3**: Load ColBERT via fastembed, embed documents and queries as multi-vectors, compute the MaxSim similarity matrix
 - **Section 4–5**: Set up a Qdrant collection with both dense and ColBERT vector fields, demonstrating the named multi-vector configuration
@@ -207,5 +207,5 @@ The [L1 notebook](../../notebooks/image_retrieval/colbert/L1.ipynb) puts these c
 
 For deeper dives into the libraries used:
 
-- [Fastembed Tutorial](../../notebooks/image_retrieval/colbert/docs/fastembed_tutorial.md) — embedding models, ColBERT internals, MaxSim scoring
-- [Qdrant Tutorial](../../notebooks/image_retrieval/colbert/docs/qdrant_tutorial.md) — vector database setup, multi-vector collections, hybrid retrieval patterns
+- `notebooks/image_retrieval/colbert/docs/fastembed_tutorial.md` — embedding models, ColBERT internals, MaxSim scoring
+- `notebooks/image_retrieval/colbert/docs/qdrant_tutorial.md` — vector database setup, multi-vector collections, hybrid retrieval patterns

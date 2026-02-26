@@ -542,4 +542,4 @@ if __name__ == "__main__":
 
 - [Complete Dependencies](DEPENDENCIES.md)
 - [Agent & LLM Tools](AGENT_LLM_TOOLS.md)
-- [Environment Setup](../ENVIRONMENT_SETUP.md)
+- [Environment Setup](../installation/ENVIRONMENT_SETUP.md)

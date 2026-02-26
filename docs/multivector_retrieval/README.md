@@ -15,11 +15,11 @@ This series covers the theory and practice of multi-vector retrieval — from fo
 
 ## Related Notebooks
 
-The hands-on notebooks live under [`notebooks/image_retrieval/`](../../notebooks/image_retrieval/):
+The hands-on notebooks live under `notebooks/image_retrieval/` (project root):
 
 | Notebook | Description |
 | -------- | ----------- |
-| [L1 — ColBERT Multi-Vector Text Retrieval](../../notebooks/image_retrieval/colbert/L1.ipynb) | ColBERT embeddings, MaxSim scoring, dense vs. multi-vector comparison using Qdrant |
+| `notebooks/image_retrieval/colbert/L1.ipynb` — ColBERT Multi-Vector Text Retrieval | ColBERT embeddings, MaxSim scoring, dense vs. multi-vector comparison using Qdrant |
 
 ---
 
@@ -29,11 +29,11 @@ Detailed tutorials for the key libraries used in the notebooks:
 
 | Tutorial | Covers |
 | -------- | ------ |
-| [Fastembed Tutorial](../../notebooks/image_retrieval/colbert/docs/fastembed_tutorial.md) | Dense & ColBERT embedding models, asymmetric encoding, batch processing |
-| [Qdrant Tutorial](../../notebooks/image_retrieval/colbert/docs/qdrant_tutorial.md) | Vector database setup, multi-vector collections, hybrid retrieval, quantization |
+| `notebooks/image_retrieval/colbert/docs/fastembed_tutorial.md` | Dense & ColBERT embedding models, asymmetric encoding, batch processing |
+| `notebooks/image_retrieval/colbert/docs/qdrant_tutorial.md` | Vector database setup, multi-vector collections, hybrid retrieval, quantization |
 
 ---
 
 ## Environment Setup
 
-See the [Image Retrieval README](../../notebooks/image_retrieval/README.md#environment-setup) for instructions on setting up the dedicated `image-retrieval` conda environment (macOS and RunPod/CUDA).
+See `notebooks/image_retrieval/README.md` for instructions on setting up the dedicated `image-retrieval` conda environment (macOS and RunPod/CUDA).

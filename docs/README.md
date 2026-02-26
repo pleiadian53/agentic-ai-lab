@@ -69,7 +69,7 @@ Documentation for external libraries and tools used in the project.
 Guidelines for organizing, documenting, and versioning datasets.
 
 - **[Data Management Guidelines](./data_management/guidelines.md)** - Complete data organization policy
-- **[Data Patterns](../tool_use/docs/data_patterns.md)** - ML Agent data documentation patterns
+- **[Data Patterns](./data_management/data_patterns.md)** - ML Agent data documentation patterns
 
 **Start here if:** You're working with datasets or need to understand data organization.
 
@@ -81,6 +81,7 @@ Learning guides and usage examples.
 
 - **[Learning Guide](./tutorials/LEARNING_GUIDE.md)** - Comprehensive system overview and learning path
 - **[Usage Guide](./tutorials/USAGE_GUIDE.md)** - Research agent usage examples
+- **[FastAPI Tool Use Tutorial](./tutorials/fastapi_tool_use_tutorial.md)** - Building tool-enabled agents with FastAPI
 
 **Start here if:** You want to learn how to use the system.
 
@@ -98,7 +99,7 @@ Developer guides and collaboration standards.
 
 ### 🗂️ Documentation Meta
 
-- **[Directory Structure](./STRUCTURE.md)** - Full tree view of `docs/` and how it maps to `dev/`
+- **[Directory Structure](./STRUCTURE.md)** - Full tree view of `docs/`
 - **[Documentation Example](./DOCUMENTATION_GUIDES_EXAMPLE.md)** - Doc structure example from a reference project
 
 ---
@@ -143,6 +144,16 @@ OpenAI Responses API reference and usage notes.
 Shareable documentation for active applications.
 
 - **[Nexus](./applications/nexus/README.md)** - Research agent: architecture, integration roadmap, KG integration
+  - **[Architecture](./applications/nexus/architecture.md)** - System design overview
+  - **[Installation](./applications/nexus/installation.md)** - Setup and dependencies
+  - **[Troubleshooting](./applications/nexus/troubleshooting.md)** - Common issues
+  - **[Multi-Agent Workflow Tutorial](./applications/nexus/MULTIAGENT_WORKFLOW_TUTORIAL.md)** - Building multi-agent pipelines
+  - **[Tool Orchestration Design](./applications/nexus/TOOL_ORCHESTRATION_DESIGN.md)** - How tools are selected and invoked
+  - **[Tool Calling Reference](./applications/nexus/tool_calling/)** - Architecture, patterns, and AISuite vs raw API
+- **[Chart Agent](./applications/chart_agent/README.md)** - AI-powered data visualization with reflection
+  - **[Architecture](./applications/chart_agent/ARCHITECTURE.md)** - System and component design
+  - **[LLM Insight Strategy](./applications/chart_agent/LLM_INSIGHT_STRATEGY.md)** - How insights are derived
+  - **[Frontend Options](./applications/chart_agent/frontend/)** - Swagger, React, Streamlit, cURL
 
 ---
 
@@ -224,7 +235,7 @@ Documentation for graduated, stable products.
 
 ### Data Management
 - Data guidelines → [data_management/guidelines.md](./data_management/guidelines.md)
-- Data patterns → [../tool_use/docs/data_patterns.md](../tool_use/docs/data_patterns.md)
+- Data patterns → [data_management/data_patterns.md](./data_management/data_patterns.md)
 
 ### Development & Collaboration
 - Codex guide → [development/AGENTS.md](./development/AGENTS.md)
@@ -297,7 +308,7 @@ When adding new documentation:
 
 ## 🔗 External Resources
 
-- **Main README:** [../README.md](../README.md)
+- **Main README:** `README.md` (project root)
 - **Installation Guide:** [./installation/INSTALL_QUICKSTART.md](./installation/INSTALL_QUICKSTART.md)
 - **Learning Guide:** [./tutorials/LEARNING_GUIDE.md](./tutorials/LEARNING_GUIDE.md)
 

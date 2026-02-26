@@ -49,6 +49,6 @@ When adding new libraries:
 
 ## See Also
 
-- [Environment Setup Guide](../ENVIRONMENT_SETUP.md)
-- [Mamba vs Pip Comparison](../MAMBA_VS_PIP.md)
-- [Setup Checklist](../SETUP_CHECKLIST.md)
+- [Environment Setup Guide](../installation/ENVIRONMENT_SETUP.md)
+- [Mamba vs Pip Comparison](../installation/MAMBA_VS_PIP.md)
+- [Setup Checklist](../installation/SETUP_CHECKLIST.md)

@@ -543,5 +543,5 @@ def choose_model(task_complexity):
 
 - [Complete Dependencies](DEPENDENCIES.md)
 - [Web Framework Tools](WEB_FRAMEWORK.md)
-- [Environment Setup](../ENVIRONMENT_SETUP.md)
-- [Agentic Roadmap](../AGENTIC_ROADMAP.md)
+- [Environment Setup](../installation/ENVIRONMENT_SETUP.md)
+- [Agentic Roadmap](../architecture/AGENTIC_ROADMAP.md)
